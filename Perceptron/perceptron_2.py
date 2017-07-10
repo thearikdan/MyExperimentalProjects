@@ -26,9 +26,9 @@ class Perceptron_2:
         t = np.tanh(x)**2
         return 1.0 - t
 
-    def b_deriv(self, x):
+    def deriv_b(self, x):
         return self.activation_deriv(self.inp(x))
   
-    def w_deriv(self, x):
+    def deriv_w(self, x):
         return self.activation_deriv(self.inp(x)) * x
 
