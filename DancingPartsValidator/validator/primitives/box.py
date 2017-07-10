@@ -1,7 +1,8 @@
 from primitive import Primitive
 
 class Box(Primitive):
-    def __init__(self, w, l, h):
+
+    def __init__(self, w = 0, l = 0, h = 0):
         self.w = w
         self.l = l
         self.h = h

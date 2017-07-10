@@ -2,7 +2,7 @@ from primitive import Primitive
 import math
 
 class Ellipsoid(Primitive):
-    def __init__(self, r1, r2, r3):
+    def __init__(self, r1 = 0, r2 = 0, r3 = 0):
         self.r1 = r1
         self.r2 = r2
         self.r3 = r3

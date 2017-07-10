@@ -2,7 +2,7 @@ from primitive import Primitive
 import math
 
 class Cylinder(Primitive):
-    def __init__(self, r, h):
+    def __init__(self, r = 0, h = 0):
         self.r = r
         self.h = h
 
