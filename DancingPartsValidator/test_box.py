@@ -1,4 +1,4 @@
-from validator.primitives import box
+from components.primitives import box
 
 
 b = box.Box()

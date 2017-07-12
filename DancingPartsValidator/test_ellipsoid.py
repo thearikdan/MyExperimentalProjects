@@ -1,4 +1,4 @@
-from validator.primitives import ellipsoid
+from components.primitives import ellipsoid
 
 b = ellipsoid.Ellipsoid(3,1,2)
 

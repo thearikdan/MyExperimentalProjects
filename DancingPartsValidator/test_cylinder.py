@@ -1,4 +1,4 @@
-from validator.primitives import cylinder
+from components.primitives import cylinder
 
 b = cylinder.Cylinder(1,2)
 
