@@ -12,4 +12,4 @@ print vertex.shape
 
 el = PlyElement.describe(vertex, 'vertex')
 
-PlyData([el]).write('some_binary.ply')
+PlyData([el]).write('data/some_binary.ply')

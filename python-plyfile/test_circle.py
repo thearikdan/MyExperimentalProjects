@@ -2,25 +2,24 @@ import numpy as np
 from plyfile import PlyElement, PlyData
 
 point_count = 2048
-x_low = 0.
-x_high = 100.
 
-y_low = 0.
-y_high = 0.
+radius = 100.
 
-z_low = 0.
-z_high = 100.
 
 vertex = np.zeros((2048,),
                       dtype=[('x', 'f4'), ('y', 'f4'),
                              ('z', 'f4')])
 
 for i in range (point_count):
-    vertex[i] = (np.random.uniform(x_low, x_high), np.random.uniform(y_low, y_high), np.random.uniform(z_low, z_high))
+    x = np.random.uniform(-radius, radius)
+    y = 0.0
+    z_ = np.sqrt(radius * radius - x * x)
+    z = np.random.uniform(-z_, z_)
+    vertex[i] = (x, y, z)
 
 print vertex
 
 
 el = PlyElement.describe(vertex, 'vertex')
 
-PlyData([el]).write('square.ply')
+PlyData([el]).write('data/circle.ply')
