@@ -1,5 +1,5 @@
 import numpy as np
-from plyfile import PlyElement, PlyData
+from plyfile import plyfile
 from point_cloud import plane
 
 point_count = 2048
@@ -20,6 +20,6 @@ d = 0
 vertex = plane.get_plane_point_cloud(point_count, x_low, x_high, y_low, y_high, z_low, z_high, norm_x, norm_y, norm_z, d)
 
 
-el = PlyElement.describe(vertex, 'vertex')
+el = plyfile.PlyElement.describe(vertex, 'vertex')
 
-PlyData([el]).write('data/plane.ply')
+plyfile.PlyData([el]).write('data/plane.ply')

@@ -1,5 +1,5 @@
 import numpy as np
-from plyfile import PlyElement, PlyData
+from plyfile import plyfile
 
 point_count = 2048
 x_low = 0.
@@ -21,6 +21,6 @@ for i in range (point_count):
 print vertex
 
 
-el = PlyElement.describe(vertex, 'vertex')
+el = plyfile.PlyElement.describe(vertex, 'vertex')
 
-PlyData([el]).write('data/square.ply')
+plyfile.PlyData([el]).write('data/square.ply')
