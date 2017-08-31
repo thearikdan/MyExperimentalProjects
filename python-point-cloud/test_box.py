@@ -1,16 +1,22 @@
 import numpy as np
 from plyfile import plyfile
 from point_cloud import box
+import os
 
 point_count = 2048
 length = 100
 width = 80
 height = 50
 
+directory = "data/boxes"
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
+
 vertex = box.get_box_point_cloud(point_count, length, width, height)
 
 el = plyfile.PlyElement.describe(vertex, 'vertex')
 
-name = "data/box_" + str(int(length)) + "_" + str(int(width)) + "_" + str(int(height)) + ".ply"  
+name = directory + "/box_" + str(int(length)) + "_" + str(int(width)) + "_" + str(int(height)) + ".ply"  
 
 plyfile.PlyData([el]).write(name)
