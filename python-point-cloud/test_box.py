@@ -11,4 +11,6 @@ vertex = box.get_box_point_cloud(point_count, length, width, height)
 
 el = plyfile.PlyElement.describe(vertex, 'vertex')
 
-plyfile.PlyData([el]).write('data/box.ply')
+name = "data/box_" + str(int(length)) + "_" + str(int(width)) + "_" + str(int(height)) + ".ply"  
+
+plyfile.PlyData([el]).write(name)
