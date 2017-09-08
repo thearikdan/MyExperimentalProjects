@@ -13,6 +13,6 @@ vertex = cone.get_cone_point_cloud(point_count, rad, radius)
 
 el = plyfile.PlyElement.describe(vertex, 'vertex')
 
-name = "data/cone_" + str(int(angle)) + "_" + str(int(radius)) + ".ply"  
+name = "data/cone_" + str(int(angle)) + "_" + str(int(radius)) + "_.ply"  
 
 plyfile.PlyData([el]).write(name)

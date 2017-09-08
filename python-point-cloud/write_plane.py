@@ -21,6 +21,6 @@ vertex = plane.get_plane_point_cloud(point_count, x_low, x_high, y_low, y_high, 
 
 el = plyfile.PlyElement.describe(vertex, 'vertex')
 
-name = "data/plane_" + str(int(norm_x)) + "_" + str(int(norm_y)) + "_" + str(int(norm_z)) + "_" + str(int(d)) + ".ply"  
+name = "data/plane_" + str(int(norm_x)) + "_" + str(int(norm_y)) + "_" + str(int(norm_z)) + "_" + str(int(d)) + "_.ply"  
 
 plyfile.PlyData([el]).write(name)

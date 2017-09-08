@@ -10,6 +10,6 @@ vertex = sphere.get_sphere_point_cloud(point_count, radius)
 
 el = plyfile.PlyElement.describe(vertex, 'vertex')
 
-name = "data/sphere_" + str(int(radius)) + ".ply"  
+name = "data/sphere_" + str(int(radius)) + "_.ply"  
 
 plyfile.PlyData([el]).write(name)

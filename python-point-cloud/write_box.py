@@ -4,7 +4,8 @@ from point_cloud import box
 import os
 import shutil
 
-sample_count = 1000
+#sample_count = 1000
+sample_count = 8
 point_count = 2048
 
 max_length = 100
@@ -29,5 +30,5 @@ for i in range(sample_count):
 
     vertex = box.get_box_point_cloud(point_count, length, width, height)
     el = plyfile.PlyElement.describe(vertex, 'vertex')
-    name = directory + "/box_" + str(int(length)) + "_" + str(int(width)) + "_" + str(int(height)) + ".ply"  
+    name = directory + "/box_" + str(int(length)) + "_" + str(int(width)) + "_" + str(int(height)) + "_.ply"  
     plyfile.PlyData([el]).write(name)

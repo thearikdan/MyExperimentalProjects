@@ -10,6 +10,6 @@ vertex = cylinder.get_cylinder_point_cloud(point_count, height, radius)
 
 el = plyfile.PlyElement.describe(vertex, 'vertex')
 
-name = "data/cylinder_" + str(int(height)) + "_" + str(int(radius)) + ".ply"  
+name = "data/cylinder_" + str(int(height)) + "_" + str(int(radius)) + "_.ply"  
 
 plyfile.PlyData([el]).write(name)
