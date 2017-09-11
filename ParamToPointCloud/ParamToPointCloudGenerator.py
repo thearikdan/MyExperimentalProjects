@@ -2,20 +2,19 @@ import numpy as np
 import tensorflow as tf
 from os import listdir
 from os.path import isfile, join
+from plyfile import plyfile
+
 
 DATA_DIR = '/raid/MyProjects/python-point-cloud/data/boxes'
 BATCH_SIZE = 2
-#MAX_PARAM_COUNT = 8 #maximum numbe of parameters for a primitive, including label
 PARAMS_VECTOR_SIZE = 256 #sparse vector for holding param values for different primitives
+POINT_COUNT = 2048
 
 labels = {"box":0,
           "cylinder":1,
           "sphere":2,
           "plane":3
          }
-
-data_files = [f for f in listdir(DATA_DIR) if isfile(join(DATA_DIR, f))]
-
 
 
 def get_primitive_params_pos_start_from_label(label):
@@ -24,7 +23,13 @@ def get_primitive_params_pos_start_from_label(label):
     return pos
 
 
+
 def get_primitive_file_label_params(name):
+    """Returns label and parameters, derived from a file name, in a sparse vector
+    First, is the label of the class (for example, box is 0)
+    Next, are parameters like width, length, height, or other parameters relevant to the class
+    The position of the parameters in the vector is determined by the class, and is positioned to ensure sparsity of the vector
+    """
     params = name.split('_')
     count = len(params)
     p = np.zeros(PARAMS_VECTOR_SIZE)
@@ -37,33 +42,54 @@ def get_primitive_file_label_params(name):
     return p
 
 
-
-def get_point_clouds_labels_params(data_dir, files):
-    arr = np.array(files)
-    np.random.shuffle(arr)
-    count = arr.size
-    for i in range(count):
-        file_name = arr[i]
-        params = get_primitive_file_label_params(file_name)
-        print params
-    
+def get_point_cloud_from_file(dir, name):
+    filename = join(dir, name)
+    plydata = plyfile.PlyData.read(filename)
+    data = plydata.elements[0].data
+    arr = np.fromiter(data, dtype=[('x', '<f4'), ('y', '<f4'), ('z', '<f4')])
     return arr
 
 
-arr = get_point_clouds_labels_params(DATA_DIR, data_files)
-print arr
+def get_point_clouds_labels_params(files):
+    """Returns label and parameters for each file in a numpy array
+    """
+    count = files.size
+    params = np.zeros(shape = (count, PARAMS_VECTOR_SIZE))
+    for i in range(count):
+        file_name = files[i]
+        param = get_primitive_file_label_params(file_name)
+        params[i] = param
+    
+    return params
 
-count = arr.size 
+
+
+def get_point_clouds_data(dir, files):
+    """Returns label and parameters for each file in a numpy array
+    """
+    count = files.size
+    data = np.zeros(shape=(count, POINT_COUNT))
+    for i in range(count):
+        file_name = files[i]
+        file_data = get_point_cloud_from_file(dir, file_name)
+        data[i] = file_data
+
+    return data
+
+
+
+#List all files, and shuffle them randomly into an np.array
+files = [f for f in listdir(DATA_DIR) if isfile(join(DATA_DIR, f))]
+data_files = np.array(files)
+np.random.shuffle(data_files)
+count = data_files.size
+
 for i in xrange(0, count, BATCH_SIZE):
     print "Batch " + str(i / BATCH_SIZE)
-    print arr[i:i+BATCH_SIZE]
+    print data_files[i:i+BATCH_SIZE]
+    params = get_point_clouds_labels_params(data_files[i:i+BATCH_SIZE])
+    print params
+    data = get_point_clouds_data(DATA_DIR, data_files[i:i+BATCH_SIZE])
+    print data
 
-#label_count = len(labels)
-#print label_count
-
-#for i in range(label_count):
-#    label = labels.keys()[i]
-#    pos = get_primitive_params_pos_start_from_label(label)
-#    print label
-#    print pos
 
