@@ -84,12 +84,25 @@ data_files = np.array(files)
 np.random.shuffle(data_files)
 count = data_files.size
 
-for i in xrange(0, count, BATCH_SIZE):
-    print "Batch " + str(i / BATCH_SIZE)
-    print data_files[i:i+BATCH_SIZE]
-    params = get_point_clouds_labels_params(data_files[i:i+BATCH_SIZE])
-    print params
-    data = get_point_clouds_data(DATA_DIR, data_files[i:i+BATCH_SIZE])
-    print data
+tf_pc_params = tf.placeholder(tf.int32, shape = [BATCH_SIZE, PARAMS_VECTOR_SIZE])
+tf_pc_data = tf.placeholder(tf.float32, shape = [BATCH_SIZE, POINT_COUNT])
+
+#Dummy data for now
+tf_params = tf_pc_params
+tf_data = tf_pc_data
+
+
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+
+    for i in xrange(0, count, BATCH_SIZE):
+#        print "Batch " + str(i / BATCH_SIZE)
+        print data_files[i:i+BATCH_SIZE]
+        params = get_point_clouds_labels_params(data_files[i:i+BATCH_SIZE])
+#        print params
+        data = get_point_clouds_data(DATA_DIR, data_files[i:i+BATCH_SIZE])
+#        print data
+        p, d = sess.run([tf_params, tf_data], feed_dict = {tf_pc_params:params, tf_pc_data:data})
+        print p, d
 
 
