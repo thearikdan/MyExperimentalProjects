@@ -5,10 +5,12 @@ from os.path import isfile, join
 from plyfile import plyfile
 
 
-DATA_DIR = '/raid/MyProjects/python-point-cloud/data/boxes'
+#DATA_DIR = '/raid/MyProjects/python-point-cloud/data/boxes'
+DATA_DIR = '/media/ara/HDD/MyProjects/python-point-cloud/data/boxes'
 BATCH_SIZE = 2
 PARAMS_VECTOR_SIZE = 256 #sparse vector for holding param values for different primitives
 POINT_COUNT = 2048
+DIMS = 3
 
 labels = {"box":0,
           "cylinder":1,
@@ -84,12 +86,28 @@ data_files = np.array(files)
 np.random.shuffle(data_files)
 count = data_files.size
 
-tf_pc_params = tf.placeholder(tf.int32, shape = [BATCH_SIZE, PARAMS_VECTOR_SIZE])
-tf_pc_data = tf.placeholder(tf.float32, shape = [BATCH_SIZE, POINT_COUNT])
+#tf_pc_params = tf.placeholder(tf.int32, shape = [None, PARAMS_VECTOR_SIZE])
+tf_pc_params = tf.placeholder(tf.float32, shape = [None, PARAMS_VECTOR_SIZE])
+tf_pc_data = tf.placeholder(tf.float32, shape = [None, POINT_COUNT])
+
+
 
 #Dummy data for now
 tf_params = tf_pc_params
 tf_data = tf_pc_data
+
+#Network
+w = tf.get_variable('w', shape = [DIMS, PARAMS_VECTOR_SIZE, POINT_COUNT])
+b = tf.get_variable('b', shape = [DIMS, POINT_COUNT])
+
+outs = []
+
+for i in range(DIMS):
+    t1 = tf.matmul(tf_params, w[i]) + b[i]
+    t2 = tf.nn.relu(t1)
+    outs.append(t2)
+
+z = tf.stack(outs)
 
 
 with tf.Session() as sess:

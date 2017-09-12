@@ -16,7 +16,7 @@ b = tf.get_variable('b', shape = [sample_size], initializer = tf.constant_initia
 z = tf.matmul(sample, w) + b
 y = tf.nn.relu(z)
 
-#y is tensor of shaoe [None, 1024] and dtype = float32
+#y is tensor of shape [None, 1024] and dtype = float32
 #we want to get to [None, 1] with dtype = int32
 
 w2 = tf.get_variable('w2', shape = [sample_size, 1], initializer = tf.random_normal_initializer(stddev=1e-1))
