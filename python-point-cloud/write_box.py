@@ -5,7 +5,7 @@ import os
 import shutil
 
 
-sample_count = 100
+sample_count = 3200
 point_count = 2048
 
 max_length = 100

@@ -19,14 +19,14 @@ labels = {"box":0,
           "plane":3
          }
 
-
+##########################
 def get_primitive_params_pos_start_from_label(label):
     label_count = len(labels)
     pos = PARAMS_VECTOR_SIZE / label_count * label
     return pos
 
 
-
+##########################
 def get_primitive_file_label_params(name):
     """Returns label and parameters, derived from a file name, in a sparse vector
     First, is the label of the class (for example, box is 0)
@@ -44,7 +44,7 @@ def get_primitive_file_label_params(name):
 
     return p
 
-
+##########################
 def get_point_cloud_from_file(dir, name):
     filename = join(dir, name)
     plydata = plyfile.PlyData.read(filename)
@@ -53,6 +53,27 @@ def get_point_cloud_from_file(dir, name):
     return arr
 
 
+##########################
+def write_point_cloud_to_file(dir, name, cloud):
+    filename = join(dir, name)
+    point_count = cloud.shape[0]
+
+    vertex = np.zeros((point_count,),
+                      dtype=[('x', 'f4'), ('y', 'f4'),
+                             ('z', 'f4')])
+
+    for i in range (point_count):
+        x = cloud[i][0]
+        y = cloud[i][1]
+        z = cloud[i][2]
+        vertex[i] = (x, y, z)
+
+    el = plyfile.PlyElement.describe(vertex, 'vertex')
+    plyfile.PlyData([el]).write(filename)
+
+
+
+##########################
 def get_point_clouds_labels_params(files):
     """Returns label and parameters for each file in a numpy array
     """
@@ -66,7 +87,7 @@ def get_point_clouds_labels_params(files):
     return params
 
 
-
+##########################
 def get_point_clouds_data(dir, files):
     """Returns point cloud data in shape(BATCH_SIZE, POINT_COUNT, DIMS)
     """
@@ -85,6 +106,7 @@ def get_point_clouds_data(dir, files):
         data[i] = point_data
     return data
 
+
 ##########################
 def batch_distance_matrix_general(A, B):
     r_A = tf.reduce_sum(A * A, axis=2, keep_dims=True)
@@ -93,6 +115,8 @@ def batch_distance_matrix_general(A, B):
     D = r_A - 2 * m + tf.transpose(r_B, perm=(0, 2, 1))
     return D
 
+
+##########################
 def knn_indices_general(queries, points, k, sorted=True):
     queries_shape = tf.shape(queries)
     batch_size = queries_shape[0]
@@ -104,13 +128,15 @@ def knn_indices_general(queries, points, k, sorted=True):
     return -distances, indices
 
 
+##########################
 # A shape is (batch_size, point_count, dims), B shape is (batch_size, point_count, dims)
 def chamfer_distance_loss(A, B):
     distances, _ = knn_indices_general(A, B, 1, False)
     return tf.reduce_mean(distances)
 
-############################
 
+############################
+############################
 #List all files, and shuffle them randomly into an np.array
 files = [f for f in listdir(DATA_DIR) if isfile(join(DATA_DIR, f))]
 data_files = np.array(files)
@@ -142,10 +168,12 @@ z0 = tf.stack(outs)
 
 z = tf.transpose(z0, perm=[1, 2, 0])
 loss_op = chamfer_distance_loss(z, tf_pc_data)
+loss_summary = tf.summary.scalar("loss", loss_op)
 
 adam = tf.train.AdamOptimizer(1e-2)
 train_op = adam.minimize(loss_op, name = "train_op")
 
+sum_writer = tf.summary.FileWriter("summary/")
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
@@ -160,11 +188,17 @@ with tf.Session() as sess:
             print('Processing batch:%d' % (j / BATCH_SIZE))
             params = get_point_clouds_labels_params(data_files[j:j+BATCH_SIZE])
             data = get_point_clouds_data(DATA_DIR, data_files[j:j+BATCH_SIZE])
-            _, loss = sess.run([train_op, loss_op], feed_dict = {tf_pc_params:params, tf_pc_data:data})
+            _, loss, loss_sum = sess.run([train_op, loss_op, loss_summary], feed_dict = {tf_pc_params:params, tf_pc_data:data})
 
-
- #       if (i % 5 == 0):
         print('-------------------------')
         print('iter:%d - loss:%f' % (i, loss))
+        sum_writer.add_summary(loss_sum, i)
+
+        if (i % 5 == 0):
+            out_clouds = sess.run(z, feed_dict = {tf_pc_params:params, tf_pc_data:data})
+            name = "Iteration_" + str(i) + ".ply"
+            print('Writing out point cloud file ' + name)
+            write_point_cloud_to_file("output", name, out_clouds[0])
+
 
 
