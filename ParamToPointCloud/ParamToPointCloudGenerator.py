@@ -67,18 +67,48 @@ def get_point_clouds_labels_params(files):
 
 
 def get_point_clouds_data(dir, files):
-    """Returns label and parameters for each file in a numpy array
+    """Returns point cloud data in shape(BATCH_SIZE, POINT_COUNT, DIMS)
     """
-    count = files.size
-    data = np.zeros(shape=(count, POINT_COUNT))
-    for i in range(count):
+    batch_size = files.size
+    data = np.zeros(shape=(batch_size, POINT_COUNT, DIMS))
+    point_data = np.zeros(shape=(POINT_COUNT, DIMS))
+    point = np.zeros(shape=(DIMS))
+    for i in range(batch_size):
         file_name = files[i]
         file_data = get_point_cloud_from_file(dir, file_name)
-        data[i] = file_data
-
+        for j in range(POINT_COUNT):
+            for k in range(DIMS):
+                t = file_data[j]
+                point[k] = t[k]
+            point_data[j] = point
+        data[i] = point_data
     return data
 
+##########################
+def batch_distance_matrix_general(A, B):
+    r_A = tf.reduce_sum(A * A, axis=2, keep_dims=True)
+    r_B = tf.reduce_sum(B * B, axis=2, keep_dims=True)
+    m = tf.matmul(A, tf.transpose(B, perm=(0, 2, 1)))
+    D = r_A - 2 * m + tf.transpose(r_B, perm=(0, 2, 1))
+    return D
 
+def knn_indices_general(queries, points, k, sorted=True):
+    queries_shape = tf.shape(queries)
+    batch_size = queries_shape[0]
+    point_num = queries_shape[1]
+    D = batch_distance_matrix_general(queries, points)
+    distances, point_indices = tf.nn.top_k(-D, k=k, sorted=sorted)
+    batch_indices = tf.tile(tf.reshape(tf.range(batch_size), (-1, 1, 1, 1)), (1, point_num, k, 1))
+    indices = tf.concat([batch_indices, tf.expand_dims(point_indices, axis=3)], axis=3)
+    return -distances, indices
+
+
+# A shape is (batch_size, point_count, dims), B shape is (batch_size, point_count, dims)
+def chamfer_distance_loss(A, B):
+    distances, _ = knn_indices_general(A, B, 1, False)
+    return tf.reduce_mean(distances)
+
+############################
 
 #List all files, and shuffle them randomly into an np.array
 files = [f for f in listdir(DATA_DIR) if isfile(join(DATA_DIR, f))]
@@ -88,7 +118,7 @@ count = data_files.size
 
 #tf_pc_params = tf.placeholder(tf.int32, shape = [None, PARAMS_VECTOR_SIZE])
 tf_pc_params = tf.placeholder(tf.float32, shape = [None, PARAMS_VECTOR_SIZE])
-tf_pc_data = tf.placeholder(tf.float32, shape = [None, POINT_COUNT])
+tf_pc_data = tf.placeholder(tf.float32, shape = [None, POINT_COUNT, DIMS])
 
 
 
@@ -102,13 +132,14 @@ b = tf.get_variable('b', shape = [DIMS, POINT_COUNT])
 
 outs = []
 
-for i in range(DIMS):
-    t1 = tf.matmul(tf_params, w[i]) + b[i]
-    t2 = tf.nn.relu(t1)
-    outs.append(t2)
+#for i in range(DIMS):
+#    t1 = tf.matmul(tf_params, w[i]) + b[i]
+#    t2 = tf.nn.relu(t1)
+#    outs.append(t2)
 
-z = tf.stack(outs)
+#z = tf.stack(outs)
 
+#losses = chamfer_distance_loss(z, tf_pc_data)
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
