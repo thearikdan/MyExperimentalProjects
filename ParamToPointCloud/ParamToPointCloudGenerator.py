@@ -11,6 +11,7 @@ BATCH_SIZE = 2
 PARAMS_VECTOR_SIZE = 256 #sparse vector for holding param values for different primitives
 POINT_COUNT = 2048
 DIMS = 3
+EPOCHS = 5000
 
 labels = {"box":0,
           "cylinder":1,
@@ -132,26 +133,29 @@ b = tf.get_variable('b', shape = [DIMS, POINT_COUNT])
 
 outs = []
 
-#for i in range(DIMS):
-#    t1 = tf.matmul(tf_params, w[i]) + b[i]
-#    t2 = tf.nn.relu(t1)
-#    outs.append(t2)
+for i in range(DIMS):
+    t1 = tf.matmul(tf_params, w[i]) + b[i]
+    t2 = tf.nn.relu(t1)
+    outs.append(t2)
 
-#z = tf.stack(outs)
+z0 = tf.stack(outs)
 
-#losses = chamfer_distance_loss(z, tf_pc_data)
+z = tf.transpose(z0, perm=[1, 2, 0])
+loss_op = chamfer_distance_loss(z, tf_pc_data)
+
+adam = tf.train.AdamOptimizer(1e-2)
+train_op = adam.minimize(loss_op, name = "train_op")
+
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
-    for i in xrange(0, count, BATCH_SIZE):
-#        print "Batch " + str(i / BATCH_SIZE)
-        print data_files[i:i+BATCH_SIZE]
-        params = get_point_clouds_labels_params(data_files[i:i+BATCH_SIZE])
-#        print params
-        data = get_point_clouds_data(DATA_DIR, data_files[i:i+BATCH_SIZE])
-#        print data
-        p, d = sess.run([tf_params, tf_data], feed_dict = {tf_pc_params:params, tf_pc_data:data})
-        print p, d
+    for i in range (EPOCHS):
+        for j in xrange(0, count, BATCH_SIZE):
+            params = get_point_clouds_labels_params(data_files[j:j+BATCH_SIZE])
+            data = get_point_clouds_data(DATA_DIR, data_files[j:j+BATCH_SIZE])
+            loss = sess.run(loss_op, feed_dict = {tf_pc_params:params, tf_pc_data:data})
+        if (i % 500 == 0):
+            print('iter:%d - loss:%f' % (i, loss))
 
 
