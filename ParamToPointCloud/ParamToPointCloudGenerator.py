@@ -7,11 +7,11 @@ from plyfile import plyfile
 
 #DATA_DIR = '/raid/MyProjects/python-point-cloud/data/boxes'
 DATA_DIR = '/media/ara/HDD/MyProjects/python-point-cloud/data/boxes'
-BATCH_SIZE = 2
+BATCH_SIZE = 256
 PARAMS_VECTOR_SIZE = 256 #sparse vector for holding param values for different primitives
 POINT_COUNT = 2048
 DIMS = 3
-EPOCHS = 5000
+EPOCHS = 500
 
 labels = {"box":0,
           "cylinder":1,
@@ -124,8 +124,8 @@ tf_pc_data = tf.placeholder(tf.float32, shape = [None, POINT_COUNT, DIMS])
 
 
 #Dummy data for now
-tf_params = tf_pc_params
-tf_data = tf_pc_data
+#tf_params = tf_pc_params
+#tf_data = tf_pc_data
 
 #Network
 w = tf.get_variable('w', shape = [DIMS, PARAMS_VECTOR_SIZE, POINT_COUNT])
@@ -134,7 +134,7 @@ b = tf.get_variable('b', shape = [DIMS, POINT_COUNT])
 outs = []
 
 for i in range(DIMS):
-    t1 = tf.matmul(tf_params, w[i]) + b[i]
+    t1 = tf.matmul(tf_pc_params, w[i]) + b[i]
     t2 = tf.nn.relu(t1)
     outs.append(t2)
 
@@ -151,11 +151,19 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
 
     for i in range (EPOCHS):
+
+        print('-------------------------') 
+        print('Current iteration:%d' % (i))
+
         for j in xrange(0, count, BATCH_SIZE):
+            print('Processing batch:%d' % (j / BATCH_SIZE))
             params = get_point_clouds_labels_params(data_files[j:j+BATCH_SIZE])
             data = get_point_clouds_data(DATA_DIR, data_files[j:j+BATCH_SIZE])
             loss = sess.run(loss_op, feed_dict = {tf_pc_params:params, tf_pc_data:data})
-        if (i % 500 == 0):
-            print('iter:%d - loss:%f' % (i, loss))
+
+
+ #       if (i % 5 == 0):
+        print('-------------------------')
+        print('iter:%d - loss:%f' % (i, loss))
 
 

@@ -4,8 +4,8 @@ from point_cloud import box
 import os
 import shutil
 
-#sample_count = 1000
-sample_count = 8
+
+sample_count = 16000
 point_count = 2048
 
 max_length = 100
