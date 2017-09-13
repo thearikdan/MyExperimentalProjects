@@ -149,10 +149,11 @@ train_op = adam.minimize(loss_op, name = "train_op")
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
+    loss = 10
 
     for i in range (EPOCHS):
 
-        print('-------------------------') 
+        print('-------------------------')
         print('Current iteration:%d' % (i))
 
         for j in xrange(0, count, BATCH_SIZE):
