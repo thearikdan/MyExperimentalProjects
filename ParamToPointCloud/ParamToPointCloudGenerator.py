@@ -7,7 +7,7 @@ from plyfile import plyfile
 
 #DATA_DIR = '/raid/MyProjects/python-point-cloud/data/boxes'
 DATA_DIR = '/media/ara/HDD/MyProjects/python-point-cloud/data/boxes'
-BATCH_SIZE = 256
+BATCH_SIZE = 16
 PARAMS_VECTOR_SIZE = 256 #sparse vector for holding param values for different primitives
 POINT_COUNT = 2048
 DIMS = 3
@@ -160,7 +160,7 @@ with tf.Session() as sess:
             print('Processing batch:%d' % (j / BATCH_SIZE))
             params = get_point_clouds_labels_params(data_files[j:j+BATCH_SIZE])
             data = get_point_clouds_data(DATA_DIR, data_files[j:j+BATCH_SIZE])
-            loss = sess.run(loss_op, feed_dict = {tf_pc_params:params, tf_pc_data:data})
+            _, loss = sess.run([train_op, loss_op], feed_dict = {tf_pc_params:params, tf_pc_data:data})
 
 
  #       if (i % 5 == 0):
