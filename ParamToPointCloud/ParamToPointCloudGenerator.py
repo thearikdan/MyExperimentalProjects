@@ -6,7 +6,7 @@ from plyfile import plyfile
 
 
 #DATA_DIR = '/raid/MyProjects/python-point-cloud/data/boxes'
-DATA_DIR = '/media/ara/HDD/MyProjects/python-point-cloud/data/boxes'
+DATA_DIR = '/media/ara/HDD/MyProjects/python-point-cloud/data/spheres'
 BATCH_SIZE = 16
 PARAMS_VECTOR_SIZE = 256 #sparse vector for holding param values for different primitives
 POINT_COUNT = 2048
@@ -40,7 +40,7 @@ def get_primitive_file_label_params(name):
     pos = get_primitive_params_pos_start_from_label(label)
     p[pos] = label
     for i in range (pos + 1, pos + count - 1): #count -1 because last param is the ".ply" extension
-        p[i] = int (params[i])
+        p[i] = int (params[i-pos])
 
     return p
 
@@ -173,7 +173,7 @@ loss_summary = tf.summary.scalar("loss", loss_op)
 adam = tf.train.AdamOptimizer(1e-2)
 train_op = adam.minimize(loss_op, name = "train_op")
 
-sum_writer = tf.summary.FileWriter("summary/")
+sum_writer = tf.summary.FileWriter("summary/spheres")
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
@@ -198,7 +198,7 @@ with tf.Session() as sess:
             out_clouds = sess.run(z, feed_dict = {tf_pc_params:params, tf_pc_data:data})
             name = "Iteration_" + str(i) + ".ply"
             print('Writing out point cloud file ' + name)
-            write_point_cloud_to_file("output", name, out_clouds[0])
+            write_point_cloud_to_file("output/spheres", name, out_clouds[0])
 
 
 

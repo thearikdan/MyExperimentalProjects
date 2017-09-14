@@ -1,15 +1,27 @@
 import numpy as np
 from plyfile import plyfile
 from point_cloud import sphere
+import os
+import shutil
 
+sample_count = 3200
 point_count = 2048
 
-radius = 100.
+max_radius = 4000
+min_radius = 20
 
-vertex = sphere.get_sphere_point_cloud(point_count, radius)
+directory = "data/spheres"
 
-el = plyfile.PlyElement.describe(vertex, 'vertex')
+if os.path.exists(directory):
+    shutil.rmtree(directory)
+    
+os.makedirs(directory)
 
-name = "data/sphere_" + str(int(radius)) + "_.ply"  
+for i in range(sample_count):
+    radius = int(np.random.uniform(min_radius, max_radius))
 
-plyfile.PlyData([el]).write(name)
+    vertex = sphere.get_sphere_point_cloud(point_count, radius)
+
+    el = plyfile.PlyElement.describe(vertex, 'vertex')
+    name = directory + "/sphere_" + str(int(radius)) + "_.ply"  
+    plyfile.PlyData([el]).write(name)
