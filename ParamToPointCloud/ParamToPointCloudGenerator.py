@@ -5,8 +5,8 @@ from os.path import isfile, join
 from plyfile import plyfile
 
 
-#DATA_DIR = '/raid/MyProjects/python-point-cloud/data/boxes'
-DATA_DIR = '/media/ara/HDD/MyProjects/python-point-cloud/data/spheres'
+DATA_DIR = '/raid/MyProjects/python-point-cloud/data/spheres'
+#DATA_DIR = '/media/ara/HDD/MyProjects/python-point-cloud/data/spheres'
 BATCH_SIZE = 16
 PARAMS_VECTOR_SIZE = 256 #sparse vector for holding param values for different primitives
 POINT_COUNT = 2048
