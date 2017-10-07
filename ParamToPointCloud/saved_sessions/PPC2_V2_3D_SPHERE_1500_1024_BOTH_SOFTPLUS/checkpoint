@@ -1,6 +1,0 @@
-model_checkpoint_path: "PPC2_V2_3D_SPHERE_1500_1024_BOTH_SOFTPLUS_6000.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_SPHERE_1500_1024_BOTH_SOFTPLUS_5600.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_SPHERE_1500_1024_BOTH_SOFTPLUS_5700.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_SPHERE_1500_1024_BOTH_SOFTPLUS_5800.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_SPHERE_1500_1024_BOTH_SOFTPLUS_5900.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_SPHERE_1500_1024_BOTH_SOFTPLUS_6000.ckpt"

@@ -1,6 +1,0 @@
-model_checkpoint_path: "PPC2_V2_3D_BOX_1500_1024_ELU_2500.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_BOX_1500_1024_ELU_2100.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_BOX_1500_1024_ELU_2200.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_BOX_1500_1024_ELU_2300.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_BOX_1500_1024_ELU_2400.ckpt"
-all_model_checkpoint_paths: "PPC2_V2_3D_BOX_1500_1024_ELU_2500.ckpt"
