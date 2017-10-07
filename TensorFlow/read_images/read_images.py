@@ -20,24 +20,25 @@ def get_label_dict(root):
         dic[d] = i
     return dic
 
+def get_files_and_labels(root):
+    label_dic = get_label_dict(root)
 
-label_dic = get_label_dict(ROOT)
-#print label_dic
+    files = []
+    labels = []
 
-files = []
-labels = []
+    dirs = get_directories(root)
 
-dirs = get_directories(ROOT)
-#print dirs
+    for d in dirs:
+        l = label_dic[d]
+        dr = join(ROOT, d)
+        fl = get_files(dr)
+        for f in fl:
+            labels.append(l)
+            files.append(join (dr, f))
+
+    return files, labels
 
 
-for d in dirs:
-    l = label_dic[d]
-    dr = join(ROOT, d)
-    fl = get_files(dr)
-    for f in fl:
-        labels.append(l)
-        files.append(join (dr, f))
-
-print files
-print labels
+f, l = get_files_and_labels(ROOT)
+print f
+print l
