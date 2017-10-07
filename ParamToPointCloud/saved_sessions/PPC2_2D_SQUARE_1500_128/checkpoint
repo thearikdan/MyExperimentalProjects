@@ -1,0 +1,2 @@
+model_checkpoint_path: "PPC2_2D_SQUARE_1500_128.ckpt"
+all_model_checkpoint_paths: "PPC2_2D_SQUARE_1500_128.ckpt"

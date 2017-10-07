@@ -1,3 +1,0 @@
-source ~/tensorflow-1.01/bin/activate
-
-plyfile is installed by pip in the virtual environment

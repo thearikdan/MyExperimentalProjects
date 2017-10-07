@@ -1,0 +1,2 @@
+model_checkpoint_path: "PPC2_V2_3D_BOX_1500_1024_drop_04_PSG_LOSS.ckpt"
+all_model_checkpoint_paths: "PPC2_V2_3D_BOX_1500_1024_drop_04_PSG_LOSS.ckpt"

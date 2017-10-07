@@ -1,0 +1,6 @@
+model_checkpoint_path: "PPC2_V2_3D_CONE_1500_1024_ELU_2800.ckpt"
+all_model_checkpoint_paths: "PPC2_V2_3D_CONE_1500_1024_ELU_2400.ckpt"
+all_model_checkpoint_paths: "PPC2_V2_3D_CONE_1500_1024_ELU_2500.ckpt"
+all_model_checkpoint_paths: "PPC2_V2_3D_CONE_1500_1024_ELU_2600.ckpt"
+all_model_checkpoint_paths: "PPC2_V2_3D_CONE_1500_1024_ELU_2700.ckpt"
+all_model_checkpoint_paths: "PPC2_V2_3D_CONE_1500_1024_ELU_2800.ckpt"

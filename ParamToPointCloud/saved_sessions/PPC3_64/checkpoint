@@ -1,0 +1,2 @@
+model_checkpoint_path: "PPC3_64.ckpt"
+all_model_checkpoint_paths: "PPC3_64.ckpt"
