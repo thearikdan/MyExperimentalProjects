@@ -20,7 +20,7 @@ EPOCHS = 3000
 LEARNING_RATE=0.001
 
 
-PROJECT_NAME = "PPC2_V2_3D_BOX_1500_1024_drop_04_PSG_LOSS_TFLEARN_REG"
+PROJECT_NAME = "PPC2_V2_3D_BOX_1500_1024_ELU"
 
 DATA_DIR = '/raid/Github/experiments/mintools/point_cloud/primitives_to_point_clouds/data/box/1500_1024'
 
@@ -363,7 +363,7 @@ with tf.Session(config=tf.ConfigProto(
 
     saver.restore(sess, save_path)
 
-    boxes = ["box_50_40_30_", "box_150_140_130_"] #array of boxes to generate
+    boxes = ["box_50_40_30_", "box_100_80_60_"] #array of boxes to generate
     count = len(boxes)
 
     file_names = []

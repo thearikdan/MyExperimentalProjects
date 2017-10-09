@@ -20,9 +20,9 @@ EPOCHS = 3000
 LEARNING_RATE=0.001
 
 
-PROJECT_NAME = "PPC2_V2_3D_SPHERE_1500_1024_drop_04_PSG_LOSS_TFLEARN_REG"
+PROJECT_NAME = "PPC2_V2_3D_CYLINDER_1500_1024_ELU"
 
-DATA_DIR = '/raid/Github/experiments/mintools/point_cloud/primitives_to_point_clouds/data/sphere/1500_1024'
+DATA_DIR = '/raid/Github/experiments/mintools/point_cloud/primitives_to_point_clouds/data/cylinder/1500_1024'
 
 
 
@@ -312,7 +312,7 @@ tf_pc_data = tf.placeholder(tf.float32, shape = [None, POINT_COUNT, DIMS])
 with tf.device('/gpu:1'):
 	with tf.name_scope('fc1'):
 	#    layer1 = tf.layers.dense(inputs=tf_pc_params, units=PARAMS_VECTOR_SIZE, activation=tf.nn.relu, name = "fc1")
-	    layer1 = tflearn.layers.core.fully_connected(tf_pc_params, PARAMS_VECTOR_SIZE, activation=tf.nn.relu, weight_decay=1e-4,
+	    layer1 = tflearn.layers.core.fully_connected(tf_pc_params, PARAMS_VECTOR_SIZE, activation=tf.nn.elu, weight_decay=1e-4,
 		                                           regularizer='L2', name = "fc1")
 	    fc1_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'fc1')
 	    tf.summary.histogram('kernel', fc1_vars[0])
@@ -328,7 +328,7 @@ with tf.device('/gpu:1'):
 
 
 	with tf.name_scope(out_name):
-	    dim_layer = tflearn.layers.core.fully_connected(dropout1, POINT_COUNT * DIMS, activation=tf.nn.relu, weight_decay=1e-4,
+	    dim_layer = tflearn.layers.core.fully_connected(dropout1, POINT_COUNT * DIMS, activation=tf.nn.elu, weight_decay=1e-4,
 		                                     regularizer='L2', name=out_name)
 
 	    out_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, out_name)
@@ -355,7 +355,8 @@ with tf.Session(config=tf.ConfigProto(
       allow_soft_placement=True, log_device_placement=True)) as sess:
     sess.run(tf.global_variables_initializer())
 
-    fname = get_latest_file(MODEL_PATH, EXCLUDE_SUFFIX)
+    #fname = get_latest_file(MODEL_PATH, EXCLUDE_SUFFIX)
+    fname = "saved_sessions/PPC2_V2_3D_CYLINDER_1500_1024_ELU/PPC2_V2_3D_CYLINDER_1500_1024_ELU_6000.ckpt"
 
     if (len(fname) == 0):
         print ("Could not find model")
@@ -363,14 +364,14 @@ with tf.Session(config=tf.ConfigProto(
 
     saver.restore(sess, fname)
 
-    spheres = ["sphere_50_", "sphere_150_"] #array of spheres to generate
-    count = len(spheres)
+    cylinders = ["cylinder_40_20_", "cylinder_80_40_"] #array of cylinders to generate
+    count = len(cylinders)
 
     file_names = []
     data_files = []
     for i in range (count):
-        file_names.append(spheres[i] + ".ply")
-        data_files.append(GENERATED_DEBUG_DIR + '/' + spheres[i] + ".csv")
+        file_names.append(cylinders[i] + ".ply")
+        data_files.append(GENERATED_DEBUG_DIR + '/' + cylinders[i] + ".csv")
 
     params = np.zeros(shape = (count, PARAMS_VECTOR_SIZE))
     for i in range(count):
@@ -379,7 +380,7 @@ with tf.Session(config=tf.ConfigProto(
     out_clouds = sess.run(z, feed_dict = {tf_pc_params:params})
     print('Writing out point cloud files')
 
-    write_multiple_point_clouds_to_file(GENERATED_DIR, "compare_spheres.ply", out_clouds)
+    write_multiple_point_clouds_to_file(GENERATED_DIR, "compare_cylinders.ply", out_clouds)
 
 
 

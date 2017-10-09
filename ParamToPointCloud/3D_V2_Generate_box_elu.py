@@ -20,9 +20,9 @@ EPOCHS = 3000
 LEARNING_RATE=0.001
 
 
-PROJECT_NAME = "PPC2_V2_3D_SPHERE_1500_1024_drop_04_PSG_LOSS_TFLEARN_REG"
+PROJECT_NAME = "PPC2_V2_3D_BOX_1500_1024_ELU"
 
-DATA_DIR = '/raid/Github/experiments/mintools/point_cloud/primitives_to_point_clouds/data/sphere/1500_1024'
+DATA_DIR = '/raid/Github/experiments/mintools/point_cloud/primitives_to_point_clouds/data/box/1500_1024'
 
 
 
@@ -309,10 +309,10 @@ tf_pc_data = tf.placeholder(tf.float32, shape = [None, POINT_COUNT, DIMS])
 
 
 #Network
-with tf.device('/gpu:1'):
+with tf.device('/gpu:0'):
 	with tf.name_scope('fc1'):
 	#    layer1 = tf.layers.dense(inputs=tf_pc_params, units=PARAMS_VECTOR_SIZE, activation=tf.nn.relu, name = "fc1")
-	    layer1 = tflearn.layers.core.fully_connected(tf_pc_params, PARAMS_VECTOR_SIZE, activation=tf.nn.relu, weight_decay=1e-4,
+	    layer1 = tflearn.layers.core.fully_connected(tf_pc_params, PARAMS_VECTOR_SIZE, activation=tf.nn.elu, weight_decay=1e-4,
 		                                           regularizer='L2', name = "fc1")
 	    fc1_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'fc1')
 	    tf.summary.histogram('kernel', fc1_vars[0])
@@ -321,6 +321,27 @@ with tf.device('/gpu:1'):
 
 	    dropout1 = tf.layers.dropout(inputs=layer1, rate=0.4, training=True)
 
+	'''
+	l2_units = (POINT_COUNT + PARAMS_VECTOR_SIZE) / 2
+
+	with tf.name_scope('fc2'):
+	    layer2 = tf.layers.dense(inputs=layer1, units=l2_units, activation=tf.nn.relu, name="fc2")
+	    fc2_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'fc2')
+	    tf.summary.histogram('kernel2', fc2_vars[0])
+	    tf.summary.histogram('bias2', fc2_vars[1])
+	    tf.summary.histogram('act2', layer2)
+
+	    dropout2 = tf.layers.dropout(inputs=layer2, rate=0.4, training=True)
+
+
+	with tf.name_scope('fc3'):
+	    layer3 = tf.layers.dense(inputs=layer2, units=1024, activation=tf.nn.relu, name="fc3")
+	    fc3_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'fc3')
+	    tf.summary.histogram('kernel3', fc3_vars[0])
+	    tf.summary.histogram('bias3', fc3_vars[1])
+	    tf.summary.histogram('act3', layer3)
+	'''
+
 	out_name = "out"
 	out_k = "out_kernel"
 	out_b = "out_bias"
@@ -328,7 +349,9 @@ with tf.device('/gpu:1'):
 
 
 	with tf.name_scope(out_name):
-	    dim_layer = tflearn.layers.core.fully_connected(dropout1, POINT_COUNT * DIMS, activation=tf.nn.relu, weight_decay=1e-4,
+	#    dim_layer = tf.layers.dense(inputs=layer1, units=POINT_COUNT * DIMS, activation=tf.nn.relu, name = out_name)
+	#    dim_layer = tf.layers.dense(inputs=dropout1, units=POINT_COUNT * DIMS, activation=tf.nn.relu, name = out_name)
+	    dim_layer = tflearn.layers.core.fully_connected(dropout1, POINT_COUNT * DIMS, activation=tf.nn.elu, weight_decay=1e-4,
 		                                     regularizer='L2', name=out_name)
 
 	    out_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, out_name)
@@ -338,6 +361,7 @@ with tf.device('/gpu:1'):
 
 	z = tf.reshape(dim_layer, [-1, POINT_COUNT, DIMS])
 
+	#loss_op = chamfer_distance_loss(z, tf_pc_data)
 	loss_op = point_set_generation_loss(z, tf_pc_data)
 
 	loss_summary = tf.summary.scalar("loss", loss_op)
@@ -348,6 +372,7 @@ with tf.device('/gpu:1'):
 	merge_op = tf.summary.merge_all()
 	sum_writer = tf.summary.FileWriter(SUM_DIR)
 
+# Add ops to save and restore all the variables.
 	saver = tf.train.Saver()
 
 
@@ -355,22 +380,25 @@ with tf.Session(config=tf.ConfigProto(
       allow_soft_placement=True, log_device_placement=True)) as sess:
     sess.run(tf.global_variables_initializer())
 
-    fname = get_latest_file(MODEL_PATH, EXCLUDE_SUFFIX)
+ #   fname = get_latest_file(MODEL_PATH, EXCLUDE_SUFFIX)
+#    fname = "saved_sessions/PPC2_V2_3D_BOX_1500_1024_ELU/PPC2_V2_3D_BOX_1500_1024_ELU_6000.ckpt.index"
+    fname = "saved_sessions/PPC2_V2_3D_BOX_1500_1024_ELU/PPC2_V2_3D_BOX_1500_1024_ELU_6000.ckpt"
 
     if (len(fname) == 0):
         print ("Could not find model")
         exit(-1)
 
+#    saver.restore(sess, save_path)
     saver.restore(sess, fname)
 
-    spheres = ["sphere_50_", "sphere_150_"] #array of spheres to generate
-    count = len(spheres)
+    boxes = ["box_50_40_30_", "box_100_80_60_"] #array of boxes to generate
+    count = len(boxes)
 
     file_names = []
     data_files = []
     for i in range (count):
-        file_names.append(spheres[i] + ".ply")
-        data_files.append(GENERATED_DEBUG_DIR + '/' + spheres[i] + ".csv")
+        file_names.append(boxes[i] + ".ply")
+        data_files.append(GENERATED_DEBUG_DIR + '/' + boxes[i] + ".csv")
 
     params = np.zeros(shape = (count, PARAMS_VECTOR_SIZE))
     for i in range(count):
@@ -379,7 +407,7 @@ with tf.Session(config=tf.ConfigProto(
     out_clouds = sess.run(z, feed_dict = {tf_pc_params:params})
     print('Writing out point cloud files')
 
-    write_multiple_point_clouds_to_file(GENERATED_DIR, "compare_spheres.ply", out_clouds)
+    write_multiple_point_clouds_to_file(GENERATED_DIR, "compare_boxes.ply", out_clouds)
 
 
 
