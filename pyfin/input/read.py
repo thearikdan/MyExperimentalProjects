@@ -2,7 +2,7 @@ import numpy as np
 from numpy import genfromtxt
 
 def get_all_data_from_file(filename):
-    data = genfromtxt('/media/ara/HDD/data/Finance/WEED.TO.10.22.17.11.22.17.csv', dtype=None, delimiter=',')
+    data = genfromtxt(filename, dtype=None, delimiter=',')
     return data
 
 
