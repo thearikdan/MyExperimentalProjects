@@ -9,7 +9,20 @@ def show(data):
     shape = np.shape(data)
 
     # create discrete colormap
-    bounds = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#    bounds = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    bounds = []
+
+    for i in xrange (-100, -30, 5):
+        bounds.append(i / 10.)
+
+    for i in xrange (-30, 30, 1):
+        bounds.append(i / 10.)
+
+    for i in xrange (30, 100, 5):
+        bounds.append(i / 10.)
+ 
+#    bounds = [-10, -9, -8, -7, -6, -5, -4, -3.5, -3, -2.5 -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, #3, 3.5, 4, 5, 6, 7, 8, 9, 10]
+#    print bounds
     count = len(bounds)
 
     colormap = []
@@ -26,7 +39,7 @@ def show(data):
         c = [0, i * step - 1, 0]
         colormap.append(c)
 
-    print colormap
+#    print colormap
 
     cmap = colors.ListedColormap(colormap)
     norm = colors.BoundaryNorm(bounds, cmap.N)
