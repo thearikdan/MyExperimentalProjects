@@ -29,14 +29,14 @@ def show(data):
     step = 1. / (count / 2)
 
     for i in range (count / 2):
-        c = [1.0 - i * step, 0, 0]
+        c = [1.0, i * step, i * step]
         colormap.append(c)
 
     c = [1., 1., 1.]
     colormap.append(c)
 
     for i in range (count / 2 + 1, count):
-        c = [0, i * step - 1, 0]
+        c = [2 - (i + 1) * step, 1, 2 - (i + 1) * step]
         colormap.append(c)
 
 #    print colormap
