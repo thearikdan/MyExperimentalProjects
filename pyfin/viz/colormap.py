@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 import numpy as np
 
-LARGE_NEGATIVE_NUMBER = -1000.
+PADDED_DAY = -1000.
+PADDED_DAY_COLOR = [0., 0., 1.]
 
 
 def reshape_data(data, mod):
@@ -12,9 +13,9 @@ def reshape_data(data, mod):
     l = len(lst)
 
     rest = l % mod
-    print rest
-    for i in range(mod - rest):
-        lst.append([LARGE_NEGATIVE_NUMBER])
+    if (rest > 0):
+        for i in range(mod - rest):
+            lst.append([PADDED_DAY])
 
     new_data = np.array(lst)
 
@@ -33,7 +34,7 @@ def show(data):
 #   bounds = [-20, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20]
 
     bounds = []
-    bounds.append(LARGE_NEGATIVE_NUMBER)
+    bounds.append(PADDED_DAY)
 
     for i in xrange (-1000, -300, 100):
         bounds.append(i / 10.)
@@ -59,7 +60,7 @@ def show(data):
     count = len(bounds) - 1
 
     colormap = []
-    c = [0., 0., 1.]
+    c = PADDED_DAY_COLOR
     colormap.append(c)
 
     step = 1. / (count / 2)

@@ -7,7 +7,9 @@ import numpy as np
 
 #name = '/raid/data/pyfin/WEED.TO.csv'
 #name = '/media/ara/HDD/data/Finance/WEED.TO.10.22.17.11.22.17.csv'
-name = '/media/ara/HDD/data/Finance/WEED.TO_month.csv'
+#name = '/media/ara/HDD/data/Finance/WEED.TO_month.csv'
+name = '/media/ara/HDD/data/Finance/AMZN_month.csv'
+
 
 data = read.get_all_data_from_file(name)
 
