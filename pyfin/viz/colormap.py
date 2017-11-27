@@ -4,8 +4,11 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 import numpy as np
 
-PADDED_DAY = -1000.
+PADDED_DAY = -1000000.
 PADDED_DAY_COLOR = [0., 0., 1.]
+
+HOLIDAY = -500000
+HOLIDAY_COLOR = [0., 0., 0.5]
 
 
 
@@ -14,8 +17,40 @@ def pad_start(lst, days):
 
     for i in range(start):
         lst.insert(0, [PADDED_DAY])
+        days.insert(0, start - 1 - i)
     
-    return lst
+    return lst, days
+
+
+
+def insert_holidays(index, lst, days, diff, mod):
+    if (diff == 1) or (diff == -(mod - 1)):
+        return
+    if (diff > 1):
+        for i in range(diff - 1):
+            days.insert((index + i), (index + i) % mod)
+            lst.insert ((index + i), [HOLIDAY])
+    else: #diff is not positive
+        count = mod - 1 - abs(diff)
+        for i in range(count):
+            days.insert((index + i), (index + i) % mod)
+            lst.insert ((index + i), [HOLIDAY])
+    return lst, days  
+            
+
+
+def pad_holidays(lst, days, mod):
+    l = len(days)
+    for i in range (l-1):
+        d0 = (int (days[i])) % mod
+        d1 = (int (days[i + 1])) % mod
+        diff = d1 - d0
+        if (diff == 1) or (diff == -(mod - 1)):
+            continue
+        else:
+            lst, days = insert_holidays(i + 1, lst, days, diff, mod)
+    return lst, days
+
 
 
 def pad_end(lst, mod):
@@ -33,7 +68,12 @@ def pad_end(lst, mod):
 def reshape_data(data, days, mod):
     lst = data.tolist()
 
-    lst = pad_start(lst, days)
+    lst, days = pad_start(lst, days)
+    print lst
+    print days
+    lst, days = pad_holidays(lst, days, mod)
+    print lst
+    print days
     lst = pad_end(lst, mod)
 
     new_data = np.array(lst)
