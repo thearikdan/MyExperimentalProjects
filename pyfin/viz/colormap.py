@@ -8,25 +8,43 @@ PADDED_DAY = -1000.
 PADDED_DAY_COLOR = [0., 0., 1.]
 
 
-def reshape_data(data, mod):
-    lst = data.tolist()
+
+def pad_start(lst, days):
+    start = int (days[0])
+
+    for i in range(start):
+        lst.insert(0, [PADDED_DAY])
+    
+    return lst
+
+
+def pad_end(lst, mod):
     l = len(lst)
 
     rest = l % mod
     if (rest > 0):
         for i in range(mod - rest):
             lst.append([PADDED_DAY])
+    
+    return lst
+
+
+
+def reshape_data(data, days, mod):
+    lst = data.tolist()
+
+    lst = pad_start(lst, days)
+    lst = pad_end(lst, mod)
 
     new_data = np.array(lst)
 
-    data_shaped = new_data.reshape(-1, 5)
-    print data_shaped	
+    data_shaped = new_data.reshape(-1, mod)
     sh = np.shape(data_shaped)
-    print sh
     return data_shaped
+
     
 
-def show(data):
+def show(data, mod):
     shape = np.shape(data)
 
     # create discrete colormap
@@ -75,7 +93,7 @@ def show(data):
         colormap.append(c)
 
 
-    print colormap
+#    print colormap
 
     cmap = colors.ListedColormap(colormap)
     norm = colors.BoundaryNorm(bounds, cmap.N)
@@ -86,8 +104,8 @@ def show(data):
     # draw gridlines
     ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=2)
 #    ax.set_xticks(np.arange(-0.5, shape[0] + 0.5, 1));
-    ax.set_xticks(np.arange(-0.5, 5, 1));
-    ax.set_yticks(np.arange(-0.5, shape[1] - 0.5, 1));
+    ax.set_xticks(np.arange(-0.5, mod, 1));
+    ax.set_yticks(np.arange(-0.5, shape[1], 1));
 
     plt.show()
 
