@@ -8,10 +8,9 @@ PADDED_DAY = -1000000.
 PADDED_DAY_COLOR = [0., 0., 1.]
 
 HOLIDAY = -500000.
-HOLIDAY_COLOR = [0., 0., 0.5]
-#HOLIDAY_COLOR = [1., 1., 0.]
+HOLIDAY_COLOR = [1., 1., 0.]
 
-BORDER = 5000.
+BORDER = 10000.
 
 
 
@@ -104,7 +103,13 @@ def show(data, mod):
     for i in xrange (-100, -50, 5):
         bounds.append(i / 10.)
 
-    for i in xrange (-50, 50, 1):
+    for i in xrange (-50, -20, 2):
+        bounds.append(i / 10.)
+
+    for i in xrange (-20, 20, 1):
+        bounds.append(i / 10.)
+
+    for i in xrange (20, 50, 2):
         bounds.append(i / 10.)
 
     for i in xrange (50, 100, 5):
@@ -118,6 +123,8 @@ def show(data, mod):
 
     count = len(bounds) - 2
 
+#    print bounds
+
     colormap = []
     c = PADDED_DAY_COLOR
     colormap.append(c)
@@ -126,13 +133,12 @@ def show(data, mod):
 
     step = 1. / (count / 2)
 
-    for i in range (1, count / 2):
+    for i in range (0, count / 2):
         c = [1.0, i * step, i * step]
         colormap.append(c)
 
     for i in range (count / 2 + 1, count):
         c = [2 - (i + 1) * step, 1, 2 - (i + 1) * step]
-#        c = [2 - (i) * step, 1, 2 - (i) * step]
         colormap.append(c)
 
 
@@ -146,7 +152,6 @@ def show(data, mod):
 
     # draw gridlines
     ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=2)
-#    ax.set_xticks(np.arange(-0.5, shape[0] + 0.5, 1));
     ax.set_xticks(np.arange(-0.5, mod, 1));
     ax.set_yticks(np.arange(-0.5, shape[0], 1));
 
