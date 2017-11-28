@@ -7,8 +7,11 @@ import numpy as np
 PADDED_DAY = -1000000.
 PADDED_DAY_COLOR = [0., 0., 1.]
 
-HOLIDAY = -500000
+HOLIDAY = -500000.
 HOLIDAY_COLOR = [0., 0., 0.5]
+#HOLIDAY_COLOR = [1., 1., 0.]
+
+BORDER = 5000.
 
 
 
@@ -69,11 +72,7 @@ def reshape_data(data, days, mod):
     lst = data.tolist()
 
     lst, days = pad_start(lst, days)
-    print lst
-    print days
     lst, days = pad_holidays(lst, days, mod)
-    print lst
-    print days
     lst = pad_end(lst, mod)
 
     new_data = np.array(lst)
@@ -93,6 +92,8 @@ def show(data, mod):
 
     bounds = []
     bounds.append(PADDED_DAY)
+    bounds.append(HOLIDAY - BORDER)
+
 
     for i in xrange (-1000, -300, 100):
         bounds.append(i / 10.)
@@ -115,10 +116,12 @@ def show(data, mod):
     for i in xrange (300, 1000, 100):
         bounds.append(i / 10.)
 
-    count = len(bounds) - 1
+    count = len(bounds) - 2
 
     colormap = []
     c = PADDED_DAY_COLOR
+    colormap.append(c)
+    c = HOLIDAY_COLOR
     colormap.append(c)
 
     step = 1. / (count / 2)
@@ -145,7 +148,7 @@ def show(data, mod):
     ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=2)
 #    ax.set_xticks(np.arange(-0.5, shape[0] + 0.5, 1));
     ax.set_xticks(np.arange(-0.5, mod, 1));
-    ax.set_yticks(np.arange(-0.5, shape[1], 1));
+    ax.set_yticks(np.arange(-0.5, shape[0], 1));
 
     plt.show()
 
