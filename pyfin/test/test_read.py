@@ -1,3 +1,7 @@
+import sys
+sys.path.insert(0, "../")
+
+
 from input import read
 
 name = '/media/ara/HDD/data/Finance/WEED.TO.10.22.17.11.22.17.csv'

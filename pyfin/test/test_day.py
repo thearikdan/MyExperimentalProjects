@@ -1,8 +1,12 @@
+import sys
+sys.path.insert(0, "../")
+
+
 from input import read
 from utils import time
 import numpy as np
 
-name = '/raid/data/pyfin/WEED.TO.csv'
+name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
 
 my_data = read.get_all_data_from_file(name)
 
