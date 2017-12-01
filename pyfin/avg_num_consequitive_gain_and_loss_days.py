@@ -4,11 +4,11 @@ import numpy as np
 
 
 
-#name = '/raid/data/pyfin/LEAF.TO.csv'
+name = '/raid/data/pyfin/LEAF.TO.csv'
 #name = '/raid/data/pyfin/AMZN.csv'
 
 #name = '/media/ara/HDD/data/Finance/ACB.TO.csv'
-name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
+#name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
 #name = '/media/ara/HDD/data/Finance/AMZN_month.csv'
 
 
@@ -21,6 +21,8 @@ nd = read.get_numeric_data_from_all_data(data)
 
 pc = percentage.get_percentage_change_from_numeric_data(nd)
 perc = pc * 100
+
+print perc
 
 sh = np.shape(perc)
 
@@ -40,6 +42,8 @@ for i in range (sh[0]):
         elif current_type == NEGATIVE_TYPE:
             cons_neg_day_num.append(count)
             count = 1
+        else:
+            count = 1
         current_type = POSITIVE_TYPE
     else:
         if current_type == NEGATIVE_TYPE:
@@ -47,7 +51,16 @@ for i in range (sh[0]):
         elif current_type == POSITIVE_TYPE:
             cons_pos_day_num.append(count)
             count = 1
+        else:
+            count = 1
         current_type = NEGATIVE_TYPE
+
+#append last group
+if current_type == POSITIVE_TYPE:
+    cons_pos_day_num.append(count)
+else:
+    cons_neg_day_num.append(count)
+
 
 print "Consequtive positive days (%):"
 print cons_pos_day_num
