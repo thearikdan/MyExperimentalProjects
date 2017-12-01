@@ -1,7 +1,5 @@
 from input import read
 from stats import percentage 
-from viz import colormap
-from utils import time
 import numpy as np
 
 
