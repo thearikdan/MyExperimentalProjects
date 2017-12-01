@@ -21,3 +21,14 @@ def get_max_percentage_change_from_numeric_data(data):
     per = diff / op
     return per
 
+
+def get_min_percentage_change_from_numeric_data(data):
+    op = read.get_opening_price_from_numeric_data(data)
+
+    lp = read.get_low_price_from_numeric_data(data)
+
+    diff = lp - op
+
+    per = diff / op
+    return per
+
