@@ -4,8 +4,8 @@ import numpy as np
 
 
 
-name = '/raid/data/pyfin/LEAF.TO.csv'
-#name = '/raid/data/pyfin/AMZN.csv'
+#name = '/raid/data/pyfin/LEAF.TO.csv'
+name = '/raid/data/pyfin/AMZN.csv'
 
 #name = '/media/ara/HDD/data/Finance/ACB.TO.csv'
 #name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
@@ -65,6 +65,12 @@ else:
 print "Consequtive positive days (%):"
 print cons_pos_day_num
 
+
+print "Total number positive days (%):"
+tot = sum(cons_pos_day_num) 
+print tot
+
+
 print "Average number consequtive positive days (%):"
 avg_con_pos_days = sum(cons_pos_day_num) / len(cons_pos_day_num)
 print avg_con_pos_days
@@ -72,6 +78,10 @@ print avg_con_pos_days
 
 print "Consequtive negative days (%):"
 print cons_neg_day_num
+
+print "Total number negative days (%):"
+tot = sum(cons_neg_day_num) 
+print tot
 
 print "Average number consequtive negative days (%):"
 avg_con_neg_days = sum(cons_neg_day_num) / len(cons_neg_day_num)
