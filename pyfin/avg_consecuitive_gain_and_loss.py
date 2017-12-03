@@ -77,14 +77,19 @@ for i in range (sh[0]):
             print neg_start
         current_type = NEGATIVE_TYPE
 
+
+#append last end
+if current_type == POSITIVE_TYPE:
+    pos_end = read.get_closing_price_from_numeric_data(data[i:i+1])[0][0]
+    print "pos_end"
+    print pos_end
+else:
+    neg_end = read.get_closing_price_from_numeric_data(data[i:i+1])[0][0]
+    print "neg_end"
+    print neg_end
+
 print consec_pos_day_gain
 print consec_neg_day_loss
-
-#append last group
-#if current_type == POSITIVE_TYPE:
-#    cons_pos_day_num.append(count)
-#else:
-#    cons_neg_day_num.append(count)
 
 
 #print "Consequtive positive days (%):"
