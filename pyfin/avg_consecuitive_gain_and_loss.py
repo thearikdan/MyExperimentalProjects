@@ -22,7 +22,7 @@ sh = np.shape(date)
 
 change = absolute.get_absolute_change_from_numeric_data(data)
 
-print change
+#print change
 
 sh = np.shape(change)
 
@@ -39,54 +39,64 @@ pos_end = 0
 neg_start = 0
 neg_end = 0
 
-#count = 0
+count = 0
 for i in range (sh[0]):
     #if positive day
     if (change[i][0] > 0):
         if current_type == POSITIVE_TYPE:
+            count = count + 1
             continue
         elif current_type == NEGATIVE_TYPE:
             neg_end = read.get_closing_price_from_numeric_data(data[i-1:i])[0][0]
-            print "neg_end"
-            print neg_end
-            consec_neg_day_loss.append(neg_end - neg_start)
+#            print "neg_end"
+#            print neg_end
+            consec_neg_day_loss.append(tuple((neg_start, neg_end, count)))
  
             pos_start = read.get_opening_price_from_numeric_data(data[i:i+1])[0][0]
-            print "pos_start"
-            print pos_start
+            count = 1
+#            print "pos_start"
+#            print pos_start
         else:
             pos_start = read.get_opening_price_from_numeric_data(data[i:i+1])[0][0]
-            print "pos_start"
-            print pos_start
+#            print "pos_start"
+#            print pos_start
+            count = 1
         current_type = POSITIVE_TYPE
     else:
         if current_type == NEGATIVE_TYPE:
+            count = count + 1
             continue
         elif current_type == POSITIVE_TYPE:
             pos_end = read.get_closing_price_from_numeric_data(data[i-1:i])[0][0]
-            print "pos_end"
-            print pos_end
-            consec_pos_day_gain.append(pos_end - pos_start)
+#            print "pos_end"
+#            print pos_end
+            consec_pos_day_gain.append(tuple((pos_start, pos_end, count)))
 
             neg_start = read.get_opening_price_from_numeric_data(data[i:i+1])[0][0]
-            print "neg_start"
-            print neg_start
+            count = 1
+#            print "neg_start"
+#            print neg_start
         else:
             neg_start = read.get_opening_price_from_numeric_data(data[i:i+1])[0][0]
-            print "neg_start"
-            print neg_start
+#            print "neg_start"
+#            print neg_start
+            count = 1
         current_type = NEGATIVE_TYPE
 
 
 #append last end
 if current_type == POSITIVE_TYPE:
     pos_end = read.get_closing_price_from_numeric_data(data[i:i+1])[0][0]
-    print "pos_end"
-    print pos_end
+#    print "pos_end"
+#    print pos_end
+    consec_pos_day_gain.append(tuple((pos_start, pos_end, count)))
+
 else:
     neg_end = read.get_closing_price_from_numeric_data(data[i:i+1])[0][0]
-    print "neg_end"
-    print neg_end
+#    print "neg_end"
+#    print neg_end
+    consec_neg_day_loss.append(tuple((neg_start, neg_end, count)))
+
 
 print consec_pos_day_gain
 print consec_neg_day_loss
