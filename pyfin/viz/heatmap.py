@@ -6,7 +6,7 @@ import numpy as np
 import color_schema
 from matplotlib import colors
 
-def show(data, mod):
+def show(data, title, mod):
     shape = np.shape(data)
 
     bounds, colormap = color_schema.get_bounds_and_colormap()
@@ -20,6 +20,7 @@ def show(data, mod):
 
     # Draw a heatmap with the numeric values in each cell
     f, ax = plt.subplots(figsize=(shape[0], shape[1]))
+    f.suptitle(title, fontsize=12)
     sns.heatmap(df, annot=True, fmt="f", linewidths=.5, ax=ax, cmap=cmap, norm=norm)
     plt.show()
 
