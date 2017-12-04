@@ -6,10 +6,10 @@ import numpy as np
 
 
 
-#name = '/raid/data/pyfin/LEAF.TO.csv'
+name = '/raid/data/pyfin/LEAF.TO.csv'
 #name = '/raid/data/pyfin/AMZN.csv'
 
-name = '/media/ara/HDD/data/Finance/ACB.TO_1_month.csv'
+#name = '/media/ara/HDD/data/Finance/ACB.TO_1_month.csv'
 #name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
 #name = '/media/ara/HDD/data/Finance/AMZN_month.csv'
 

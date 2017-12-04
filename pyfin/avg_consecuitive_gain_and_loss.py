@@ -5,10 +5,10 @@ import numpy as np
 
 
 #name = '/raid/data/pyfin/LEAF.TO.csv'
-#name = '/raid/data/pyfin/AMZN.csv'
+name = '/raid/data/pyfin/AMZN.csv'
 
 #name = '/media/ara/HDD/data/Finance/ACB.TO.csv'
-name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
+#name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
 #name = '/media/ara/HDD/data/Finance/AMZN_month.csv'
 
 
@@ -32,6 +32,7 @@ current_type = 0
 
 consec_pos_day_gain = []
 consec_neg_day_loss = []
+consec_day = []
 
 pos_start = 0
 pos_end = 0
@@ -40,6 +41,8 @@ neg_start = 0
 neg_end = 0
 
 count = 0
+order = 0
+
 for i in range (sh[0]):
     #if positive day
     if (change[i][0] > 0):
@@ -50,10 +53,12 @@ for i in range (sh[0]):
             neg_end = read.get_closing_price_from_numeric_data(data[i-1:i])[0][0]
 #            print "neg_end"
 #            print neg_end
-            consec_neg_day_loss.append(tuple((neg_start, neg_end, count)))
+            consec_neg_day_loss.append(tuple((neg_start, neg_end, count, order)))
+            consec_day.append(tuple((neg_start, neg_end, count, order)))
  
             pos_start = read.get_opening_price_from_numeric_data(data[i:i+1])[0][0]
             count = 1
+            order = order + 1
 #            print "pos_start"
 #            print pos_start
         else:
@@ -70,10 +75,12 @@ for i in range (sh[0]):
             pos_end = read.get_closing_price_from_numeric_data(data[i-1:i])[0][0]
 #            print "pos_end"
 #            print pos_end
-            consec_pos_day_gain.append(tuple((pos_start, pos_end, count)))
+            consec_pos_day_gain.append(tuple((pos_start, pos_end, count, order)))
+            consec_day.append(tuple((pos_start, pos_end, count, order)))
 
             neg_start = read.get_opening_price_from_numeric_data(data[i:i+1])[0][0]
             count = 1
+            order = order + 1
 #            print "neg_start"
 #            print neg_start
         else:
@@ -89,17 +96,20 @@ if current_type == POSITIVE_TYPE:
     pos_end = read.get_closing_price_from_numeric_data(data[i:i+1])[0][0]
 #    print "pos_end"
 #    print pos_end
-    consec_pos_day_gain.append(tuple((pos_start, pos_end, count)))
+    consec_pos_day_gain.append(tuple((pos_start, pos_end, count, order)))
+    consec_day.append(tuple((pos_start, pos_end, count, order)))
 
 else:
     neg_end = read.get_closing_price_from_numeric_data(data[i:i+1])[0][0]
 #    print "neg_end"
 #    print neg_end
-    consec_neg_day_loss.append(tuple((neg_start, neg_end, count)))
+    consec_neg_day_loss.append(tuple((neg_start, neg_end, count, order)))
+    consec_day.append(tuple((neg_start, neg_end, count, order)))
 
 
 print consec_pos_day_gain
 print consec_neg_day_loss
+print consec_day
 
 
 #print "Consequtive positive days (%):"
