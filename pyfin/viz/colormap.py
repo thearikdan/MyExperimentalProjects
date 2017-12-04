@@ -3,84 +3,8 @@
 import matplotlib.pyplot as plt
 from matplotlib import colors
 import numpy as np
+from utils import constants
 
-PADDED_DAY = -1000000.
-PADDED_DAY_COLOR = [0., 0., 1.]
-
-HOLIDAY = -500000.
-HOLIDAY_COLOR = [1., 1., 0.]
-
-BORDER = 10000.
-
-
-
-def pad_start(lst, days):
-    start = int (days[0])
-
-    for i in range(start):
-        lst.insert(0, [PADDED_DAY])
-        days.insert(0, start - 1 - i)
-    
-    return lst, days
-
-
-
-def insert_holidays(index, lst, days, diff, mod):
-    if (diff == 1) or (diff == -(mod - 1)):
-        return
-    if (diff > 1):
-        for i in range(diff - 1):
-            days.insert((index + i), (index + i) % mod)
-            lst.insert ((index + i), [HOLIDAY])
-    else: #diff is not positive
-        count = mod - 1 - abs(diff)
-        for i in range(count):
-            days.insert((index + i), (index + i) % mod)
-            lst.insert ((index + i), [HOLIDAY])
-    return lst, days  
-            
-
-
-def pad_holidays(lst, days, mod):
-    l = len(days)
-    for i in range (l-1):
-        d0 = (int (days[i])) % mod
-        d1 = (int (days[i + 1])) % mod
-        diff = d1 - d0
-        if (diff == 1) or (diff == -(mod - 1)):
-            continue
-        else:
-            lst, days = insert_holidays(i + 1, lst, days, diff, mod)
-    return lst, days
-
-
-
-def pad_end(lst, mod):
-    l = len(lst)
-
-    rest = l % mod
-    if (rest > 0):
-        for i in range(mod - rest):
-            lst.append([PADDED_DAY])
-    
-    return lst
-
-
-
-def reshape_data(data, days, mod):
-    lst = data.tolist()
-
-    lst, days = pad_start(lst, days)
-    lst, days = pad_holidays(lst, days, mod)
-    lst = pad_end(lst, mod)
-
-    new_data = np.array(lst)
-
-    data_shaped = new_data.reshape(-1, mod)
-    sh = np.shape(data_shaped)
-    return data_shaped
-
-    
 
 def show(data, mod):
     shape = np.shape(data)
@@ -90,8 +14,8 @@ def show(data, mod):
 #   bounds = [-20, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20]
 
     bounds = []
-    bounds.append(PADDED_DAY)
-    bounds.append(HOLIDAY - BORDER)
+    bounds.append(constants.PADDED_DAY)
+    bounds.append(constants.HOLIDAY - constants.BORDER)
 
 
     for i in xrange (-1000, -300, 100):
@@ -126,9 +50,9 @@ def show(data, mod):
 #    print bounds
 
     colormap = []
-    c = PADDED_DAY_COLOR
+    c = constants.PADDED_DAY_COLOR
     colormap.append(c)
-    c = HOLIDAY_COLOR
+    c = constants.HOLIDAY_COLOR
     colormap.append(c)
 
     step = 1. / (count / 2)
