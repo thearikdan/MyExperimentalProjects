@@ -1,14 +1,14 @@
 from input import read
 from stats import percentage, absolute
 import numpy as np
-from viz import boxplot
+from viz import bar
 
 
 #name = '/raid/data/pyfin/LEAF.TO.csv'
-#name = '/raid/data/pyfin/AMZN.csv'
+name = '/raid/data/pyfin/AMZN.csv'
 
 #name = '/media/ara/HDD/data/Finance/ACB.TO.csv'
-name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
+#name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
 #name = '/media/ara/HDD/data/Finance/AMZN_month.csv'
 
 
@@ -118,4 +118,4 @@ np_consec_day = np.array(consec_day)
 print np_consec_day
 
 
-boxplot.show(np_consec_day)
+bar.show(np_consec_day)
