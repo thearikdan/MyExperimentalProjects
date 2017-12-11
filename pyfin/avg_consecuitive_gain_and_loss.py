@@ -2,14 +2,15 @@ from input import read
 from stats import percentage, absolute
 import numpy as np
 from viz import bar
+from utils import time, shape, string_op
 
 
 #name = '/raid/data/pyfin/LEAF.TO.csv'
-name = '/raid/data/pyfin/AMZN.csv'
+#name = '/raid/data/pyfin/AMZN.csv'
 
 #name = '/media/ara/HDD/data/Finance/ACB.TO.csv'
 #name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
-#name = '/media/ara/HDD/data/Finance/AMZN_month.csv'
+name = '/home/ara/Downloads/WEED.TO.csv'
 
 
 all_data = read.get_all_data_from_file(name)
@@ -90,5 +91,7 @@ else:
 
 np_consec_day = np.array(consec_day)
 
+comp_name = string_op.get_company_name_from_file_name(name)
+title = comp_name + ": " + time.get_date_interval_text(date)
 
-bar.show(np_consec_day)
+bar.show(np_consec_day, title)
