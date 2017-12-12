@@ -5,11 +5,7 @@ from viz import bar
 from utils import time, shape, string_op
 
 
-#name = '/raid/data/pyfin/LEAF.TO.csv'
-#name = '/raid/data/pyfin/AMZN.csv'
-
-#name = '/media/ara/HDD/data/Finance/ACB.TO.csv'
-#name = '/media/ara/HDD/data/Finance/WEED.TO_1_month.csv'
+#name = '/home/ara/Downloads/PRMCF.csv'
 name = '/home/ara/Downloads/WEED.TO.csv'
 
 
@@ -17,7 +13,7 @@ all_data = read.get_all_data_from_file(name)
 
 data = read.get_numeric_data_from_all_data(all_data)
 
-date = read.get_date_from_all_data(data)
+date = read.get_date_from_all_data(all_data)
 sh = np.shape(date)
 
 change = absolute.get_absolute_change_from_numeric_data(data)
