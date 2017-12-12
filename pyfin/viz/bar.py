@@ -28,26 +28,36 @@ def get_color_from_data(data):
 
 
 def draw_text(ax, rect):
-    #    rect = rects[-1]
+    min_perc = 2.5
 
     clr = "white"
     yloc = rect.get_y()
 
-    height = int(rect.get_height())
+    height = rect.get_height()
+    perc = height / rect.get_y() * 100
 
-    if abs(height) > 8:
+
+    if abs(perc) > min_perc:
         clr = "white"
-        yloc = rect.get_y() + height / 2
+        yloc = rect.get_y() + height * 3 / 4
     else:
         clr = "black"
+        yloc = rect.get_y() + height / 2
 
-    p = "%.2f%%" % (height / rect.get_y() * 100)
+    p = "%.2f%%" % perc
     xloc = rect.get_x() + (rect.get_width() / 2.0)
-    ax.text(xloc, yloc, p, horizontalalignment='center', verticalalignment='center', color=clr, weight='bold')
+#    ax.text(xloc, yloc, p, horizontalalignment='center', verticalalignment='center', color=clr, weight='bold')
+    ax.text(xloc, yloc, p, horizontalalignment='center', verticalalignment='center', color=clr)
 
-    p = "%d days" % (rect.get_width())
-    yloc = yloc - 2
-    ax.text(xloc, yloc, p, horizontalalignment='center', verticalalignment='center', color=clr, weight='bold')
+    if (abs(perc) > min_perc):
+        days = rect.get_width()
+        if (days > 1):
+            p = "%d days" % days
+        else:
+            p = "%d" % days
+
+        yloc = rect.get_y() + height / 4
+        ax.text(xloc, yloc, p, horizontalalignment='center', verticalalignment='center', color=clr)
 
 
 def show(data, title):
@@ -63,10 +73,15 @@ def show(data, title):
 
     f.suptitle(title, fontsize=12)
 
-    rects = ax.bar(x, gain, bottom=data[:,0], width=w, color=c)
+    rects = ax.bar(x, gain, align="edge", bottom=data[:,0], width=w, color=c)
+
+    ax.set_xlim(xmin=0)
 
     for rect in rects:
         draw_text(ax, rect)
 
+    tick_end = x[len(x)-1] + int(w[len(x)-1])
+
+    plt.xticks(np.arange(0, tick_end + 1, 1.0))
     plt.show()
 
