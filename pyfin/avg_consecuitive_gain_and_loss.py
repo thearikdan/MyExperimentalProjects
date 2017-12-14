@@ -7,6 +7,9 @@ from utils import time, shape, string_op
 
 #name = '/home/ara/Downloads/PRMCF.csv'
 name = '/home/ara/Downloads/WEED.TO.csv'
+#name = '/home/ara/Downloads/ACB.TO.csv'
+#name = '/home/ara/Downloads/APHQF.csv'
+#name = '/home/ara/Downloads/IVITF.csv'
 
 
 all_data = read.get_all_data_from_file(name)
