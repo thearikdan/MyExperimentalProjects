@@ -3,21 +3,31 @@ from stats import percentage, absolute
 import numpy as np
 from viz import bar
 from utils import time, shape, string_op
+from datetime import datetime
+import dateutil
+
 
 
 #name = '/home/ara/Downloads/PRMCF.csv'
-name = '/home/ara/Downloads/WEED.TO.csv'
+#name = '/home/ara/Downloads/WEED.TO.csv'
 #name = '/home/ara/Downloads/ACB.TO.csv'
 #name = '/home/ara/Downloads/APHQF.csv'
 #name = '/home/ara/Downloads/IVITF.csv'
 
 
-all_data = read.get_all_data_from_file(name)
+#all_data = read.get_all_data_from_file(name)
 
-data = read.get_numeric_data_from_all_data(all_data)
+#data = read.get_numeric_data_from_all_data(all_data)
 
-date = read.get_date_from_all_data(all_data)
-sh = np.shape(date)
+symbol = "APHQF"
+end_date = datetime.today() #today
+start_date = end_date + dateutil.relativedelta.relativedelta(months=-1) #month ago
+
+data = read.get_numeric_data_from_web(symbol, start_date, end_date)
+
+
+#date = read.get_date_from_all_data(all_data)
+#sh = np.shape(date)
 
 change = absolute.get_absolute_change_from_numeric_data(data)
 
@@ -90,7 +100,7 @@ else:
 
 np_consec_day = np.array(consec_day)
 
-comp_name = string_op.get_company_name_from_file_name(name)
-title = comp_name + ": " + time.get_date_interval_text(date)
-
+#comp_name = string_op.get_company_name_from_file_name(name)
+#title = comp_name + ": " + time.get_date_interval_text(date)
+title = symbol + ": " + start_date.strftime("%Y-%m-%d")+ " to " + end_date.strftime("%Y-%m-%d")
 bar.show(np_consec_day, title)

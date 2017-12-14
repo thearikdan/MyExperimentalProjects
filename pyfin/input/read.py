@@ -1,5 +1,14 @@
 import numpy as np
 from numpy import genfromtxt
+import pandas_datareader as pdr
+from datetime import datetime
+
+
+def get_numeric_data_from_web(ticker, start_date, end_date):
+    data = pdr.get_data_yahoo(symbols=ticker, start=start_date, end=end_date)
+    return data.as_matrix()
+
+
 
 def get_all_data_from_file(filename):
     data = genfromtxt(filename, dtype=None, delimiter=',')
