@@ -23,11 +23,8 @@ symbol = "APHQF"
 end_date = datetime.today() #today
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-1) #month ago
 
-data = read.get_numeric_data_from_web(symbol, start_date, end_date)
+_, data = read.get_data_from_web(symbol, start_date, end_date)
 
-
-#date = read.get_date_from_all_data(all_data)
-#sh = np.shape(date)
 
 change = absolute.get_absolute_change_from_numeric_data(data)
 
