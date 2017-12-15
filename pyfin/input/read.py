@@ -7,7 +7,7 @@ from datetime import datetime
 def get_data_from_web(ticker, start_date, end_date):
     data = pdr.get_data_yahoo(symbols=ticker, start=start_date, end=end_date)
     dateIndex = data.index
-    date = np.array(dateIndex.to_pydatetime(), dtype=np.datetime64)
+    date = np.array(dateIndex.to_pydatetime())
     return date, data.as_matrix()
 
 

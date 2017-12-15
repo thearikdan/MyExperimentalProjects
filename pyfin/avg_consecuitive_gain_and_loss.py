@@ -19,7 +19,7 @@ import dateutil
 
 #data = read.get_numeric_data_from_all_data(all_data)
 
-symbol = "APHQF"
+symbol = "WEED.TO"
 end_date = datetime.today() #today
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-1) #month ago
 
