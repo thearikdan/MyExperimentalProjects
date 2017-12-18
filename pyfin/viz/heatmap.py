@@ -1,4 +1,6 @@
 #Needs pyfin virtualenv for matplotlib
+#%matplotlib inline
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -19,7 +21,7 @@ def show(data, title, mod):
 
 
     # Draw a heatmap with the numeric values in each cell
-    f, ax = plt.subplots(figsize=(shape[0], shape[1]))
+    f, ax = plt.subplots(figsize=(shape[0], shape[1]), dpi=240)
     f.suptitle(title, fontsize=12)
     sns.heatmap(df, annot=True, fmt="f", linewidths=.5, ax=ax, cmap=cmap, norm=norm)
     plt.show()
