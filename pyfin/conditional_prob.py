@@ -21,7 +21,6 @@ for i in range (sh[0]):
     day = time.get_day_number_from_date_string(date[i].strftime("%Y-%m-%d"))
     days.append(day)
 
-#nd = read.get_numeric_data_from_all_data(data)
 pc = percentage.get_percentage_change_from_numeric_data(num_data)
 perc = pc * 100
 
@@ -38,8 +37,4 @@ for i in range (mod):
 df = pd.DataFrame(data, columns=['Mon','Tue', 'Wed', 'Thu', 'Fri'], index=['Probability of positive','Mean','Deviation'])
 print df
 
-title = symbol + ": " + start_date.strftime("%Y-%m-%d")+ " to " + end_date.strftime("%Y-%m-%d")
-
-
-heatmap.show(shaped_perc, title, mod)
 
