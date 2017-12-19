@@ -5,6 +5,7 @@ import numpy as np
 from viz import heatmap
 from datetime import datetime
 import dateutil
+import pandas as pd
 
 
 symbol = "WEED.TO"
@@ -28,10 +29,14 @@ mod = 5
 
 shaped_perc = shape.reshape_data(perc, days, mod)
 
+data = np.zeros(shape=(3, mod))
+
 for i in range (mod):
-    print shaped_perc[:,i]
-    print probability.get_positive_probability_of_day(shaped_perc[:,i])
-    print absolute.get_mean_and_deviation_of_day(shaped_perc[:,i])
+    data[0, i] = probability.get_positive_probability_of_day(shaped_perc[:,i])
+    data[1, i], data[2, i] = absolute.get_mean_and_deviation_of_day(shaped_perc[:,i])
+
+df = pd.DataFrame(data, columns=['Mon','Tue', 'Wed', 'Thu', 'Fri'], index=['Probability of positive','Mean','Deviation'])
+print df
 
 title = symbol + ": " + start_date.strftime("%Y-%m-%d")+ " to " + end_date.strftime("%Y-%m-%d")
 
