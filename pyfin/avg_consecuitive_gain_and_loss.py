@@ -88,8 +88,6 @@ if current_type == POSITIVE_TYPE:
     pos_end = read.get_closing_price_from_numeric_data(data[i:i+1])[0][0]
     record = np.array([pos_start, pos_end, count])
     consec_day.append(record)
-
-
 else:
     neg_end = read.get_closing_price_from_numeric_data(data[i:i+1])[0][0]
     record = np.array([neg_start, neg_end, count])
