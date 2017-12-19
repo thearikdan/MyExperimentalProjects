@@ -1,5 +1,7 @@
 from input import read
 
+
+
 def get_percentage_change_from_numeric_data(data):
     op = read.get_opening_price_from_numeric_data(data)
 

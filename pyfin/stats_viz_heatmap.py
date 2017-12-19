@@ -29,7 +29,6 @@ sh = np.shape(date)
 
 days = []
 for i in range (sh[0]):
-#    day = time.get_day_number_from_date_string(date[i][0])
     day = time.get_day_number_from_date_string(date[i].strftime("%Y-%m-%d"))
     days.append(day)
 
@@ -38,7 +37,6 @@ pc = percentage.get_percentage_change_from_numeric_data(num_data)
 perc = pc * 100
 
 shaped_perc = shape.reshape_data(perc, days, 5)
-#print shaped_perc
 
 #comp_name = string_op.get_company_name_from_file_name(name)
 #title = comp_name + ": " + time.get_date_interval_text(date)

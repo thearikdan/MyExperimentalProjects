@@ -19,10 +19,9 @@ def show(data, title, mod):
     # Create a dataset (fake)
     df = pd.DataFrame(data, columns=["Mon","Tue","Wed","Thu","Fri"])
 
-
     # Draw a heatmap with the numeric values in each cell
-    f, ax = plt.subplots(figsize=(shape[0], shape[1]), dpi=240)
+    f, ax = plt.subplots(figsize=(shape[0], shape[1]), dpi=120)
     f.suptitle(title, fontsize=12)
-    sns.heatmap(df, annot=True, fmt="f", linewidths=.5, ax=ax, cmap=cmap, norm=norm)
+    sns.heatmap(df, annot=True, fmt=".2f", linewidths=.5, ax=ax, cmap=cmap, norm=norm)
     plt.show()
 

@@ -1,7 +1,6 @@
 import numpy as np
 import constants
-
-
+import decimal
 
 def pad_start(lst, days):
     start = int (days[0])
@@ -66,6 +65,5 @@ def reshape_data(data, days, mod):
     new_data = np.array(lst)
 
     data_shaped = new_data.reshape(-1, mod)
-    sh = np.shape(data_shaped)
     return data_shaped
 
