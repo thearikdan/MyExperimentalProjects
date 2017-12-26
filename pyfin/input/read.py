@@ -2,6 +2,28 @@ import numpy as np
 from numpy import genfromtxt
 import pandas_datareader as pdr
 from datetime import datetime
+import urllib2
+import json
+
+
+def get_intraday_data_from_web(ticker, interval):
+    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?interval=%s" % (ticker, interval)
+    response = urllib2.urlopen(str).read()
+    json_obj = json.loads(response)
+
+    chart = (json_obj['chart'])
+    result = chart['result']
+    indicators = result[0]['indicators']
+    quote = indicators['quote']
+
+    high = quote[0]['high']
+    low = quote[0]['low']
+    open = quote[0]['open']
+    close = quote[0]['close']
+    volume = quote[0]['volume']
+
+    timestamp = result[0]['timestamp']
+    return timestamp, volume, open, close, high, low
 
 
 def get_data_from_web(ticker, start_date, end_date):
