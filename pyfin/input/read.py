@@ -4,10 +4,21 @@ import pandas_datareader as pdr
 from datetime import datetime
 import urllib2
 import json
+import time
+from datetime import datetime
+
+
+def get_int_time(date_time):
+    date_time_tuple = date_time.timetuple()
+    date_time_int = int(time.mktime(date_time_tuple))
+    return date_time_int
 
 
 def get_intraday_data_from_web(ticker, start, end, interval):
-    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start, end, interval)
+    start_date_time = get_int_time(start)
+    end_date_time = get_int_time(end)
+
+    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, interval)
     response = urllib2.urlopen(str).read()
     json_obj = json.loads(response)
 
