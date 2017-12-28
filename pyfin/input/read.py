@@ -14,6 +14,14 @@ def get_int_time(date_time):
     return date_time_int
 
 
+def get_date_time_from_timestamp(timestamp):
+    date_time = []
+    count = len(timestamp)
+    for i in range(count):
+        dt = datetime.fromtimestamp(timestamp[i])
+        date_time.append(dt)
+    return date_time
+
 def get_intraday_data_from_web(ticker, start, end, interval):
     start_date_time = get_int_time(start)
     end_date_time = get_int_time(end)
@@ -34,7 +42,8 @@ def get_intraday_data_from_web(ticker, start, end, interval):
     volume = quote[0]['volume']
 
     timestamp = result[0]['timestamp']
-    return timestamp, volume, open, close, high, low
+    date_time = get_date_time_from_timestamp(timestamp)
+    return date_time, volume, open, close, high, low
 
 
 def get_data_from_web(ticker, start_date, end_date):
