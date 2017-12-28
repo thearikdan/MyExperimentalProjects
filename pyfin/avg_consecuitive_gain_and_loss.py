@@ -1,4 +1,4 @@
-from input import read
+from read_write import read
 from stats import percentage, absolute
 import numpy as np
 from viz import bar

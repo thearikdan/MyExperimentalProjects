@@ -1,4 +1,4 @@
-from input import read
+from read_write import read
 from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np

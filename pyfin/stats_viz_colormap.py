@@ -1,4 +1,4 @@
-from input import read
+from read_write import read
 from stats import percentage 
 from viz import colormap
 from utils import time, shape

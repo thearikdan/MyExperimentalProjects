@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, "../")
 
 
-from input import read
+from read_write import read
 from utils import time
 import numpy as np
 

@@ -1,4 +1,4 @@
-from input import read
+from read_write import read
 from stats import percentage, absolute
 from utils import time, shape, string_op, probability
 import numpy as np

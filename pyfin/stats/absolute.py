@@ -1,4 +1,4 @@
-from input import read
+from read_write import read
 from utils import constants
 import numpy as np
 
