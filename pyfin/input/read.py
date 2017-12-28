@@ -6,8 +6,8 @@ import urllib2
 import json
 
 
-def get_intraday_data_from_web(ticker, interval):
-    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?interval=%s" % (ticker, interval)
+def get_intraday_data_from_web(ticker, start, end, interval):
+    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start, end, interval)
     response = urllib2.urlopen(str).read()
     json_obj = json.loads(response)
 
