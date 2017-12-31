@@ -6,4 +6,4 @@ HOLIDAY_COLOR = [1., 1., 0.]
 
 BORDER = 10000.
 
-
+DATA_ROOT = "data"

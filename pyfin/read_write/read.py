@@ -5,7 +5,12 @@ from datetime import datetime
 import urllib2
 import json
 import time
+import write
+import pickle
 from datetime import datetime
+from os.path import join, isfile
+from utils import time_op, string_op, constants
+from os.path import join
 
 
 def get_int_time(date_time):
@@ -21,6 +26,7 @@ def get_date_time_from_timestamp(timestamp):
         dt = datetime.fromtimestamp(timestamp[i])
         date_time.append(dt)
     return date_time
+
 
 def get_intraday_data_from_web(ticker, start, end, interval):
     start_date_time = get_int_time(start)
@@ -44,6 +50,25 @@ def get_intraday_data_from_web(ticker, start, end, interval):
     timestamp = result[0]['timestamp']
     date_time = get_date_time_from_timestamp(timestamp)
     return date_time, volume, open, close, high, low
+
+
+def get_intraday_data_from_file(full_path, start, end):
+    with open(full_path, "rb") as f:
+        date_time, volume, opn, close, high, low = pickle.load(f) 
+        return (date_time, volume, opn, close, high, low)
+
+
+def get_intraday_data(ticker, start, end, interval):
+    dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval)
+    filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval)
+    dir_name = join(constants.DATA_ROOT, dir_name)
+    full_path = join(dir_name, filename)
+    if isfile(full_path):
+        return get_intraday_data_from_file(full_path, start, end)
+    else:
+        date_time, volume, opn, close, high, low = get_intraday_data_from_web("WEED.TO", start, end, interval)
+        write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+        return date_time, volume, opn, close, high, low
 
 
 def get_data_from_web(ticker, start_date, end_date):
