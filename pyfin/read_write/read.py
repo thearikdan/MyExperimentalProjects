@@ -173,3 +173,29 @@ def get_volume_from_file(filename):
     return get_volume_from_numeric_data(data)
 
 
+def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date):
+    date_time_list = []
+    volume_list = []
+    open_list = []
+    close_list = []
+    high_list = []
+    low_list = []
+    for i in range (N):
+        date = time_op.get_date_N_days_ago_from_date(i, last_date)
+
+        start_date = date.replace(hour=9, minute=30, second=00)
+        end_date = date.replace(hour=16, minute=00, second=00)
+
+        is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(ticker, start_date, end_date, "1m")
+        if (is_data_available):
+            date_time_list.append(date_time)
+            volume_list.append(volume)
+            open_list.append(opn)
+            close_list.append(close)
+            high_list.append(high)
+            low_list.append(low)
+
+    return date_time_list, volume_list, open_list, close_list, high_list, low_list
+
+
+
