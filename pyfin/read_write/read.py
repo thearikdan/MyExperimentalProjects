@@ -41,6 +41,9 @@ def get_intraday_data_from_web(ticker, start, end, interval):
     indicators = result[0]['indicators']
     quote = indicators['quote']
 
+    is_data_available = len(quote[0]) > 0
+    if not (is_data_available):
+        return (False, [], [], [], [], [], [])
     high = quote[0]['high']
     low = quote[0]['low']
     open = quote[0]['open']
@@ -49,13 +52,13 @@ def get_intraday_data_from_web(ticker, start, end, interval):
 
     timestamp = result[0]['timestamp']
     date_time = get_date_time_from_timestamp(timestamp)
-    return date_time, volume, open, close, high, low
+    return (True, date_time, volume, open, close, high, low)
 
 
 def get_intraday_data_from_file(full_path, start, end):
     with open(full_path, "rb") as f:
         date_time, volume, opn, close, high, low = pickle.load(f) 
-        return (date_time, volume, opn, close, high, low)
+        return (True, date_time, volume, opn, close, high, low)
 
 
 def get_intraday_data(ticker, start, end, interval):
@@ -66,9 +69,10 @@ def get_intraday_data(ticker, start, end, interval):
     if isfile(full_path):
         return get_intraday_data_from_file(full_path, start, end)
     else:
-        date_time, volume, opn, close, high, low = get_intraday_data_from_web("WEED.TO", start, end, interval)
-        write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
-        return date_time, volume, opn, close, high, low
+        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web("WEED.TO", start, end, interval)
+        if (is_data_available):
+            write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+        return is_data_available, date_time, volume, opn, close, high, low
 
 
 def get_data_from_web(ticker, start_date, end_date):
