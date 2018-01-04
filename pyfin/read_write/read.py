@@ -29,8 +29,11 @@ def get_date_time_from_timestamp(timestamp):
 
 
 def get_intraday_data_from_web(ticker, start, end, interval):
-    start_date_time = get_int_time(start)
-    end_date_time = get_int_time(end)
+    #always get full day data from web
+    start_full_day = start.replace(hour=9, minute=30, second=00)
+    end_full_day = start.replace(hour=16, minute=00, second=00)
+    start_date_time = get_int_time(start_full_day)
+    end_date_time = get_int_time(end_full_day)
 
     str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, interval)
     response = urllib2.urlopen(str).read()
@@ -58,10 +61,13 @@ def get_intraday_data_from_web(ticker, start, end, interval):
 def get_intraday_data_from_file(full_path, start, end):
     with open(full_path, "rb") as f:
         date_time, volume, opn, close, high, low = pickle.load(f)
-        start_index = date_time.index(start)
-        end_index = date_time.index(end)
+        start_index = date_time.index(start) if start in date_time else None
+        end_index = date_time.index(end) if start in date_time else None
 
-        return (True,
+        if ((start_index == None) or (end_index == None)):
+            return (False, [], [], [], [], [], [])
+        else:
+            return (True,
                 date_time[start_index:end_index],
                 volume[start_index:end_index],
                 opn[start_index:end_index],
@@ -79,13 +85,18 @@ def get_intraday_data(ticker, start, end, interval):
         return get_intraday_data_from_file(full_path, start, end)
     else:
         is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web("WEED.TO", start, end, interval)
-        if (is_data_available):
-            write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+        if not (is_data_available):
+            return (False, [], [], [], [], [], [])
 
-        start_index = date_time.index(start)
-        end_index = date_time.index(end)
+        write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
 
-        return (is_data_available,
+        start_index = date_time.index(start) if start in date_time else None
+        end_index = date_time.index(end) if start in date_time else None
+
+        if ((start_index == None) or (end_index == None)):
+            return (False, [], [], [], [], [], [])
+        else:
+            return (True,
                 date_time[start_index:end_index],
                 volume[start_index:end_index],
                 opn[start_index:end_index],
@@ -192,7 +203,10 @@ def get_volume_from_file(filename):
     return get_volume_from_numeric_data(data)
 
 
-def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date):
+def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date,
+                                                from_time=datetime(2000, 01, 01, 9, 30, 00),
+                                                to_time=datetime(2000, 01, 01, 16, 00, 00)):
+    #in from_time and to_time only hour, minutes and seconds are important;                                                   years and months are ignored
     date_time_list = []
     volume_list = []
     open_list = []
@@ -202,8 +216,8 @@ def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date):
     for i in range (N):
         date = time_op.get_date_N_days_ago_from_date(i, last_date)
 
-        start_date = date.replace(hour=9, minute=30, second=00)
-        end_date = date.replace(hour=16, minute=00, second=00)
+        start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
+        end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
 
         is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(ticker, start_date, end_date, "1m")
         if (is_data_available):
