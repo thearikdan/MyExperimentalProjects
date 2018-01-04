@@ -57,8 +57,17 @@ def get_intraday_data_from_web(ticker, start, end, interval):
 
 def get_intraday_data_from_file(full_path, start, end):
     with open(full_path, "rb") as f:
-        date_time, volume, opn, close, high, low = pickle.load(f) 
-        return (True, date_time, volume, opn, close, high, low)
+        date_time, volume, opn, close, high, low = pickle.load(f)
+        start_index = date_time.index(start)
+        end_index = date_time.index(end)
+
+        return (True,
+                date_time[start_index:end_index],
+                volume[start_index:end_index],
+                opn[start_index:end_index],
+                close[start_index:end_index],
+                high[start_index:end_index],
+                low[start_index:end_index])
 
 
 def get_intraday_data(ticker, start, end, interval):
@@ -72,7 +81,17 @@ def get_intraday_data(ticker, start, end, interval):
         is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web("WEED.TO", start, end, interval)
         if (is_data_available):
             write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
-        return is_data_available, date_time, volume, opn, close, high, low
+
+        start_index = date_time.index(start)
+        end_index = date_time.index(end)
+
+        return (is_data_available,
+                date_time[start_index:end_index],
+                volume[start_index:end_index],
+                opn[start_index:end_index],
+                close[start_index:end_index],
+                high[start_index:end_index],
+                low[start_index:end_index])
 
 
 def get_data_from_web(ticker, start_date, end_date):
