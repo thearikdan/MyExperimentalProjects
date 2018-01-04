@@ -47,7 +47,12 @@ def get_intraday_data_from_web(ticker, start, end, interval):
     is_data_available = len(quote[0]) > 0
     if not (is_data_available):
         return (False, [], [], [], [], [], [])
+
     high = quote[0]['high']
+    is_data_available = len(high) > 1
+    if not (is_data_available):
+        return (False, [], [], [], [], [], [])
+
     low = quote[0]['low']
     open = quote[0]['open']
     close = quote[0]['close']
@@ -203,9 +208,7 @@ def get_volume_from_file(filename):
     return get_volume_from_numeric_data(data)
 
 
-def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date,
-                                                from_time=datetime(2000, 01, 01, 9, 30, 00),
-                                                to_time=datetime(2000, 01, 01, 16, 00, 00)):
+def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_time, to_time):
     #in from_time and to_time only hour, minutes and seconds are important;                                                   years and months are ignored
     date_time_list = []
     volume_list = []
