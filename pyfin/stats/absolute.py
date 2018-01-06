@@ -47,3 +47,28 @@ def get_mean_and_deviation_of_day(day_data):
 
     return mean, dev
 
+
+def get_N_minute_from_one_minute_interval(N, date_time, volume , opn, close, high, low):
+    date_time_N = []
+    volume_N = []
+    open_N = []
+    close_N = []
+    high_N = []
+    low_N = []
+    count = len (date_time)
+    if (N > count):
+        return date_time_N, volume_N , open_N, close_N, high_N, low_N
+
+    new_count = count / N
+
+    for i in range (new_count):
+        date_time_N.append(date_time[N * i])
+        volume_N.append(volume[N * i])
+        open_N.append(opn[N * i])
+        close_N.append(close[N * i])
+        high_N.append(max(high[N * i : N * (i + 1)]))
+        low_N.append(min(low[N * i : N * (i + 1)]))
+
+
+    return date_time_N, volume_N , open_N, close_N, high_N, low_N
+
