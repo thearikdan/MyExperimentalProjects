@@ -40,3 +40,15 @@ def get_date_N_days_ago_from_date(N, date):
     date_N_days_ago = date - timedelta(days=N)
     return date_N_days_ago
 
+
+def get_highest_price_time(time, high):
+    maximum = max(high)
+    index = high.index(maximum)
+    return time[index]
+
+
+def get_lowest_price_time(time, low):
+    minimum = min(low)
+    index = low.index(minimum)
+    return time[index]
+
