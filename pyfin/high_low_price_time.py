@@ -3,7 +3,7 @@ from datetime import datetime
 from utils import time_op
 import matplotlib.pyplot as plt
 import numpy as np
-
+from stats import absolute
 
 start_date = datetime(2017, 12, 28, 9, 30)
 end_date = datetime(2017, 12, 28, 15, 59)
@@ -14,14 +14,28 @@ is_data_available, date_time, volume , opn, close, high, low = read.get_intraday
 if not (is_data_available):
     exit(0)
 
-high_time = time_op.get_highest_price_time(date_time, high)
-print high_time
 
+N = 5
 
-low_time = time_op.get_lowest_price_time(date_time, low)
-print low_time
+date_time_N, volume_N , open_N, close_N, high_N, low_N = absolute.get_N_minute_from_one_minute_interval(N, date_time, volume , opn, close, high, low)
 
-count = len(close)
-range = np.arange(count)
-plt.plot(range, close)
+neigh_point_count = 5
+
+print "Maximum"
+max_index_list = absolute.get_local_maximum_index_list(close_N, neigh_point_count)
+max_count = len(max_index_list)
+for i in range (max_count):
+    print close_N[max_index_list[i]]
+    print date_time_N[max_index_list[i]]
+
+print "Minimum"
+min_index_list = absolute.get_local_minimum_index_list(close_N, neigh_point_count)
+min_count = len(min_index_list)
+for i in range (min_count):
+    print close_N[min_index_list[i]]
+    print date_time_N[min_index_list[i]]
+
+count_N = len(close_N)
+range = np.arange(count_N)
+plt.plot(range, close_N)
 plt.show()

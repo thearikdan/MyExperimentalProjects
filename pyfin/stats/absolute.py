@@ -1,6 +1,8 @@
 from read_write import read
 from utils import constants
 import numpy as np
+from scipy.signal import argrelextrema
+
 
 def get_absolute_change_from_numeric_data(data):
     op = read.get_opening_price_from_numeric_data(data)
@@ -69,6 +71,27 @@ def get_N_minute_from_one_minute_interval(N, date_time, volume , opn, close, hig
         high_N.append(max(high[N * i : N * (i + 1)]))
         low_N.append(min(low[N * i : N * (i + 1)]))
 
-
     return date_time_N, volume_N , open_N, close_N, high_N, low_N
+
+
+def get_local_maximum_index_list(lst, neighb_point_count):
+    np_list = np.array(lst)
+    res = argrelextrema(np_list, np.greater, axis=0, order=neighb_point_count)
+    indices = []
+    count = res[0].size
+    for i in range(count):
+        indices.append(res[0][i])
+    return indices
+
+
+def get_local_minimum_index_list(lst, neighb_point_count):
+    np_list = np.array(lst)
+    res = argrelextrema(np_list, np.less, axis=0, order=neighb_point_count)
+    indices = []
+    count = res[0].size
+    for i in range(count):
+        indices.append(res[0][i])
+    return indices
+
+    
 
