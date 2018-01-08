@@ -1,7 +1,7 @@
 from read_write import read
 from stats import percentage 
 from viz import heatmap
-from utils import time, shape, string_op
+from utils import time_op, shape, string_op
 import numpy as np
 from datetime import datetime
 import dateutil
@@ -29,7 +29,7 @@ sh = np.shape(date)
 
 days = []
 for i in range (sh[0]):
-    day = time.get_day_number_from_date_string(date[i].strftime("%Y-%m-%d"))
+    day = time_op.get_day_number_from_date_string(date[i].strftime("%Y-%m-%d"))
     days.append(day)
 
 #nd = read.get_numeric_data_from_all_data(data)

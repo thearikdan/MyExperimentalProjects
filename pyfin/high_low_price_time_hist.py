@@ -5,13 +5,13 @@ from read_write import time_data
 
 
 N_minute_interval = 5
-neighb_point_count = 5
-days_count = 20
+neighb_point_count = 1
+days_count = 30
 
 start_date = datetime(2018, 1, 4, 9, 30)
 end_date = datetime(2018, 1, 4, 15, 59)
 
-symbol = "LEAF.TO"
+symbol = "WEED.TO"
 
 max_time_list, min_time_list = time_data.get_high_and_low_price_times(symbol, start_date, end_date, days_count, N_minute_interval, neighb_point_count)
 
