@@ -66,7 +66,6 @@ def get_intraday_data_from_web(ticker, start, end, interval):
 def get_intraday_data_from_file(full_path, start, end):
     with open(full_path, "rb") as f:
         date_time, volume, opn, close, high, low = pickle.load(f)
-        print date_time
         start_index = date_time.index(start) if start in date_time else None
         end_index = date_time.index(end) if start in date_time else None
 
