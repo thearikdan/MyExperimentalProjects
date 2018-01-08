@@ -89,7 +89,7 @@ def get_intraday_data(ticker, start, end, interval):
     if isfile(full_path):
         return get_intraday_data_from_file(full_path, start, end)
     else:
-        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web("WEED.TO", start, end, interval)
+        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end, interval)
         if not (is_data_available):
             return (False, [], [], [], [], [], [])
 
