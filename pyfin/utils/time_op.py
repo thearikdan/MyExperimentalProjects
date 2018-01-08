@@ -52,3 +52,4 @@ def get_lowest_price_time(time, low):
     index = low.index(minimum)
     return time[index]
 
+
