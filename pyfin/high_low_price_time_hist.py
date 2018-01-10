@@ -4,12 +4,12 @@ from viz import histogram
 from read_write import time_data
 
 
-N_minute_interval = 5
-neighb_point_count = 1
+N_minute_interval = 1
+neighb_point_count = 3
 days_count = 30
 
-start_date = datetime(2018, 1, 4, 9, 30)
-end_date = datetime(2018, 1, 4, 15, 59)
+start_date = datetime(2018, 1, 9, 9, 30)
+end_date = datetime(2018, 1, 9, 12, 30)
 
 symbol = "WEED.TO"
 
