@@ -7,8 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-start_date = datetime(2018, 1, 9, 10, 30)
-end_date = datetime(2018, 1, 9, 11, 30)
+start_date = datetime(2018, 1, 9, 9, 30)
+end_date = datetime(2018, 1, 9, 10, 30)
 
 days_count = 18
 
@@ -56,6 +56,8 @@ plt.figure(1)
 for i in range(count):
     plt.subplot(count*100 + 11 + i)
     plt.plot(date_time_list[sorted_ind[i]], close_per_list[sorted_ind[i]])
+    plt.plot(date_time_list[sorted_ind[i]], close_per, 'r')
+
 
 plt.show()
 
