@@ -2,8 +2,10 @@ from read_write import read
 from datetime import datetime
 import matplotlib.pyplot as plt
 from stats import percentage
-from utils import analytics, time_op
+from utils import analytics, time_op, sort_op
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 start_date = datetime(2018, 1, 9, 10, 30)
 end_date = datetime(2018, 1, 9, 11, 30)
@@ -16,7 +18,7 @@ if not (is_data_available):
     exit(0)
 
 date_time_1, volume_per , open_per, close_per, high_per, low_per = percentage.get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low)
-print close_per
+#print close_per
 
 date_time_list = []
 close_per_list = []
@@ -39,9 +41,22 @@ dist_list = []
 for i in range (count):
     vec1 = np.array(close_per)
     vec2 = np.array(close_per_list[i])
-    print vec2
+#    print vec2
     dist = analytics.get_distance(vec1, vec2)
     dist_list.append(dist)
 
 print dist_list
+
+sorted_ind = sort_op.get_sorted_indices(dist_list)
+print sorted_ind
+
+count = len(sorted_ind)
+
+plt.figure(1)
+for i in range(count):
+    plt.subplot(count*100 + 11 + i)
+    plt.plot(date_time_list[sorted_ind[i]], close_per_list[sorted_ind[i]])
+
+plt.show()
+
 
