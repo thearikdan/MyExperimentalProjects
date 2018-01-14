@@ -22,6 +22,7 @@ date_time_1, volume_per , open_per, close_per, high_per, low_per = percentage.ge
 
 date_time_list = []
 close_per_list = []
+close_list = []
 
 for i in range (1, days_count):
     new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
@@ -34,6 +35,7 @@ for i in range (1, days_count):
     date_time_per_before, volume_per_before , open_per_before, close_per_before, high_per_before, low_per_before = percentage.get_percentage_change_in_intraday_prices(date_time_before, volume_before , opn_before, close_before, high_before, low_before)
     date_time_list.append(date_time_per_before)
     close_per_list.append(close_per_before)
+    close_list.append(close_before)
 
 
 count = len(close_per_list)
@@ -60,5 +62,15 @@ for i in range(count):
 
 
 plt.show()
+
+plt.figure(2)
+for i in range(count):
+    plt.subplot(count*100 + 11 + i)
+    plt.plot(date_time, close_list[sorted_ind[i]])
+    plt.plot(date_time, close, 'r')
+
+
+plt.show()
+
 
 
