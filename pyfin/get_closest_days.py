@@ -11,8 +11,9 @@ start_date = datetime(2018, 1, 9, 9, 30)
 end_date = datetime(2018, 1, 9, 10, 30)
 
 days_count = 18
+symbol = "WEED.TO"
 
-is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data("WEED.TO", start_date, end_date, "1m")
+is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, "1m")
 
 if not (is_data_available):
     exit(0)
@@ -28,7 +29,7 @@ for i in range (1, days_count):
     new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
     new_end_date = time_op.get_date_N_days_ago_from_date(i, end_date)
 
-    is_data_available_before, date_time_before, volume_before , opn_before, close_before, high_before, low_before = read.get_intraday_data("WEED.TO", new_start_date, new_end_date, "1m")
+    is_data_available_before, date_time_before, volume_before , opn_before, close_before, high_before, low_before = read.get_intraday_data(symbol, new_start_date, new_end_date, "1m")
     if not (is_data_available_before):
         continue
 
@@ -54,7 +55,14 @@ print sorted_ind
 
 count = len(sorted_ind)
 
+start_date_str = start_date.strftime("%Y-%m-%d %H:%M")
+end_date_str = end_date.strftime("%Y-%m-%d %H:%M")
+
 plt.figure(1)
+title = symbol + ":" + " Percentage changes for " + str(count) + " closest days from " + start_date_str + " to " + end_date_str
+
+plt.suptitle(title, fontsize=10)
+
 for i in range(count):
     plt.subplot(count*100 + 11 + i)
     plt.plot(date_time_list[sorted_ind[i]], close_per_list[sorted_ind[i]])
@@ -64,6 +72,10 @@ for i in range(count):
 plt.show()
 
 plt.figure(2)
+title = symbol + ":" + " Price changes for " + str(count) + " closest days from " + start_date_str + " to " + end_date_str
+
+plt.suptitle(title, fontsize=10)
+
 for i in range(count):
     plt.subplot(count*100 + 11 + i)
     plt.plot(date_time, close_list[sorted_ind[i]])
