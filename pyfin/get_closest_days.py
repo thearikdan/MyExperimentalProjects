@@ -7,10 +7,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-start_date = datetime(2018, 1, 9, 9, 30)
-end_date = datetime(2018, 1, 9, 10, 30)
+start_date = datetime(2018, 1, 12, 9, 30)
+end_date = datetime(2018, 1, 12, 10, 30)
 
 days_count = 18
+
+display_count = 5
+
 symbol = "WEED.TO"
 
 is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, "1m")
@@ -40,6 +43,7 @@ for i in range (1, days_count):
 
 
 count = len(close_per_list)
+
 dist_list = []
 for i in range (count):
     vec1 = np.array(close_per)
@@ -54,35 +58,84 @@ sorted_ind = sort_op.get_sorted_indices(dist_list)
 print sorted_ind
 
 count = len(sorted_ind)
+if count > display_count:
+    count = display_count
+
 
 start_date_str = start_date.strftime("%Y-%m-%d %H:%M")
 end_date_str = end_date.strftime("%Y-%m-%d %H:%M")
 
+
 plt.figure(1)
+
+left  = 0.125  # the left side of the subplots of the figure
+right = 0.9    # the right side of the subplots of the figure
+bottom = 0.1   # the bottom of the subplots of the figure
+top = 0.9      # the top of the subplots of the figure
+wspace = 0.2   # the amount of width reserved for space between subplots,
+               # expressed as a fraction of the average axis width
+hspace = 1.5   # the amount of height reserved for space between subplots,
+               # expressed as a fraction of the average axis height
+
+plt.subplots_adjust(left, bottom, right, top,
+                wspace, hspace)
+
+
 title = symbol + ":" + " Percentage changes for " + str(count) + " closest days from " + start_date_str + " to " + end_date_str
 
-plt.suptitle(title, fontsize=10)
+plt.suptitle(title, fontsize=12)
 
 for i in range(count):
-    plt.subplot(count*100 + 11 + i)
+    ax = plt.subplot(count*100 + 11 + i)
+    date_str = (date_time_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
+    dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
+    sub_title = "Date: " + date_str + ", distance: " + dist_str
+    ax.set_title(sub_title, fontsize=10)
+#    plt.tick_params(
+#        axis='both',          # changes apply to the x-axis
+#        which='both',      # both major and minor ticks are affected
+#        bottom='off',      # ticks along the bottom edge are off
+#        top='off',         # ticks along the top edge are off
+#        labelbottom='off',
+#        labelleft='off',
+#)
     plt.plot(date_time_list[sorted_ind[i]], close_per_list[sorted_ind[i]])
     plt.plot(date_time_list[sorted_ind[i]], close_per, 'r')
 
 
 plt.show()
 
+
 plt.figure(2)
+left  = 0.125  # the left side of the subplots of the figure
+right = 0.9    # the right side of the subplots of the figure
+bottom = 0.1   # the bottom of the subplots of the figure
+top = 0.9      # the top of the subplots of the figure
+wspace = 0.2   # the amount of width reserved for space between subplots,
+               # expressed as a fraction of the average axis width
+hspace = 1.5   # the amount of height reserved for space between subplots,
+               # expressed as a fraction of the average axis height
+
+plt.subplots_adjust(left, bottom, right, top,
+                wspace, hspace)
+
 title = symbol + ":" + " Price changes for " + str(count) + " closest days from " + start_date_str + " to " + end_date_str
 
-plt.suptitle(title, fontsize=10)
+plt.suptitle(title, fontsize=12)
 
 for i in range(count):
-    plt.subplot(count*100 + 11 + i)
+    ax = plt.subplot(count*100 + 11 + i)
+    date_str = (date_time_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
+    dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
+    sub_title = "Date: " + date_str + ", distance: " + dist_str
+    ax.set_title(sub_title, fontsize=10)
     plt.plot(date_time, close_list[sorted_ind[i]])
     plt.plot(date_time, close, 'r')
 
 
 plt.show()
+
+
 
 
 
