@@ -39,6 +39,11 @@ def get_intraday_percentage_change(list):
     count = len(list)
     list_begin = np.array(list[0:count-1]).astype(float)
     list_end = np.array(list[1:count]).astype(float)
+    #Some of the element of list_begin can be 0 (first minute volume, for example)
+    #To avoid dividing by 0, we'll replace all 0-es by 1
+    for i in range (count - 1):
+        if (list_begin[i] == 0):
+            list_begin[i] = 1
     perc = (list_end - list_begin) / list_begin
     return perc
 

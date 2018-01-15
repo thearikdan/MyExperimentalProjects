@@ -7,8 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-start_date = datetime(2018, 1, 12, 9, 30)
-end_date = datetime(2018, 1, 12, 10, 30)
+start_date = datetime(2018, 1, 15, 9, 30)
+end_date = datetime(2018, 1, 15, 10, 30)
 
 days_count = 18
 
