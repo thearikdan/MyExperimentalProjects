@@ -136,6 +136,48 @@ for i in range(count):
 plt.show()
 
 
+close_list_full = []
+for i in range(count):
+    start_date_full = date_time_list[sorted_ind[i]][0].replace(hour=9, minute=30)
+    end_date_full = date_time_list[sorted_ind[i]][0].replace(hour=15, minute=59)
+
+    is_data_available_before_full, date_time_before_full, volume_before_full , opn_before_full, close_before_full, high_before_full, low_before_full = read.get_intraday_data(symbol, start_date_full, end_date_full, "1m")
+    if not (is_data_available_before_full):
+        continue
+    close_list_full.append(close_before_full)
+#    print date_time_before_full
+
+
+plt.figure(3)
+left  = 0.125  # the left side of the subplots of the figure
+right = 0.9    # the right side of the subplots of the figure
+bottom = 0.1   # the bottom of the subplots of the figure
+top = 0.9      # the top of the subplots of the figure
+wspace = 0.2   # the amount of width reserved for space between subplots,
+               # expressed as a fraction of the average axis width
+hspace = 1.5   # the amount of height reserved for space between subplots,
+               # expressed as a fraction of the average axis height
+
+plt.subplots_adjust(left, bottom, right, top,
+                wspace, hspace)
+
+title = symbol + ":" + " Full day price changes for " + str(count) + " closest days from " + start_date_str + " to " + end_date_str
+
+plt.suptitle(title, fontsize=12)
+
+for i in range(count):
+    ax = plt.subplot(count*100 + 11 + i)
+    date_str = (date_time_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
+    dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
+    sub_title = "Date: " + date_str + ", distance: " + dist_str
+    ax.set_title(sub_title, fontsize=10)
+    plt.plot(date_time_before_full, close_list_full[i])
+#    plt.plot(date_time, close, 'r')
+
+
+plt.show()
+
+
 
 
 
