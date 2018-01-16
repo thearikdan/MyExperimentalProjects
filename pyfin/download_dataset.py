@@ -1,22 +1,17 @@
 from read_write import read
-from datetime import datetime
-import time
+
 
 N = 36
 file_name = "tickers/cannabis.txt"
-now = datetime.now()
+read.download_list_of_tickers(file_name, N)
 
-from_time = datetime(2000, 1, 1, 10, 00, 00)
-to_time = datetime(2000, 1, 1, 11, 30, 00)
-#in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
+file_name = "tickers/cannot_be_positive.txt"
+read.download_list_of_tickers(file_name, N)
 
-with open(file_name) as f:
-    tickers = f.read().splitlines()
+file_name = "tickers/cannot_be_negative.txt"
+read.download_list_of_tickers(file_name, N)
 
-count = len(tickers)
-
-for i in range (count):
-    read.get_all_intraday_prices_for_N_days_to_date (tickers[i], N, now, from_time, to_time)
-
+file_name = "tickers/battery.txt"
+read.download_list_of_tickers(file_name, N)
 
 

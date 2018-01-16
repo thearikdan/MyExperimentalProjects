@@ -8,8 +8,8 @@ N_minute_interval = 1
 neighb_point_count = 3
 days_count = 30
 
-start_date = datetime(2018, 1, 9, 9, 30)
-end_date = datetime(2018, 1, 9, 12, 30)
+start_date = datetime(2018, 1, 12, 9, 30)
+end_date = datetime(2018, 1, 12, 12, 30)
 
 symbol = "WEED.TO"
 

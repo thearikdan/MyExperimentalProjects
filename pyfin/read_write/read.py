@@ -234,5 +234,20 @@ def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_time,
     return date_time_list, volume_list, open_list, close_list, high_list, low_list
 
 
+def download_list_of_tickers(list_file_name, day_count):
+    now = datetime.now()
+    from_time = datetime(2000, 1, 1, 9, 30, 00)
+    to_time = datetime(2000, 1, 1, 15, 59, 00)
+    #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
+
+    with open(list_file_name) as f:
+        tickers = f.read().splitlines()
+
+    count = len(tickers)
+
+    for i in range (count):
+        get_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
+
+
 
 
