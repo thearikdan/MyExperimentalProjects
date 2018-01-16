@@ -2,6 +2,8 @@ from read_write import read
 from utils import constants
 import numpy as np
 from scipy.signal import argrelextrema
+from utils import time_op
+
 
 
 def get_absolute_change_from_numeric_data(data):
@@ -93,5 +95,30 @@ def get_local_minimum_index_list(lst, neighb_point_count):
         indices.append(res[0][i])
     return indices
 
+
+def get_historical_data(symbol, start_date, end_date, days_count):
+    date_time_list = []
+    volume_per_list = []
+    open_per_list = []
+    close_per_list = []
+    high_per_list = []
+    low_per_list = []
+
+    for i in range (1, days_count):
+        new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
+        new_end_date = time_op.get_date_N_days_ago_from_date(i, end_date)
+
+        is_data_available_before, date_time_before, volume_before , open_before, close_before, high_before, low_before = read.get_intraday_data(symbol, new_start_date, new_end_date, "1m")
+        if not (is_data_available_before):
+            continue
+
+        date_time_list.append(date_time_before)
+        volume_per_list.append(volume_before)
+        open_per_list.append(open_before)
+        close_per_list.append(close_before)
+        high_per_list.append(high_before)
+        low_per_list.append(low_before)
+
+    return date_time_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list 
     
 

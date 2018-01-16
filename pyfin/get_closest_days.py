@@ -1,45 +1,34 @@
 from read_write import read
 from datetime import datetime
 import matplotlib.pyplot as plt
-from stats import percentage
+from stats import percentage, absolute
 from utils import analytics, time_op, sort_op
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-start_date = datetime(2018, 1, 15, 9, 30)
-end_date = datetime(2018, 1, 15, 10, 30)
+start_date = datetime(2018, 1, 16, 9, 30)
+end_date = datetime(2018, 1, 16, 11, 30)
 
 days_count = 18
 
 display_count = 5
 
 symbol = "WEED.TO"
+#symbol = "NVDA"
+
 
 is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, "1m")
 
 if not (is_data_available):
+    print "No data available"
     exit(0)
 
 date_time_1, volume_per , open_per, close_per, high_per, low_per = percentage.get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low)
-#print close_per
 
-date_time_list = []
-close_per_list = []
-close_list = []
+date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = percentage.get_historical_percentage_data(symbol, start_date, end_date, days_count)
 
-for i in range (1, days_count):
-    new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
-    new_end_date = time_op.get_date_N_days_ago_from_date(i, end_date)
-
-    is_data_available_before, date_time_before, volume_before , opn_before, close_before, high_before, low_before = read.get_intraday_data(symbol, new_start_date, new_end_date, "1m")
-    if not (is_data_available_before):
-        continue
-
-    date_time_per_before, volume_per_before , open_per_before, close_per_before, high_per_before, low_per_before = percentage.get_percentage_change_in_intraday_prices(date_time_before, volume_before , opn_before, close_before, high_before, low_before)
-    date_time_list.append(date_time_per_before)
-    close_per_list.append(close_per_before)
-    close_list.append(close_before)
+date_time_list, volume_list, open_list, close_list, high_list, low_list = absolute.get_historical_data(symbol, start_date, end_date, days_count)
 
 
 count = len(close_per_list)
@@ -48,7 +37,6 @@ dist_list = []
 for i in range (count):
     vec1 = np.array(close_per)
     vec2 = np.array(close_per_list[i])
-#    print vec2
     dist = analytics.get_distance(vec1, vec2)
     dist_list.append(dist)
 
@@ -87,7 +75,7 @@ plt.suptitle(title, fontsize=12)
 
 for i in range(count):
     ax = plt.subplot(count*100 + 11 + i)
-    date_str = (date_time_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
+    date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
     dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
     sub_title = "Date: " + date_str + ", distance: " + dist_str
     ax.set_title(sub_title, fontsize=10)
@@ -99,8 +87,8 @@ for i in range(count):
 #        labelbottom='off',
 #        labelleft='off',
 #)
-    plt.plot(date_time_list[sorted_ind[i]], close_per_list[sorted_ind[i]])
-    plt.plot(date_time_list[sorted_ind[i]], close_per, 'r')
+    plt.plot(date_time_per_list[sorted_ind[i]], close_per_list[sorted_ind[i]])
+    plt.plot(date_time_per_list[sorted_ind[i]], close_per, 'r')
 
 
 plt.show()
@@ -125,7 +113,7 @@ plt.suptitle(title, fontsize=12)
 
 for i in range(count):
     ax = plt.subplot(count*100 + 11 + i)
-    date_str = (date_time_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
+    date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
     dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
     sub_title = "Date: " + date_str + ", distance: " + dist_str
     ax.set_title(sub_title, fontsize=10)
@@ -138,8 +126,8 @@ plt.show()
 
 close_list_full = []
 for i in range(count):
-    start_date_full = date_time_list[sorted_ind[i]][0].replace(hour=9, minute=30)
-    end_date_full = date_time_list[sorted_ind[i]][0].replace(hour=15, minute=59)
+    start_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=9, minute=30)
+    end_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=15, minute=59)
 
     is_data_available_before_full, date_time_before_full, volume_before_full , opn_before_full, close_before_full, high_before_full, low_before_full = read.get_intraday_data(symbol, start_date_full, end_date_full, "1m")
     if not (is_data_available_before_full):
@@ -167,7 +155,7 @@ plt.suptitle(title, fontsize=12)
 
 for i in range(count):
     ax = plt.subplot(count*100 + 11 + i)
-    date_str = (date_time_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
+    date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
     dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
     sub_title = "Date: " + date_str + ", distance: " + dist_str
     ax.set_title(sub_title, fontsize=10)
