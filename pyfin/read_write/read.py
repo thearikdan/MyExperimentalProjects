@@ -110,6 +110,22 @@ def get_intraday_data(ticker, start, end, interval):
                 low[start_index:end_index])
 
 
+def download_intraday_data(ticker, start, end, interval):
+    dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval)
+    filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval)
+    dir_name = join(constants.DATA_ROOT, dir_name)
+    full_path = join(dir_name, filename)
+    if isfile(full_path):
+        return True
+    else:
+        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end, interval)
+        if not (is_data_available):
+            return False
+
+        write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+        return True
+
+
 def get_data_from_web(ticker, start_date, end_date):
     data = pdr.get_data_yahoo(symbols=ticker, start=start_date, end=end_date)
     dateIndex = data.index
@@ -234,6 +250,17 @@ def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_time,
     return date_time_list, volume_list, open_list, close_list, high_list, low_list
 
 
+def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_time, to_time):
+    for i in range (N):
+        date = time_op.get_date_N_days_ago_from_date(i, last_date)
+
+        start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
+        end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
+
+        is_data_available = download_intraday_data(ticker, start_date, end_date, "1m")
+        return is_data_available
+
+
 def download_list_of_tickers(list_file_name, day_count):
     now = datetime.now()
     from_time = datetime(2000, 1, 1, 9, 30, 00)
@@ -246,7 +273,7 @@ def download_list_of_tickers(list_file_name, day_count):
     count = len(tickers)
 
     for i in range (count):
-        get_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
+        download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
 
 
 

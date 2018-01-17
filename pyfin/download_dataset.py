@@ -1,17 +1,17 @@
+import time
 from read_write import read
 
+start_time = time.clock()
 
 N = 36
-file_name = "tickers/cannabis.txt"
-read.download_list_of_tickers(file_name, N)
 
-file_name = "tickers/cannot_be_positive.txt"
-read.download_list_of_tickers(file_name, N)
+names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt"]
 
-file_name = "tickers/cannot_be_negative.txt"
-read.download_list_of_tickers(file_name, N)
+for name in names:
+    read.download_list_of_tickers(name, N)
 
-file_name = "tickers/battery.txt"
-read.download_list_of_tickers(file_name, N)
+seconds = time.clock() - start_time
 
-
+m, s = divmod(seconds, 60)
+h, m = divmod(m, 60)
+print "Elapsed time: %d:%02d:%02d" % (h, m, s)
