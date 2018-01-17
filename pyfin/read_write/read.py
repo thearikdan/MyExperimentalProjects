@@ -70,7 +70,7 @@ def get_intraday_data_from_file(full_path, start, end):
     with open(full_path, "rb") as f:
         date_time, volume, opn, close, high, low = pickle.load(f)
         start_index = date_time.index(start) if start in date_time else None
-        end_index = date_time.index(end) if start in date_time else None
+        end_index = date_time.index(end) if end in date_time else None
 
         if ((start_index == None) or (end_index == None)):
             return (False, [], [], [], [], [], [])
@@ -83,6 +83,103 @@ def get_intraday_data_from_file(full_path, start, end):
                 high[start_index:end_index],
                 low[start_index:end_index])
 
+
+def is_corrupt_value(a):
+    if (a == 0) or (a is None):
+        return True
+    else:
+        return False
+
+
+def find_next_good_value(lst, index):
+    val = None
+    count = len(lst)
+
+    if (index >= count):
+        return val
+
+    for i in range(index + 1, count):
+        if not is_corrupt_value(lst[i]):
+            val = lst[i]
+            return val
+    return val
+
+
+def find_previous_good_value(lst, index):
+    val = None
+    count = len(lst)
+
+    if (index >= count):
+        return val
+
+    if (index <= 0):
+        return val
+
+    for i in range(0, index - 1):
+        if not is_corrupt_value(lst[i]):
+            val = lst[i]
+            return val
+    return val
+
+
+def heal_list(lst):
+    count = len(lst)
+    for i in range(count):
+        if is_corrupt_value(lst[i]):
+            lst[i] = find_next_good_value(lst, i)
+            if (lst[i] is None):
+                lst[i] = find_previous_good_value(lst, i)
+    return lst
+
+
+def heal_intraday_data(volume, opn, close, high, low):
+    v = heal_list(volume)
+    o = heal_list(opn)
+    c = heal_list(close)
+    h = heal_list(high)
+    l = heal_list(low)
+    return (v, o, c, h, l)
+
+'''
+def delete_element(date_time, volume, opn, close, high, low, index):
+    del date_time[index]
+    del volume[index]
+    del opn[index]
+    del close[index]
+    del high[index]
+    del low[index]
+    return date_time, volume, opn, close, high, low
+
+#although removing None element is a cleaner solution, the problem is that we want to keep the length for all days to be the same
+#therefore we will put neighboring values into corrupted positions
+
+def heal_intraday_data(date_time, volume, opn, close, high, low):
+    res = True
+    if (None in volume):
+        ind = volume.index(None)
+        date_time, volume, opn, close, high, low = delete_element(date_time, volume, opn, close, high, low, ind)
+        res = False
+    if (None in opn):
+        ind = volume.opn(None)
+        date_time, volume, opn, close, high, low = delete_element(date_time, volume, opn, close, high, low, ind)
+        res = False
+    if (None in close):
+        ind = close.index(None)
+        date_time, volume, opn, close, high, low = delete_element(date_time, volume, opn, close, high, low, ind)
+        res = False
+    if (None in high):
+        ind = high.index(None)
+        date_time, volume, opn, close, high, low = delete_element(date_time, volume, opn, close, high, low, ind)
+        res = False
+    if (None in close):
+        ind = close.index(None)
+        date_time, volume, opn, close, high, low = delete_element(date_time, volume, opn, close, high, low, ind)
+        res = False
+    if not (res):
+        return heal_intraday_data(date_time, volume, opn, close, high, low)
+    else:
+        return date_time, volume, opn, close, high, low
+'''
 
 def get_intraday_data(ticker, start, end, interval):
     dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval)
@@ -90,27 +187,33 @@ def get_intraday_data(ticker, start, end, interval):
     dir_name = join(constants.DATA_ROOT, dir_name)
     full_path = join(dir_name, filename)
     if isfile(full_path):
-        return get_intraday_data_from_file(full_path, start, end)
+        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_file(full_path, start, end)
+        if (is_data_available):
+            volume, opn, close, high, low = heal_intraday_data(volume, opn, close, high, low)
+            return (is_data_available, date_time, volume, opn, close, high, low)
+
+    is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end, interval)
+    if not (is_data_available):
+        return (False, [], [], [], [], [], [])
+
+    #Write original data, even if some values are corrupt (0, or None)
+    write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+
+    volume, opn, close, high, low = heal_intraday_data(volume, opn, close, high, low)
+
+    start_index = date_time.index(start) if start in date_time else None
+    end_index = date_time.index(end) if end in date_time else None
+
+    if ((start_index == None) or (end_index == None)):
+        return (False, [], [], [], [], [], [])
     else:
-        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end, interval)
-        if not (is_data_available):
-            return (False, [], [], [], [], [], [])
-
-        write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
-
-        start_index = date_time.index(start) if start in date_time else None
-        end_index = date_time.index(end) if start in date_time else None
-
-        if ((start_index == None) or (end_index == None)):
-            return (False, [], [], [], [], [], [])
-        else:
-            return (True,
-                date_time[start_index:end_index],
-                volume[start_index:end_index],
-                opn[start_index:end_index],
-                close[start_index:end_index],
-                high[start_index:end_index],
-                low[start_index:end_index])
+        return (True,
+            date_time[start_index:end_index],
+            volume[start_index:end_index],
+            opn[start_index:end_index],
+            close[start_index:end_index],
+            high[start_index:end_index],
+            low[start_index:end_index])
 
 
 def download_intraday_data(ticker, start, end, interval):
