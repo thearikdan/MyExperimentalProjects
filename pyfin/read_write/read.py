@@ -36,8 +36,11 @@ def get_intraday_data_from_web(ticker, start, end, interval):
     end_date_time = get_int_time(end_full_day)
 
     str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, interval)
-    response = urllib2.urlopen(str).read()
-    json_obj = json.loads(response)
+    try:
+        response = urllib2.urlopen(str).read()
+        json_obj = json.loads(response)
+    except Exception as e:
+        return (False, [], [], [], [], [], [])
 
     chart = (json_obj['chart'])
     result = chart['result']
