@@ -257,9 +257,7 @@ def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_
         start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
         end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
 
-        is_data_available = download_intraday_data(ticker, start_date, end_date, "1m")
-        return is_data_available
-
+        download_intraday_data(ticker, start_date, end_date, "1m")
 
 def download_list_of_tickers(list_file_name, day_count):
     now = datetime.now()
@@ -273,6 +271,7 @@ def download_list_of_tickers(list_file_name, day_count):
     count = len(tickers)
 
     for i in range (count):
+        print "Downloading intraday prices from list " + list_file_name + " for symbol " + tickers[i]
         download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
 
 

@@ -5,7 +5,7 @@ start_time = time.clock()
 
 N = 36
 
-names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt"]
+names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt", "tickers/nasdaqlisted.txt", "tickers/otherlisted.txt"]
 
 for name in names:
     read.download_list_of_tickers(name, N)
