@@ -40,6 +40,7 @@ def get_intraday_data_from_web(ticker, start, end, interval):
         response = urllib2.urlopen(str).read()
         json_obj = json.loads(response)
     except Exception as e:
+        print "Colud not download data for " + ticker + " for " + start_full_day.strftime("%Y-%m-%d")
         return (False, [], [], [], [], [], [])
 
     chart = (json_obj['chart'])
@@ -378,7 +379,9 @@ def download_list_of_tickers(list_file_name, day_count):
 
     for i in range (count):
         print "Downloading intraday prices from list " + list_file_name + " for symbol " + tickers[i]
-        download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
+        #download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
+        #This method is more thorough because it will also download files that don't have full day data
+        get_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
 
 
 

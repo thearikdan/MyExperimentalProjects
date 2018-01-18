@@ -5,9 +5,9 @@ start_time = time.clock()
 
 N = 36
 
-#names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt", "tickers/nasdaqlisted.txt", "tickers/otherlisted.txt"]
+names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt", "tickers/nasdaqlisted_full.txt", "tickers/otherlisted.txt"]
 
-names = ["tickers/nasdaqlisted.txt", "tickers/otherlisted.txt"]
+#names = ["tickers/nasdaqlisted_full.txt", "tickers/otherlisted.txt"]
 
 
 for name in names:
