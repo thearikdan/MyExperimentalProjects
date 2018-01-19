@@ -56,7 +56,6 @@ if count > display_count:
 start_date_str = start_date.strftime("%Y-%m-%d %H:%M")
 end_date_str = end_date.strftime("%Y-%m-%d %H:%M")
 
-resorted_close_per_list = sort_op.get_resorted_list(close_per_list, sorted_ind)
 
 plt.figure(1)
 
@@ -91,14 +90,13 @@ for i in range(count):
 #        labelbottom='off',
 #        labelleft='off',
 #)
-#    plt.plot(date_time_per_list[sorted_ind[i]], close_per_list[sorted_ind[i]])
-    plt.plot(date_time_per_list[sorted_ind[i]], resorted_close_per_list[i])
+    plt.plot(date_time_per_list[sorted_ind[i]], close_per_list[sorted_ind[i]])
     plt.plot(date_time_per_list[sorted_ind[i]], close_per, 'r')
 
 
 plt.show()
 
-'''
+
 plt.figure(2)
 left  = 0.125  # the left side of the subplots of the figure
 right = 0.9    # the right side of the subplots of the figure
@@ -169,7 +167,7 @@ for i in range(count):
 
 
 plt.show()
-'''
+
 
 
 
