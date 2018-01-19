@@ -14,11 +14,11 @@ days_count = 18
 
 display_count = 5
 
-#symbol = "WEED.TO"
+symbol = "WEED.TO"
 #symbol = "EMHTF"
 #symbol = "PRMCF"
 #symbol = "ACBFF"
-symbol = "MEDFF"
+#symbol = "MEDFF"
 
 
 is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, "1m")
