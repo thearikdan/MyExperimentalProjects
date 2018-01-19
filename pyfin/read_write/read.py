@@ -39,14 +39,15 @@ def get_intraday_data_from_web(ticker, start, end, interval):
     try:
         response = urllib2.urlopen(str).read()
         json_obj = json.loads(response)
-    except Exception as e:
-        print "Colud not download data for " + ticker + " for " + start_full_day.strftime("%Y-%m-%d")
-        return (False, [], [], [], [], [], [])
 
-    chart = (json_obj['chart'])
-    result = chart['result']
-    indicators = result[0]['indicators']
-    quote = indicators['quote']
+        chart = (json_obj['chart'])
+        result = chart['result']
+        indicators = result[0]['indicators']
+        quote = indicators['quote']
+
+    except Exception as e:
+        print "Could not download data for " + ticker + " for " + start_full_day.strftime("%Y-%m-%d")
+        return (False, [], [], [], [], [], [])
 
     is_data_available = len(quote[0]) > 0
     if not (is_data_available):

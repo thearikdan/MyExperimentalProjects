@@ -7,7 +7,7 @@ N = 36
 
 names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt", "tickers/nasdaqlisted_full.txt", "tickers/otherlisted.txt"]
 
-#names = ["tickers/nasdaqlisted_full.txt", "tickers/otherlisted.txt"]
+#names = ["tickers/otherlisted.txt"]
 
 
 for name in names:
