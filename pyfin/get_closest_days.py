@@ -43,10 +43,10 @@ for i in range (count):
     dist = analytics.get_distance(vec1, vec2)
     dist_list.append(dist)
 
-print dist_list
+#print dist_list
 
 sorted_ind = sort_op.get_sorted_indices(dist_list)
-print sorted_ind
+#print sorted_ind
 
 count = len(sorted_ind)
 if count > display_count:
@@ -68,41 +68,31 @@ for i in range(count):
     subtitle = "Date: " + date_str + ", distance: " + dist_str
     subtitles.append(subtitle)
 
-vertical_plots.show(count, start_date, end_date, title, subtitles, resorted_date_time_per_list, resorted_close_per_list, close_per)
+vertical_plots.show_with_reference(count, start_date, end_date, title, subtitles, resorted_date_time_per_list, resorted_close_per_list, close_per)
 
-'''
-plt.figure(2)
-left  = 0.125  # the left side of the subplots of the figure
-right = 0.9    # the right side of the subplots of the figure
-bottom = 0.1   # the bottom of the subplots of the figure
-top = 0.9      # the top of the subplots of the figure
-wspace = 0.2   # the amount of width reserved for space between subplots,
-               # expressed as a fraction of the average axis width
-hspace = 1.5   # the amount of height reserved for space between subplots,
-               # expressed as a fraction of the average axis height
 
-plt.subplots_adjust(left, bottom, right, top,
-                wspace, hspace)
+
+resorted_close_list = sort_op.get_resorted_list(close_list, sorted_ind)
+date_time_list = []
 
 title = symbol + ":" + " Price changes for " + str(count) + " closest days from " + start_date_str + " to " + end_date_str
-
-plt.suptitle(title, fontsize=12)
-
+subtitles = []
 for i in range(count):
-    ax = plt.subplot(count*100 + 11 + i)
     date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
     dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
-    sub_title = "Date: " + date_str + ", distance: " + dist_str
-    ax.set_title(sub_title, fontsize=10)
-    plt.plot(date_time, close_list[sorted_ind[i]])
-    plt.plot(date_time, close, 'r')
+    subtitle = "Date: " + date_str + ", distance: " + dist_str
+    subtitles.append(subtitle)
+    date_time_list.append(date_time)
+
+vertical_plots.show_with_reference(count, start_date, end_date, title, subtitles, date_time_list, resorted_close_list, close)
 
 
-plt.show()
 
-
+full_count = len(sorted_ind)
 close_list_full = []
-for i in range(count):
+date_time_full_list = []
+
+for i in range(full_count):
     start_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=9, minute=30)
     end_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=15, minute=59)
 
@@ -110,39 +100,25 @@ for i in range(count):
     if not (is_data_available_before_full):
         continue
     close_list_full.append(close_before_full)
-#    print date_time_before_full
+    date_time_full_list.append(date_time_before_full)
 
 
-plt.figure(3)
-left  = 0.125  # the left side of the subplots of the figure
-right = 0.9    # the right side of the subplots of the figure
-bottom = 0.1   # the bottom of the subplots of the figure
-top = 0.9      # the top of the subplots of the figure
-wspace = 0.2   # the amount of width reserved for space between subplots,
-               # expressed as a fraction of the average axis width
-hspace = 1.5   # the amount of height reserved for space between subplots,
-               # expressed as a fraction of the average axis height
+if (count > full_count):
+    count = full_count
 
-plt.subplots_adjust(left, bottom, right, top,
-                wspace, hspace)
+start_date_full_str = start_date_full.strftime("%Y-%m-%d %H:%M")
+end_date_full_str = end_date_full.strftime("%Y-%m-%d %H:%M")
 
-title = symbol + ":" + " Full day price changes for " + str(count) + " closest days from " + start_date_str + " to " + end_date_str
+title = symbol + ":" + " Full day price changes for " + str(count) + " closest days from " + start_date_full_str + " to " + end_date_full_str
 
-plt.suptitle(title, fontsize=12)
-
+subtitles = []
 for i in range(count):
-    ax = plt.subplot(count*100 + 11 + i)
-    date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
+    date_str = (date_time_full_list[i][0]).strftime("%Y-%m-%d")
     dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
-    sub_title = "Date: " + date_str + ", distance: " + dist_str
-    ax.set_title(sub_title, fontsize=10)
-    plt.plot(date_time_before_full, close_list_full[i])
-#    plt.plot(date_time, close, 'r')
+    subtitle = "Date: " + date_str + ", distance: " + dist_str
+    subtitles.append(subtitle)
 
-
-plt.show()
-'''
-
+vertical_plots.show(count, start_date_full, end_date_full, title, subtitles, date_time_full_list, close_list_full)
 
 
 
