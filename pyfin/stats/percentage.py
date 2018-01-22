@@ -1,6 +1,6 @@
 from read_write import read
 import numpy as np
-from utils import time_op
+from utils import time_op, analytics
 
 
 
@@ -85,4 +85,21 @@ def get_historical_percentage_data(symbol, start_date, end_date, days_count):
         low_per_list.append(low_per_before)
 
     return date_time_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list 
+
+
+
+def get_percentage_change_distance_data(symbol, start_date, end_date, days_count):
+    is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, "1m")
+
+    if not (is_data_available):
+        print "No data available"
+        return None
+
+    date_time_1, volume_per , open_per, close_per, high_per, low_per = get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low)
+    date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = get_historical_percentage_data(symbol, start_date, end_date, days_count)
+    dist_close_per_list = analytics.get_distance_list(close_per, close_per_list)
+
+    return date_time, date_time_per_list, (close, close_per, close_per_list, dist_close_per_list)
+
+
 

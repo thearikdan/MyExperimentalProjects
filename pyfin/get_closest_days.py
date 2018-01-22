@@ -19,34 +19,15 @@ symbol = "WEED.TO"
 #symbol = "PRMCF"
 #symbol = "ACBFF"
 #symbol = "MEDFF"
+#symbol = "AMZN"
 
 
-is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, "1m")
 
-if not (is_data_available):
-    print "No data available"
-    exit(0)
-
-date_time_1, volume_per , open_per, close_per, high_per, low_per = percentage.get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low)
-
-date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = percentage.get_historical_percentage_data(symbol, start_date, end_date, days_count)
+date_time, date_time_per_list, (close, close_per, close_per_list, dist_close_per_list) = percentage.get_percentage_change_distance_data(symbol, start_date, end_date, days_count)
 
 date_time_list, volume_list, open_list, close_list, high_list, low_list = absolute.get_historical_data(symbol, start_date, end_date, days_count)
 
-
-count = len(close_per_list)
-
-dist_list = []
-for i in range (count):
-    vec1 = np.array(close_per)
-    vec2 = np.array(close_per_list[i])
-    dist = analytics.get_distance(vec1, vec2)
-    dist_list.append(dist)
-
-#print dist_list
-
-sorted_ind = sort_op.get_sorted_indices(dist_list)
-#print sorted_ind
+sorted_ind = sort_op.get_sorted_indices(dist_close_per_list)
 
 count = len(sorted_ind)
 if count > display_count:
@@ -64,7 +45,7 @@ title = symbol + ":" + " Percentage changes for " + str(count) + " closest days 
 subtitles = []
 for i in range(count):
     date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
-    dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
+    dist_str = "{:.4f}".format(dist_close_per_list[sorted_ind[i]])
     subtitle = "Date: " + date_str + ", distance: " + dist_str
     subtitles.append(subtitle)
 
@@ -79,7 +60,7 @@ title = symbol + ":" + " Price changes for " + str(count) + " closest days from 
 subtitles = []
 for i in range(count):
     date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
-    dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
+    dist_str = "{:.4f}".format(dist_close_per_list[sorted_ind[i]])
     subtitle = "Date: " + date_str + ", distance: " + dist_str
     subtitles.append(subtitle)
     date_time_list.append(date_time)
@@ -114,7 +95,7 @@ title = symbol + ":" + " Full day price changes for " + str(count) + " closest d
 subtitles = []
 for i in range(count):
     date_str = (date_time_full_list[i][0]).strftime("%Y-%m-%d")
-    dist_str = "{:.4f}".format(dist_list[sorted_ind[i]])
+    dist_str = "{:.4f}".format(dist_close_per_list[sorted_ind[i]])
     subtitle = "Date: " + date_str + ", distance: " + dist_str
     subtitles.append(subtitle)
 
