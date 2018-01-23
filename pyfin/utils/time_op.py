@@ -53,3 +53,8 @@ def get_lowest_price_time(time, low):
     return time[index]
 
 
+def get_date_time_interval_until_end_of_day(my_date_time, reference_end_date_time):
+    start_time = my_date_time.replace(hour=reference_end_date_time.hour, minute=reference_end_date_time.minute)
+    end_time = my_date_time.replace(hour=16, minute=00)
+    return (start_time, end_time)
+
