@@ -11,7 +11,7 @@ def interpolate_by_distance(my_list, dist, interp_count):
         interp_count = list_count
 
     weights = []
-    for i in range (dist_count):
+    for i in range (interp_count):
         if (dist[i] == 0):
             #exact match, no need to interpolate
             interp = my_list[i]
@@ -23,12 +23,11 @@ def interpolate_by_distance(my_list, dist, interp_count):
     weight_sum = sum(weights)
     
     weights_np = np.array(weights) / weight_sum
-    print weights_np
 
     interp = []
     dim = len(my_list[0])
     my_np = np.zeros(dim)
-    for i in range (list_count):
+    for i in range (interp_count):
         list_np = np.array(my_list[i])
         list_np = list_np * weights_np[i]
         my_np += list_np
