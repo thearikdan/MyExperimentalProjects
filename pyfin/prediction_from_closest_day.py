@@ -2,6 +2,20 @@ from datetime import datetime
 from utils import prediction
 from stats import percentage
 from read_write import read
+import numpy as np
+
+def multiply_list_by_num(list1, num):
+    count1 = len(list1)
+    for i in range(count1):
+        list[i] = (list1[i] * num)
+    return list1
+
+
+def divide_list_by_num(list1, num):
+    count1 = len(list1)
+    for i in range(count1):
+        list[i] = (list1[i] / num)
+    return list1
 
 
 def interpolate_by_distance(my_list, dist, interp_count):
@@ -24,9 +38,15 @@ def interpolate_by_distance(my_list, dist, interp_count):
             weights.append(weight)
 
     weight_sum = sum(weights)
-    interp = [0] * len(my_list[0])
-    for i in range (interp_count):
-        interp += [a*b for a,b in zip(weight[i], my_list[i])] / weight_sum
+
+    interp = []
+    for i in range (list_count):
+        list_np = np.array(my_list[i])
+        w = float(weights[i])
+        list_np = list_np * w
+        list_np = list_np / weight_sum
+        interp.append(list_np.tolist())
+
     return interp
 
 
@@ -54,7 +74,6 @@ symbol = "WEED.TO"
 #symbol = "AMZN"
 
 start, end, dist = prediction.get_closest_distances_time_to_predict_and_distances(symbol, start_date, end_date, days_count)
-print start, end, dist
 
 count = len(start)
 
@@ -66,7 +85,7 @@ high_per_list = []
 low_per_list = []
 
 for i in range (count):
-    is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start[i][0], end[i][0], "1m")
+    is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start[i], end[i], "1m")
         
     if not (is_data_available):
         continue

@@ -46,7 +46,8 @@ def get_intraday_percentage_change(list):
         if (list_begin[i] == 0):
             list_begin[i] = 1
     perc = (list_end - list_begin) / list_begin
-    return perc
+    perc_list = perc.tolist()
+    return perc_list
 
 
 def get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low):
