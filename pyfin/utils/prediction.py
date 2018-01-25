@@ -1,7 +1,10 @@
 from stats import absolute, percentage
-from utils import time_op, sort_op
+from utils import time_op, sort_op, file_op, analytics
 from read_write import read
 from utils import interpolation
+from datetime import datetime, timedelta
+from os import path
+
 
 
 def get_closest_distances_time_to_predict_and_distances(symbol, start_date, end_date, days_count):
@@ -90,5 +93,54 @@ def get_linear_interpolation_prediction(symbol, from_date_time, to_date_time, da
     predicted_prices = project_percentage_change(last_price, interp_close_per)
 
     return (predicted_prices, date_time_per_list[0], start[:top_days_count_to_interpolate], dist[:top_days_count_to_interpolate])
+
+
+def analyse_linear_interpolation_prediction_performance(symbol, start_date, end_date, days_to_analyse, root_dir):
+    dir_name = path.join(root_dir, symbol)
+    file_op.ensure_dir_exists(dir_name)
+
+    real_start_date = end_date + timedelta(minutes = 1)
+    real_end_date = end_date.replace(hour=15, minute=59)
+
+    days_count_list = []
+    interp_count_list = []
+    distance_list = []
+
+    is_data_available, date_time_real, volume_real, opn_real, close_real, high_real, low_real = read.get_intraday_data(symbol, real_start_date, real_end_date, "1m")
+
+    if not (is_data_available):
+        print ("No ground truth data available")
+        return
+
+    for i in range (2, days_to_analyse):
+        for j in range (1, i):
+            predicted_prices, times, closest_date_times, distances = get_linear_interpolation_prediction(symbol, start_date, end_date, i, j)
+            distance = analytics.get_distance(close_real, predicted_prices)
+        
+            days_count_list.append(i)
+            interp_count_list.append(j)
+            distance_list.append(distance)
+        
+            info = "Analysed days: %d, Interpolated Closest Days: %d, distance %f\n" % (i, j, distance)
+            print info
+
+
+    sorted_ind = sort_op.get_sorted_indices(distance_list)
+
+    title = "LinearInterpolationPrediction_%s_to_%s.txt" % (start_date.strftime("%Y-%m-%d-%H:%M"), end_date.strftime("%Y-%m-%d-%H:%M"))
+    filename = path.join(DIR_NAME, title) 
+    f = open(filename, 'w')
+    title_str = "Linear Interpolation Prediction for %s from %s to %s\n\n" % (symbol, start_date.strftime("%Y-%m-%d-%H:%M"), end_date.strftime("%Y-%m-%d-%H:%M"))
+    f.write(title_str)
+
+    count = len(sorted_ind)
+    for i in range (count):
+        info = "Analysed days: %d, Interpolated Closest Days: %d, distance %f\n" % (days_count_list[sorted_ind[i]], interp_count_list[sorted_ind[i]], distance_list[sorted_ind[i]])
+        f.write(info)
+
+    f.close
+
+
+
 
 
