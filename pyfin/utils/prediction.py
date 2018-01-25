@@ -128,7 +128,7 @@ def analyse_linear_interpolation_prediction_performance(symbol, start_date, end_
     sorted_ind = sort_op.get_sorted_indices(distance_list)
 
     title = "LinearInterpolationPrediction_%s_to_%s.txt" % (start_date.strftime("%Y-%m-%d-%H:%M"), end_date.strftime("%Y-%m-%d-%H:%M"))
-    filename = path.join(DIR_NAME, title) 
+    filename = path.join(dir_name, title) 
     f = open(filename, 'w')
     title_str = "Linear Interpolation Prediction for %s from %s to %s\n\n" % (symbol, start_date.strftime("%Y-%m-%d-%H:%M"), end_date.strftime("%Y-%m-%d-%H:%M"))
     f.write(title_str)

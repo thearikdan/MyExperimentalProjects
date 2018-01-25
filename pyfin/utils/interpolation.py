@@ -3,6 +3,8 @@ import numpy as np
 
 def interpolate_by_distance(my_list, dist, interp_count):
     list_count = len(my_list)
+    if (list_count == 0):
+        return []
     dist_count = len(dist)
     if (list_count != dist_count):
         raise Exception('Distances and lists must have the same length!')
