@@ -7,7 +7,8 @@ DAYS_TO_ANALYSE = 30
 
 ROOT_DIR = "results/analysis"
 
-names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt"]
+#names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt"]
+names = ["tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt"]
 
 
 for name in names:
