@@ -52,7 +52,7 @@ def get_linear_interpolation_prediction(symbol, from_date_time, to_date_time, da
     is_data_available, date_time_curr, volume_curr , opn_curr, close_curr, high_curr, low_curr = read.get_intraday_data(symbol, from_date_time, to_date_time, "1m")
 
     if not (is_data_available):
-        return ([], [], [], [],[], [])
+        return ([], [], [], [])
 
     count_curr = len(close_curr)
     last_price = close_curr[count_curr - 1]
@@ -85,7 +85,7 @@ def get_linear_interpolation_prediction(symbol, from_date_time, to_date_time, da
 
     count = len(date_time_per_list)
     if (count == 0):
-        return ([], [], [], [],[], [])
+        return ([], [], [], [])
 
     if (top_days_count_to_interpolate > count):
         top_days_count_to_interpolate = count
