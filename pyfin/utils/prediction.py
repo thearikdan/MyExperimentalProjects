@@ -99,6 +99,15 @@ def get_linear_interpolation_prediction(symbol, from_date_time, to_date_time, da
 
 def analyse_linear_interpolation_prediction_performance(symbol, start_date, end_date, days_to_analyse, root_dir):
     dir_name = path.join(root_dir, symbol)
+
+    title = "LinearInterpolationPrediction_%s_to_%s.txt" % (start_date.strftime("%Y-%m-%d-%H:%M"), end_date.strftime("%Y-%m-%d-%H:%M"))
+    filename = path.join(dir_name, title) 
+    if (path.exists(filename)):
+        info = "File %s for symbol %s already exists, skipping analysis\n" % (title, symbol)
+        print info
+
+        return
+
     file_op.ensure_dir_exists(dir_name)
 
     real_start_date = end_date + timedelta(minutes = 1)
@@ -117,20 +126,22 @@ def analyse_linear_interpolation_prediction_performance(symbol, start_date, end_
     for i in range (2, days_to_analyse):
         for j in range (1, i):
             predicted_prices, times, closest_date_times, distances = get_linear_interpolation_prediction(symbol, start_date, end_date, i, j)
+            pred_len = len(predicted_prices)
+            real_len = len(close_real)
+            if (pred_len != real_len):
+                continue
             distance = analytics.get_distance(close_real, predicted_prices)
         
             days_count_list.append(i)
             interp_count_list.append(j)
             distance_list.append(distance)
         
-            info = "Analysed days: %d, Interpolated Closest Days: %d, distance %f\n" % (i, j, distance)
+            info = "Symbol:%s: Analysed days: %d, Interpolated Closest Days: %d, distance %f\n" % (symbol, i, j, distance)
             print info
 
 
     sorted_ind = sort_op.get_sorted_indices(distance_list)
 
-    title = "LinearInterpolationPrediction_%s_to_%s.txt" % (start_date.strftime("%Y-%m-%d-%H:%M"), end_date.strftime("%Y-%m-%d-%H:%M"))
-    filename = path.join(dir_name, title) 
     f = open(filename, 'w')
     title_str = "Linear Interpolation Prediction for %s from %s to %s\n\n" % (symbol, start_date.strftime("%Y-%m-%d-%H:%M"), end_date.strftime("%Y-%m-%d-%H:%M"))
     f.write(title_str)

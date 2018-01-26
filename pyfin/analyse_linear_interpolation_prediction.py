@@ -1,14 +1,14 @@
 from datetime import datetime
 from utils import prediction
-start_date = datetime(2018, 1, 24, 9, 30)
-end_date = datetime(2018, 1, 24, 10, 30)
+start_date = datetime(2018, 1, 25, 9, 30)
+end_date = datetime(2018, 1, 25, 10, 30)
 
 DAYS_TO_ANALYSE = 30
 
 ROOT_DIR = "results/analysis"
 
 #names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt"]
-names = ["tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt"]
+names = ["tickers/cannot_be_positive.txt"]
 
 
 for name in names:
