@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 from read_write import read
 
 
-start_date = datetime(2018, 1, 24, 9, 30)
-end_date = datetime(2018, 1, 24, 10, 30)
+start_date = datetime(2018, 1, 26, 9, 30)
+end_date = datetime(2018, 1, 26, 10, 30)
 
-days_count = 15
+days_count = 10
 
-interp_count = 3
+interp_count = 1
 
 
 #symbol = "WEED.TO"
@@ -17,7 +17,9 @@ interp_count = 3
 #symbol = "PRMCF"
 #symbol = "ACBFF"
 #symbol = "MEDFF"
-symbol = "AMZN"
+#symbol = "AMZN"
+symbol = "DIS"
+
 
 real_start_date = end_date + timedelta(minutes = 1)
 real_end_date = end_date.replace(hour=15, minute=59)
