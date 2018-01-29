@@ -3,13 +3,13 @@ from read_write import read
 from stats import percentage
 
 start_date = datetime(2018, 1, 26, 9, 30)
-end_date = datetime(2018, 1, 26, 10, 30)
+end_date = datetime(2018, 1, 26, 15, 59)
 
 
-symbol = "WEED.TO"
+#symbol = "WEED.TO"
 #symbol = "EMHTF"
 #symbol = "PRMCF"
-#symbol = "ACBFF"
+symbol = "ACBFF"
 #symbol = "MEDFF"
 #symbol = "AMZN"
 #symbol = "DIS"
@@ -28,8 +28,8 @@ count = len(per_list)
 
 print per_list
 
-start = -0.01
-end = 0.01
+start = -0.1
+end = 0.1
 
 bag_count = int ((end - start) / delta)
 print bag_count
