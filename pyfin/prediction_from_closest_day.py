@@ -3,12 +3,12 @@ from utils import prediction
 import matplotlib.pyplot as plt
 
 
-start_date = datetime(2018, 1, 26, 9, 30)
-end_date = datetime(2018, 1, 26, 14, 00)
+start_date = datetime(2018, 1, 31, 9, 30)
+end_date = datetime(2018, 1, 31, 13, 20)
 
 days_count = 15
 
-interp_count = 1
+interp_count = 3
 
 
 #symbol = "WEED.TO"

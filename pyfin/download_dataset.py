@@ -3,7 +3,7 @@ from read_write import read
 
 start_time = time.clock()
 
-N = 3
+N = 7
 
 names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt", "tickers/nasdaqlisted_full.txt", "tickers/otherlisted.txt"]
 
@@ -17,4 +17,4 @@ seconds = time.clock() - start_time
 
 m, s = divmod(seconds, 60)
 h, m = divmod(m, 60)
-print "Elapsed time: %d:%02d:%02d" % (h, m, s)
+print "Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s)

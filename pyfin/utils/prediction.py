@@ -116,12 +116,15 @@ def analyse_linear_interpolation_prediction_performance(symbol, start_date, end_
     days_count_list = []
     interp_count_list = []
     distance_list = []
+    individual_distances_list = []
 
     is_data_available, date_time_real, volume_real, opn_real, close_real, high_real, low_real = read.get_intraday_data(symbol, real_start_date, real_end_date, "1m")
 
     if not (is_data_available):
         print ("No ground truth data available")
         return
+
+
 
     for i in range (2, days_to_analyse):
         for j in range (1, i):
@@ -135,6 +138,7 @@ def analyse_linear_interpolation_prediction_performance(symbol, start_date, end_
             days_count_list.append(i)
             interp_count_list.append(j)
             distance_list.append(distance)
+            individual_distances_list.append(distances)
         
             info = "Symbol:%s: Analysed days: %d, Interpolated Closest Days: %d, distance %f\n" % (symbol, i, j, distance)
             print info
@@ -150,7 +154,17 @@ def analyse_linear_interpolation_prediction_performance(symbol, start_date, end_
     for i in range (count):
         info = "Analysed days: %d, Interpolated Closest Days: %d, distance %f\n" % (days_count_list[sorted_ind[i]], interp_count_list[sorted_ind[i]], distance_list[sorted_ind[i]])
         f.write(info)
+        ind_distances_title = "    Individual distances list:\n"
+        f.write(ind_distances_title)
+        dist_count = len(individual_distances_list[sorted_ind[i]])
+        for j in range (dist_count):
+            ind_distance = "        %f\n" % (individual_distances_list[sorted_ind[i]][j])
+            f.write(ind_distance)
 
+        perc_spread = (individual_distances_list[sorted_ind[i]][dist_count - 1] - individual_distances_list[sorted_ind[i]][0]) / individual_distances_list[sorted_ind[i]][0] * 100
+        perc_spread_txt = "        Percentage spread: %f\n\n" % (perc_spread)
+        f.write(perc_spread_txt)
+    
     f.close
 
 

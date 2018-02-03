@@ -7,19 +7,19 @@ import numpy as np
 from viz import vertical_plots
 
 
-start_date = datetime(2018, 1, 22, 9, 30)
-end_date = datetime(2018, 1, 22, 10, 30)
+start_date = datetime(2018, 1, 31, 9, 30)
+end_date = datetime(2018, 1, 31, 13, 20)
 
-days_count = 18
+days_count = 30
 
 display_count = 5
 
-symbol = "WEED.TO"
+#symbol = "WEED.TO"
 #symbol = "EMHTF"
 #symbol = "PRMCF"
 #symbol = "ACBFF"
 #symbol = "MEDFF"
-#symbol = "AMZN"
+symbol = "AMZN"
 
 
 

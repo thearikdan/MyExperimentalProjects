@@ -19,7 +19,7 @@ import dateutil
 
 #date = read.get_date_from_all_data(data)
 
-symbol = "WEED.TO"
+symbol = "AMZN"
 end_date = datetime.today() #today
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-1) #month ago
 
