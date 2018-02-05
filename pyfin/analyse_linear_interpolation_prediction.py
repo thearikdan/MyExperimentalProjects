@@ -1,8 +1,6 @@
 from datetime import datetime 
 import dateutil
 from utils import prediction
-start_date = datetime(2018, 2, 2, 9, 30)
-end_date = datetime(2018, 2, 2, 10, 30)
 
 days_count = 15
 
@@ -21,6 +19,8 @@ for name in names:
         tickers = f.read().splitlines()
         count = len(tickers)
         for i in range (count):
+            start_date = datetime(2018, 2, 1, 9, 30)
+            end_date = datetime(2018, 2, 1, 10, 30)
             for j in range (days_count):
                 start_date = start_date + dateutil.relativedelta.relativedelta(days=-j) 
                 end_date = end_date + dateutil.relativedelta.relativedelta(days=-j) 

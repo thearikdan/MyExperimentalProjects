@@ -1,0 +1,5191 @@
+Linear Interpolation Prediction for NVDA from 2018-01-31-09:30 to 2018-01-31-10:30
+
+Analysed days: 21, Interpolated Closest Days: 6, distance 14.375321
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 16, Interpolated Closest Days: 5, distance 14.948412
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 17, Interpolated Closest Days: 5, distance 14.948412
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 18, Interpolated Closest Days: 5, distance 14.948412
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 19, Interpolated Closest Days: 5, distance 14.948412
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 20, Interpolated Closest Days: 6, distance 15.276743
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 9, Interpolated Closest Days: 3, distance 15.371002
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 10.379292
+
+Analysed days: 10, Interpolated Closest Days: 3, distance 15.371002
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 10.379292
+
+Analysed days: 11, Interpolated Closest Days: 3, distance 15.371002
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 10.379292
+
+Analysed days: 12, Interpolated Closest Days: 3, distance 15.371002
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 10.379292
+
+Analysed days: 13, Interpolated Closest Days: 3, distance 15.371002
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 10.379292
+
+Analysed days: 14, Interpolated Closest Days: 3, distance 15.371002
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 10.379292
+
+Analysed days: 15, Interpolated Closest Days: 3, distance 15.371002
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 10.379292
+
+Analysed days: 20, Interpolated Closest Days: 5, distance 15.999054
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 21, Interpolated Closest Days: 7, distance 16.353053
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 21, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 22, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 23, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 24, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 25, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 26, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 27, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 28, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 29, Interpolated Closest Days: 5, distance 16.793222
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        Percentage spread: 7.686615
+
+Analysed days: 8, Interpolated Closest Days: 2, distance 16.902141
+    Individual distances list:
+        0.011957
+        0.013198
+        Percentage spread: 10.379292
+
+Analysed days: 20, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 21, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 22, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 23, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 24, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 25, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 26, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 27, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 28, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 29, Interpolated Closest Days: 4, distance 16.916615
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 16, Interpolated Closest Days: 6, distance 17.213032
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 17, Interpolated Closest Days: 6, distance 17.213032
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 18, Interpolated Closest Days: 6, distance 17.213032
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 19, Interpolated Closest Days: 6, distance 17.213032
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 8, Interpolated Closest Days: 5, distance 17.627427
+    Individual distances list:
+        0.011957
+        0.013198
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 8, Interpolated Closest Days: 6, distance 17.627427
+    Individual distances list:
+        0.011957
+        0.013198
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 8, Interpolated Closest Days: 7, distance 17.627427
+    Individual distances list:
+        0.011957
+        0.013198
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 20, Interpolated Closest Days: 7, distance 17.905040
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 8, Interpolated Closest Days: 4, distance 18.218711
+    Individual distances list:
+        0.011957
+        0.013198
+        0.013809
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 21, Interpolated Closest Days: 8, distance 18.993197
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 22, Interpolated Closest Days: 7, distance 19.038360
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 23, Interpolated Closest Days: 7, distance 19.038360
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 24, Interpolated Closest Days: 7, distance 19.038360
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 25, Interpolated Closest Days: 7, distance 19.038360
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 26, Interpolated Closest Days: 7, distance 19.038360
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 27, Interpolated Closest Days: 7, distance 19.038360
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 28, Interpolated Closest Days: 7, distance 19.038360
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 3, Interpolated Closest Days: 2, distance 19.569061
+    Individual distances list:
+        0.011957
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 4, Interpolated Closest Days: 2, distance 19.569061
+    Individual distances list:
+        0.011957
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 4, Interpolated Closest Days: 3, distance 19.569061
+    Individual distances list:
+        0.011957
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 5, Interpolated Closest Days: 2, distance 19.569061
+    Individual distances list:
+        0.011957
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 5, Interpolated Closest Days: 3, distance 19.569061
+    Individual distances list:
+        0.011957
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 5, Interpolated Closest Days: 4, distance 19.569061
+    Individual distances list:
+        0.011957
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 8, Interpolated Closest Days: 3, distance 19.747574
+    Individual distances list:
+        0.011957
+        0.013198
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 20, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 21, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 22, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 23, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 24, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 25, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 26, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 27, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 28, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 29, Interpolated Closest Days: 3, distance 20.010016
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        Percentage spread: 1.107874
+
+Analysed days: 9, Interpolated Closest Days: 6, distance 20.031572
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 9, Interpolated Closest Days: 7, distance 20.031572
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 9, Interpolated Closest Days: 8, distance 20.031572
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 16, Interpolated Closest Days: 3, distance 20.207499
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 17, Interpolated Closest Days: 3, distance 20.207499
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 18, Interpolated Closest Days: 3, distance 20.207499
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 19, Interpolated Closest Days: 3, distance 20.207499
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        Percentage spread: 5.402044
+
+Analysed days: 16, Interpolated Closest Days: 4, distance 20.439614
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 17, Interpolated Closest Days: 4, distance 20.439614
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 18, Interpolated Closest Days: 4, distance 20.439614
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 19, Interpolated Closest Days: 4, distance 20.439614
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 16, Interpolated Closest Days: 7, distance 20.825649
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 17, Interpolated Closest Days: 7, distance 20.825649
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 18, Interpolated Closest Days: 7, distance 20.825649
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 19, Interpolated Closest Days: 7, distance 20.825649
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 20, Interpolated Closest Days: 8, distance 21.226047
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 9, Interpolated Closest Days: 5, distance 21.260076
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013809
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 16, Interpolated Closest Days: 9, distance 21.480228
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 17, Interpolated Closest Days: 9, distance 21.480228
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 18, Interpolated Closest Days: 9, distance 21.480228
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 19, Interpolated Closest Days: 9, distance 21.480228
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 20, Interpolated Closest Days: 10, distance 21.809743
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 29, Interpolated Closest Days: 6, distance 21.947804
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        Percentage spread: 9.306003
+
+Analysed days: 21, Interpolated Closest Days: 9, distance 22.035395
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 16, Interpolated Closest Days: 8, distance 22.230296
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 17, Interpolated Closest Days: 8, distance 22.230296
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 18, Interpolated Closest Days: 8, distance 22.230296
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 19, Interpolated Closest Days: 8, distance 22.230296
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 21, Interpolated Closest Days: 11, distance 22.479285
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 20, Interpolated Closest Days: 9, distance 22.498229
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 9, Interpolated Closest Days: 4, distance 22.885014
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 21, Interpolated Closest Days: 10, distance 23.162343
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 22, Interpolated Closest Days: 8, distance 23.801901
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 23, Interpolated Closest Days: 8, distance 23.801901
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 24, Interpolated Closest Days: 8, distance 23.801901
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 25, Interpolated Closest Days: 8, distance 23.801901
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 26, Interpolated Closest Days: 8, distance 23.801901
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 27, Interpolated Closest Days: 8, distance 23.801901
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 28, Interpolated Closest Days: 8, distance 23.801901
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 29, Interpolated Closest Days: 8, distance 24.232267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        Percentage spread: 11.223881
+
+Analysed days: 20, Interpolated Closest Days: 12, distance 25.074004
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 20, Interpolated Closest Days: 13, distance 25.074004
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 20, Interpolated Closest Days: 14, distance 25.074004
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 20, Interpolated Closest Days: 15, distance 25.074004
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 20, Interpolated Closest Days: 16, distance 25.074004
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 20, Interpolated Closest Days: 17, distance 25.074004
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 20, Interpolated Closest Days: 18, distance 25.074004
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 20, Interpolated Closest Days: 19, distance 25.074004
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 16, Interpolated Closest Days: 11, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 16, Interpolated Closest Days: 12, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 16, Interpolated Closest Days: 13, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 16, Interpolated Closest Days: 14, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 16, Interpolated Closest Days: 15, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 17, Interpolated Closest Days: 11, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 17, Interpolated Closest Days: 12, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 17, Interpolated Closest Days: 13, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 17, Interpolated Closest Days: 14, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 17, Interpolated Closest Days: 15, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 17, Interpolated Closest Days: 16, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 18, Interpolated Closest Days: 11, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 18, Interpolated Closest Days: 12, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 18, Interpolated Closest Days: 13, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 18, Interpolated Closest Days: 14, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 18, Interpolated Closest Days: 15, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 18, Interpolated Closest Days: 16, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 18, Interpolated Closest Days: 17, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 19, Interpolated Closest Days: 11, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 19, Interpolated Closest Days: 12, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 19, Interpolated Closest Days: 13, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 19, Interpolated Closest Days: 14, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 19, Interpolated Closest Days: 15, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 19, Interpolated Closest Days: 16, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 19, Interpolated Closest Days: 17, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 19, Interpolated Closest Days: 18, distance 25.121432
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 10, Interpolated Closest Days: 4, distance 25.402163
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 12.386284
+
+Analysed days: 11, Interpolated Closest Days: 4, distance 25.402163
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 12.386284
+
+Analysed days: 12, Interpolated Closest Days: 4, distance 25.402163
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 12.386284
+
+Analysed days: 13, Interpolated Closest Days: 4, distance 25.402163
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 12.386284
+
+Analysed days: 14, Interpolated Closest Days: 4, distance 25.402163
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 12.386284
+
+Analysed days: 15, Interpolated Closest Days: 4, distance 25.402163
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        Percentage spread: 12.386284
+
+Analysed days: 21, Interpolated Closest Days: 13, distance 25.434267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 21, Interpolated Closest Days: 14, distance 25.434267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 21, Interpolated Closest Days: 15, distance 25.434267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 21, Interpolated Closest Days: 16, distance 25.434267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 21, Interpolated Closest Days: 17, distance 25.434267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 21, Interpolated Closest Days: 18, distance 25.434267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 21, Interpolated Closest Days: 19, distance 25.434267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 21, Interpolated Closest Days: 20, distance 25.434267
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 22, Interpolated Closest Days: 6, distance 25.957351
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        Percentage spread: 10.487473
+
+Analysed days: 23, Interpolated Closest Days: 6, distance 25.957351
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        Percentage spread: 10.487473
+
+Analysed days: 24, Interpolated Closest Days: 6, distance 25.957351
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        Percentage spread: 10.487473
+
+Analysed days: 25, Interpolated Closest Days: 6, distance 25.957351
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        Percentage spread: 10.487473
+
+Analysed days: 26, Interpolated Closest Days: 6, distance 25.957351
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        Percentage spread: 10.487473
+
+Analysed days: 27, Interpolated Closest Days: 6, distance 25.957351
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        Percentage spread: 10.487473
+
+Analysed days: 28, Interpolated Closest Days: 6, distance 25.957351
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        Percentage spread: 10.487473
+
+Analysed days: 2, Interpolated Closest Days: 1, distance 26.037396
+    Individual distances list:
+        0.020361
+        Percentage spread: 0.000000
+
+Analysed days: 10, Interpolated Closest Days: 7, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 10, Interpolated Closest Days: 8, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 10, Interpolated Closest Days: 9, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 11, Interpolated Closest Days: 7, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 11, Interpolated Closest Days: 8, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 11, Interpolated Closest Days: 9, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 11, Interpolated Closest Days: 10, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 12, Interpolated Closest Days: 7, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 12, Interpolated Closest Days: 8, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 12, Interpolated Closest Days: 9, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 12, Interpolated Closest Days: 10, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 12, Interpolated Closest Days: 11, distance 26.045293
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 22, Interpolated Closest Days: 9, distance 26.132352
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 23, Interpolated Closest Days: 9, distance 26.132352
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 24, Interpolated Closest Days: 9, distance 26.132352
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 25, Interpolated Closest Days: 9, distance 26.132352
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 26, Interpolated Closest Days: 9, distance 26.132352
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 27, Interpolated Closest Days: 9, distance 26.132352
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 28, Interpolated Closest Days: 9, distance 26.132352
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 20, Interpolated Closest Days: 11, distance 26.189260
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 16, Interpolated Closest Days: 10, distance 26.368498
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 17, Interpolated Closest Days: 10, distance 26.368498
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 18, Interpolated Closest Days: 10, distance 26.368498
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 19, Interpolated Closest Days: 10, distance 26.368498
+    Individual distances list:
+        0.011866
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 21, Interpolated Closest Days: 12, distance 26.485464
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 7, Interpolated Closest Days: 4, distance 26.519294
+    Individual distances list:
+        0.011957
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 7, Interpolated Closest Days: 5, distance 26.519294
+    Individual distances list:
+        0.011957
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 7, Interpolated Closest Days: 6, distance 26.519294
+    Individual distances list:
+        0.011957
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 3, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 4, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 5, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 6, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 7, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 8, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 9, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 10, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 11, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 12, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 13, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 14, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 15, Interpolated Closest Days: 1, distance 27.808760
+    Individual distances list:
+        0.011957
+        Percentage spread: 0.000000
+
+Analysed days: 22, Interpolated Closest Days: 12, distance 28.069915
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 10, Interpolated Closest Days: 6, distance 28.280225
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 11, Interpolated Closest Days: 6, distance 28.280225
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 12, Interpolated Closest Days: 6, distance 28.280225
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 22, Interpolated Closest Days: 10, distance 28.589357
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 23, Interpolated Closest Days: 10, distance 28.589357
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 24, Interpolated Closest Days: 10, distance 28.589357
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 25, Interpolated Closest Days: 10, distance 28.589357
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 26, Interpolated Closest Days: 10, distance 28.589357
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 27, Interpolated Closest Days: 10, distance 28.589357
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 28, Interpolated Closest Days: 10, distance 28.589357
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 29, Interpolated Closest Days: 9, distance 28.610396
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        Percentage spread: 13.246230
+
+Analysed days: 13, Interpolated Closest Days: 8, distance 28.636492
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 13, Interpolated Closest Days: 9, distance 28.636492
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 13, Interpolated Closest Days: 10, distance 28.636492
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 13, Interpolated Closest Days: 11, distance 28.636492
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 13, Interpolated Closest Days: 12, distance 28.636492
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 22, Interpolated Closest Days: 11, distance 29.165944
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 14, Interpolated Closest Days: 9, distance 29.397474
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 14, Interpolated Closest Days: 10, distance 29.397474
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 14, Interpolated Closest Days: 11, distance 29.397474
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 14, Interpolated Closest Days: 12, distance 29.397474
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 14, Interpolated Closest Days: 13, distance 29.397474
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 13, Interpolated Closest Days: 5, distance 29.416726
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.092539
+
+Analysed days: 14, Interpolated Closest Days: 5, distance 29.416726
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.092539
+
+Analysed days: 15, Interpolated Closest Days: 5, distance 29.416726
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.092539
+
+Analysed days: 23, Interpolated Closest Days: 13, distance 29.742951
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 24, Interpolated Closest Days: 13, distance 29.742951
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 25, Interpolated Closest Days: 13, distance 29.742951
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 26, Interpolated Closest Days: 13, distance 29.742951
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 29, Interpolated Closest Days: 10, distance 30.381811
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        Percentage spread: 15.973193
+
+Analysed days: 22, Interpolated Closest Days: 14, distance 30.391280
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 22, Interpolated Closest Days: 15, distance 30.391280
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 22, Interpolated Closest Days: 16, distance 30.391280
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 22, Interpolated Closest Days: 17, distance 30.391280
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 22, Interpolated Closest Days: 18, distance 30.391280
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 22, Interpolated Closest Days: 19, distance 30.391280
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 22, Interpolated Closest Days: 20, distance 30.391280
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 22, Interpolated Closest Days: 21, distance 30.391280
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 23, Interpolated Closest Days: 11, distance 30.496332
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        Percentage spread: 21.905823
+
+Analysed days: 24, Interpolated Closest Days: 11, distance 30.496332
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        Percentage spread: 21.905823
+
+Analysed days: 25, Interpolated Closest Days: 11, distance 30.496332
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        Percentage spread: 21.905823
+
+Analysed days: 26, Interpolated Closest Days: 11, distance 30.496332
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        Percentage spread: 21.905823
+
+Analysed days: 6, Interpolated Closest Days: 3, distance 30.627942
+    Individual distances list:
+        0.011957
+        0.013809
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 6, Interpolated Closest Days: 4, distance 30.627942
+    Individual distances list:
+        0.011957
+        0.013809
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 6, Interpolated Closest Days: 5, distance 30.627942
+    Individual distances list:
+        0.011957
+        0.013809
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 10, Interpolated Closest Days: 5, distance 30.859433
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 11, Interpolated Closest Days: 5, distance 30.859433
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 12, Interpolated Closest Days: 5, distance 30.859433
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 23, Interpolated Closest Days: 12, distance 30.894912
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 24, Interpolated Closest Days: 12, distance 30.894912
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 25, Interpolated Closest Days: 12, distance 30.894912
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 26, Interpolated Closest Days: 12, distance 30.894912
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 13, Interpolated Closest Days: 7, distance 30.900619
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 7, Interpolated Closest Days: 3, distance 31.394073
+    Individual distances list:
+        0.011957
+        0.013809
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 14, Interpolated Closest Days: 8, distance 31.475879
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 15, Interpolated Closest Days: 8, distance 31.475879
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        Percentage spread: 25.511447
+
+Analysed days: 9, Interpolated Closest Days: 2, distance 31.477079
+    Individual distances list:
+        0.011957
+        0.012507
+        Percentage spread: 4.601663
+
+Analysed days: 10, Interpolated Closest Days: 2, distance 31.477079
+    Individual distances list:
+        0.011957
+        0.012507
+        Percentage spread: 4.601663
+
+Analysed days: 11, Interpolated Closest Days: 2, distance 31.477079
+    Individual distances list:
+        0.011957
+        0.012507
+        Percentage spread: 4.601663
+
+Analysed days: 12, Interpolated Closest Days: 2, distance 31.477079
+    Individual distances list:
+        0.011957
+        0.012507
+        Percentage spread: 4.601663
+
+Analysed days: 13, Interpolated Closest Days: 2, distance 31.477079
+    Individual distances list:
+        0.011957
+        0.012507
+        Percentage spread: 4.601663
+
+Analysed days: 14, Interpolated Closest Days: 2, distance 31.477079
+    Individual distances list:
+        0.011957
+        0.012507
+        Percentage spread: 4.601663
+
+Analysed days: 15, Interpolated Closest Days: 2, distance 31.477079
+    Individual distances list:
+        0.011957
+        0.012507
+        Percentage spread: 4.601663
+
+Analysed days: 29, Interpolated Closest Days: 7, distance 31.536053
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        Percentage spread: 10.487473
+
+Analysed days: 22, Interpolated Closest Days: 13, distance 31.738760
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 23, Interpolated Closest Days: 15, distance 31.793077
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 23, Interpolated Closest Days: 16, distance 31.793077
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 23, Interpolated Closest Days: 17, distance 31.793077
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 23, Interpolated Closest Days: 18, distance 31.793077
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 23, Interpolated Closest Days: 19, distance 31.793077
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 23, Interpolated Closest Days: 20, distance 31.793077
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 23, Interpolated Closest Days: 21, distance 31.793077
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 23, Interpolated Closest Days: 22, distance 31.793077
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 11, distance 32.388466
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 16.373602
+
+Analysed days: 24, Interpolated Closest Days: 16, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 24, Interpolated Closest Days: 17, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 24, Interpolated Closest Days: 18, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 24, Interpolated Closest Days: 19, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 24, Interpolated Closest Days: 20, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 24, Interpolated Closest Days: 21, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 24, Interpolated Closest Days: 22, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 24, Interpolated Closest Days: 23, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 16, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 17, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 18, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 19, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 20, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 21, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 22, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 23, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 25, Interpolated Closest Days: 24, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 16, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 17, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 18, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 19, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 20, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 21, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 22, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 23, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 24, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 26, Interpolated Closest Days: 25, distance 32.392519
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 11, distance 32.972129
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        Percentage spread: 21.091022
+
+Analysed days: 28, Interpolated Closest Days: 11, distance 32.972129
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        Percentage spread: 21.091022
+
+Analysed days: 16, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 17, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 18, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 19, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 20, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 21, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 22, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 23, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 24, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 25, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 26, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 27, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 28, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 29, Interpolated Closest Days: 2, distance 33.107461
+    Individual distances list:
+        0.011866
+        0.011957
+        Percentage spread: 0.765170
+
+Analysed days: 23, Interpolated Closest Days: 14, distance 33.148784
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 24, Interpolated Closest Days: 14, distance 33.148784
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 25, Interpolated Closest Days: 14, distance 33.148784
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 26, Interpolated Closest Days: 14, distance 33.148784
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 27, Interpolated Closest Days: 14, distance 33.270481
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 28, Interpolated Closest Days: 14, distance 33.270481
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 13, Interpolated Closest Days: 6, distance 33.439138
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 14, Interpolated Closest Days: 6, distance 33.439138
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 15, Interpolated Closest Days: 6, distance 33.439138
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 24, Interpolated Closest Days: 15, distance 33.718071
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        Percentage spread: 40.637890
+
+Analysed days: 25, Interpolated Closest Days: 15, distance 33.718071
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        Percentage spread: 40.637890
+
+Analysed days: 26, Interpolated Closest Days: 15, distance 33.718071
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        Percentage spread: 40.637890
+
+Analysed days: 14, Interpolated Closest Days: 7, distance 33.751525
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 23.266845
+
+Analysed days: 15, Interpolated Closest Days: 7, distance 33.751525
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        Percentage spread: 23.266845
+
+Analysed days: 15, Interpolated Closest Days: 10, distance 34.485190
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 15, Interpolated Closest Days: 11, distance 34.485190
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 15, Interpolated Closest Days: 12, distance 34.485190
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 15, Interpolated Closest Days: 13, distance 34.485190
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 15, Interpolated Closest Days: 14, distance 34.485190
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        0.020361
+        Percentage spread: 70.286854
+
+Analysed days: 27, Interpolated Closest Days: 12, distance 34.529709
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        Percentage spread: 21.905823
+
+Analysed days: 28, Interpolated Closest Days: 12, distance 34.529709
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        Percentage spread: 21.905823
+
+Analysed days: 27, Interpolated Closest Days: 13, distance 34.614720
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 28, Interpolated Closest Days: 13, distance 34.614720
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 28, Interpolated Closest Days: 18, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 19, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 20, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 21, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 22, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 23, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 24, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 25, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 26, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 28, Interpolated Closest Days: 27, distance 35.011547
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 17, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 18, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 19, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 20, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 21, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 22, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 23, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 24, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 25, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 27, Interpolated Closest Days: 26, distance 35.355372
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 15, distance 36.030253
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        Percentage spread: 26.471823
+
+Analysed days: 29, Interpolated Closest Days: 12, distance 36.348604
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        Percentage spread: 21.091022
+
+Analysed days: 28, Interpolated Closest Days: 17, distance 36.365592
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        Percentage spread: 62.981323
+
+Analysed days: 27, Interpolated Closest Days: 15, distance 36.389001
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 28, Interpolated Closest Days: 15, distance 36.389001
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 27, Interpolated Closest Days: 16, distance 36.789454
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        Percentage spread: 40.637890
+
+Analysed days: 28, Interpolated Closest Days: 16, distance 36.789454
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        Percentage spread: 40.637890
+
+Analysed days: 15, Interpolated Closest Days: 9, distance 36.900120
+    Individual distances list:
+        0.011957
+        0.012507
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 34.175322
+
+Analysed days: 29, Interpolated Closest Days: 19, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 20, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 21, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 22, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 23, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 24, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 25, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 26, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 27, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 28, distance 37.237166
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        0.020361
+        Percentage spread: 71.589838
+
+Analysed days: 29, Interpolated Closest Days: 14, distance 37.475317
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        Percentage spread: 24.210046
+
+Analysed days: 29, Interpolated Closest Days: 13, distance 37.596002
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        Percentage spread: 21.905823
+
+Analysed days: 29, Interpolated Closest Days: 18, distance 38.622644
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        0.019340
+        Percentage spread: 62.981323
+
+Analysed days: 29, Interpolated Closest Days: 16, distance 38.857094
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        Percentage spread: 35.201992
+
+Analysed days: 29, Interpolated Closest Days: 17, distance 39.121148
+    Individual distances list:
+        0.011866
+        0.011957
+        0.011998
+        0.012507
+        0.012778
+        0.012970
+        0.013111
+        0.013198
+        0.013438
+        0.013761
+        0.013809
+        0.014369
+        0.014465
+        0.014739
+        0.015007
+        0.016043
+        0.016688
+        Percentage spread: 40.637890
+
+Analysed days: 6, Interpolated Closest Days: 2, distance 39.298288
+    Individual distances list:
+        0.011957
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 7, Interpolated Closest Days: 2, distance 39.298288
+    Individual distances list:
+        0.011957
+        0.013809
+        Percentage spread: 15.489908
+
+Analysed days: 16, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 17, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 18, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 19, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 20, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 21, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 22, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 23, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 24, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 25, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 26, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 27, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 28, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
+Analysed days: 29, Interpolated Closest Days: 1, distance 80.442385
+    Individual distances list:
+        0.011866
+        Percentage spread: 0.000000
+
