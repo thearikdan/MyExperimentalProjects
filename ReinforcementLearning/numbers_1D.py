@@ -29,7 +29,7 @@ def create_points_list(initial_states, operations):
 
 
 initial_states = np.arange(0, 21)
-operations = np.arange(-10, 11)
+operations = np.arange(-3, 4)
 
 points_list = create_points_list(initial_states, operations)
 
@@ -45,7 +45,9 @@ nx.draw_networkx_labels(G,pos)
 plt.show()
 
 # how many points in graph? x points
-MATRIX_SIZE = len(points_list) + 1
+init_states_count = initial_states.shape[0]
+
+MATRIX_SIZE = init_states_count + 1
 
 # create matrix x*y
 R = np.matrix(np.ones(shape=(MATRIX_SIZE, MATRIX_SIZE)))
