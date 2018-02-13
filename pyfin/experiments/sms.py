@@ -5,7 +5,7 @@ server = smtplib.SMTP( "smtp.gmail.com", 587 )
 
 server.starttls()
 
-server.login( 'arikdan@gmail.com', 'YourPassword' )
+server.login( 'aramarketwatch@gmail.com', 'Watchmen' )
 
 # Send text message through SMS gateway of destination number
-server.sendmail( '"Ara', 'Your phone@your provider', 'Hello' )
+server.sendmail( 'Market Watchmen', '4168733699@msg.telus.com', 'Hello' )
