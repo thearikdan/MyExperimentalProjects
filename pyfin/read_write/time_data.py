@@ -17,7 +17,7 @@ def get_high_and_low_price_times(symbol, start_date, end_date, days_count, N_min
         if not (is_data_available):
             continue
 
-        date_time_N, volume_N , open_N, close_N, high_N, low_N = absolute.get_N_minute_from_one_minute_interval(N_minute_interval, date_time, volume , opn, close, high, low)
+        date_time_N, volume_N , open_N, close_N, high_N, low_N = time_op.get_N_minute_from_one_minute_interval(N_minute_interval, date_time, volume , opn, close, high, low)
 
         max_index_list = absolute.get_local_maximum_index_list(close_N, neighb_point_count)
         max_count = len(max_index_list)

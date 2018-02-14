@@ -28,15 +28,14 @@ def get_date_time_from_timestamp(timestamp):
     return date_time
 
 
-def get_intraday_data_from_web(ticker, start, end, interval):
+def get_intraday_data_from_web(ticker, start, end):
     #always get full day data from web
     start_full_day = start.replace(hour=9, minute=30, second=00)
     end_full_day = start.replace(hour=16, minute=00, second=00)
     start_date_time = get_int_time(start_full_day)
     end_date_time = get_int_time(end_full_day)
-    interval_string = "%dm" % (interval)
 
-    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, interval_string)
+    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, "1m")
     try:
         response = urllib2.urlopen(str).read()
         json_obj = json.loads(response)
@@ -60,13 +59,13 @@ def get_intraday_data_from_web(ticker, start, end, interval):
         return (False, [], [], [], [], [], [])
 
     low = quote[0]['low']
-    open = quote[0]['open']
+    opn = quote[0]['open']
     close = quote[0]['close']
     volume = quote[0]['volume']
 
     timestamp = result[0]['timestamp']
     date_time = get_date_time_from_timestamp(timestamp)
-    return (True, date_time, volume, open, close, high, low)
+    return (True, date_time, volume, opn, close, high, low)
 
 
 def get_intraday_data_from_file(full_path, start, end):
@@ -185,7 +184,7 @@ def heal_intraday_data(date_time, volume, opn, close, high, low):
 '''
 
 def get_intraday_data(ticker, start, end, interval):
-    interval_string = "%dm" % (interval)
+    interval_string = "1m"
     dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
     filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
     dir_name = join(constants.DATA_ROOT, dir_name)
@@ -194,9 +193,10 @@ def get_intraday_data(ticker, start, end, interval):
         is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_file(full_path, start, end)
         if (is_data_available):
             volume, opn, close, high, low = heal_intraday_data(volume, opn, close, high, low)
-            return (is_data_available, date_time, volume, opn, close, high, low)
+            dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, date_time, volume, opn, close, high, low)
+            return (is_data_available, dtn, vn, on, cn, hn, ln)
 
-    is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end, interval)
+    is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end)
     if not (is_data_available):
         return (False, [], [], [], [], [], [])
 
@@ -211,17 +211,21 @@ def get_intraday_data(ticker, start, end, interval):
     if ((start_index == None) or (end_index == None)):
         return (False, [], [], [], [], [], [])
     else:
-        return (True,
-            date_time[start_index:end_index],
-            volume[start_index:end_index],
-            opn[start_index:end_index],
-            close[start_index:end_index],
-            high[start_index:end_index],
-            low[start_index:end_index])
+        dt = date_time[start_index:end_index]
+        v = volume[start_index:end_index]
+        o = opn[start_index:end_index]
+        c = close[start_index:end_index]
+        h = high[start_index:end_index]
+        l = low[start_index:end_index]
+
+        dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, dt, v, o,
+                                                                                c, h, l)
+
+        return (True, dtn, vn, on, cn, hn, ln)
 
 
-def download_intraday_data(ticker, start, end, interval):
-    interval_string = "%dm" % (interval)
+def download_intraday_data(ticker, start, end):
+    interval_string = "1m"
     dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
     filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
     dir_name = join(constants.DATA_ROOT, dir_name)
@@ -229,7 +233,7 @@ def download_intraday_data(ticker, start, end, interval):
     if isfile(full_path):
         return True
     else:
-        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end, interval)
+        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end)
         if not (is_data_available):
             return False
 
@@ -368,7 +372,7 @@ def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_
         start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
         end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
 
-        download_intraday_data(ticker, start_date, end_date, 1)
+        download_intraday_data(ticker, start_date, end_date)
 
 def download_intraday_list_of_tickers(list_file_name, day_count):
     now = datetime.now()

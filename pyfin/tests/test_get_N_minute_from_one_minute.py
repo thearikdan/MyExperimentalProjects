@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, "../")
 
 
-from stats import absolute
+from utils import time_op
 from datetime import datetime, timedelta
 
 
@@ -28,7 +28,7 @@ for i in range (count):
     close_list.append(close + i)
 
 
-t1, v1, o1, c1, h1, l1 = absolute.get_N_minute_from_one_minute_interval(1, time_list, volume_list , opn_list, close_list, high_list, low_list)
+t1, v1, o1, c1, h1, l1 = time_op.get_N_minute_from_one_minute_interval(1, time_list, volume_list , opn_list, close_list, high_list, low_list)
 
 if (t1 != time_list):
     print "One minute time test failed"
@@ -61,7 +61,7 @@ else:
     print "One minute low test succeded"
 
 
-t3, v3, o3, c3, h3, l3 = absolute.get_N_minute_from_one_minute_interval(3, time_list, volume_list , opn_list, close_list, high_list, low_list)
+t3, v3, o3, c3, h3, l3 = time_op.get_N_minute_from_one_minute_interval(3, time_list, volume_list , opn_list, close_list, high_list, low_list)
 
 if (t3 != [datetime(2000, 1, 1, 10, 00, 00), datetime(2000, 1, 1, 10, 3), datetime(2000, 1, 1, 10, 6)]):
     print "Three minutes time test failed"
