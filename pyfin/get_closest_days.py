@@ -77,7 +77,7 @@ for i in range(full_count):
     start_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=9, minute=30)
     end_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=15, minute=59)
 
-    is_data_available_before_full, date_time_before_full, volume_before_full , opn_before_full, close_before_full, high_before_full, low_before_full = read.get_intraday_data(symbol, start_date_full, end_date_full, "1m")
+    is_data_available_before_full, date_time_before_full, volume_before_full , opn_before_full, close_before_full, high_before_full, low_before_full = read.get_intraday_data(symbol, start_date_full, end_date_full, 1)
     if not (is_data_available_before_full):
         continue
     close_list_full.append(close_before_full)
