@@ -49,7 +49,7 @@ def project_percentage_change(num, percentage_list):
 
 def get_linear_interpolation_prediction(symbol, from_date_time, to_date_time, days_count_to_analyse, top_days_count_to_interpolate):
     
-    is_data_available, date_time_curr, volume_curr , opn_curr, close_curr, high_curr, low_curr = read.get_intraday_data(symbol, from_date_time, to_date_time, "1m")
+    is_data_available, date_time_curr, volume_curr , opn_curr, close_curr, high_curr, low_curr = read.get_intraday_data(symbol, from_date_time, to_date_time, 1)
 
     if not (is_data_available):
         return ([], [], [], [])
@@ -69,7 +69,7 @@ def get_linear_interpolation_prediction(symbol, from_date_time, to_date_time, da
     low_per_list = []
 
     for i in range (count):
-        is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start[i], end[i], "1m")
+        is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start[i], end[i], 1)
         
         if not (is_data_available):
             continue
@@ -118,7 +118,7 @@ def analyse_linear_interpolation_prediction_performance(symbol, start_date, end_
     distance_list = []
     individual_distances_list = []
 
-    is_data_available, date_time_real, volume_real, opn_real, close_real, high_real, low_real = read.get_intraday_data(symbol, real_start_date, real_end_date, "1m")
+    is_data_available, date_time_real, volume_real, opn_real, close_real, high_real, low_real = read.get_intraday_data(symbol, real_start_date, real_end_date, 1)
 
     if not (is_data_available):
         print ("No ground truth data available")

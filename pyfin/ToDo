@@ -1,3 +1,5 @@
-average of absolute price percentage changes between high and low, instead of average percentage price changes.
+Average of absolute price percentage changes between high and low, instead of average percentage price changes.
 Conditional probability of price going up / down from time x + 1 to 13:59, given the prive change between 9:30 and time x
-Conditional probability of privce going up / down, given index price up / down
+Conditional probability of pri[ce going up / down, given index price up / down
+Add interval to parameters of percentage change closeness
+Store daily prices in files

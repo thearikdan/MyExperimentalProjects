@@ -24,7 +24,7 @@ symbol = "DIS"
 real_start_date = end_date + timedelta(minutes = 1)
 real_end_date = end_date.replace(hour=15, minute=59)
 
-is_data_available, date_time_real, volume_real, opn_real, close_real, high_real, low_real = read.get_intraday_data(symbol, real_start_date, real_end_date, "1m")
+is_data_available, date_time_real, volume_real, opn_real, close_real, high_real, low_real = read.get_intraday_data(symbol, real_start_date, real_end_date, 1)
 
 if not (is_data_available):
     print ("No ground truth data available")

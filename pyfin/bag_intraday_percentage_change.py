@@ -16,7 +16,7 @@ symbol = "ACBFF"
 
 delta = 0.0001
 
-is_data_available, date_time, volume, opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, "1m")
+is_data_available, date_time, volume, opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, 1)
 
 if not (is_data_available):
     print ("No ground truth data available")

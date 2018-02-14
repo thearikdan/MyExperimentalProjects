@@ -12,7 +12,7 @@ def get_high_and_low_price_times(symbol, start_date, end_date, days_count, N_min
         new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
         new_end_date = time_op.get_date_N_days_ago_from_date(i, end_date)
 
-        is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, new_start_date, new_end_date, "1m")
+        is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, new_start_date, new_end_date, 1)
 
         if not (is_data_available):
             continue

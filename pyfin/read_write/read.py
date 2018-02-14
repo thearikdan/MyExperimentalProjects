@@ -34,8 +34,9 @@ def get_intraday_data_from_web(ticker, start, end, interval):
     end_full_day = start.replace(hour=16, minute=00, second=00)
     start_date_time = get_int_time(start_full_day)
     end_date_time = get_int_time(end_full_day)
+    interval_string = "%dm" % (interval)
 
-    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, interval)
+    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, interval_string)
     try:
         response = urllib2.urlopen(str).read()
         json_obj = json.loads(response)
@@ -184,8 +185,9 @@ def heal_intraday_data(date_time, volume, opn, close, high, low):
 '''
 
 def get_intraday_data(ticker, start, end, interval):
-    dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval)
-    filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval)
+    interval_string = "%dm" % (interval)
+    dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
+    filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
     dir_name = join(constants.DATA_ROOT, dir_name)
     full_path = join(dir_name, filename)
     if isfile(full_path):
@@ -219,8 +221,9 @@ def get_intraday_data(ticker, start, end, interval):
 
 
 def download_intraday_data(ticker, start, end, interval):
-    dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval)
-    filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval)
+    interval_string = "%dm" % (interval)
+    dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
+    filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
     dir_name = join(constants.DATA_ROOT, dir_name)
     full_path = join(dir_name, filename)
     if isfile(full_path):
@@ -346,7 +349,7 @@ def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_time,
         start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
         end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
 
-        is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(ticker, start_date, end_date, "1m")
+        is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(ticker, start_date, end_date, 1)
         if (is_data_available):
             date_time_list.append(date_time)
             volume_list.append(volume)
@@ -365,9 +368,9 @@ def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_
         start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
         end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
 
-        download_intraday_data(ticker, start_date, end_date, "1m")
+        download_intraday_data(ticker, start_date, end_date, 1)
 
-def download_list_of_tickers(list_file_name, day_count):
+def download_intraday_list_of_tickers(list_file_name, day_count):
     now = datetime.now()
     from_time = datetime(2000, 1, 1, 9, 30, 00)
     to_time = datetime(2000, 1, 1, 15, 59, 00)
