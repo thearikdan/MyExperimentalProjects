@@ -1,20 +1,25 @@
 from datetime import datetime, timedelta
 from read_write import read
 from utils import time_op
-from stats import percentage
+from stats import percentage, absolute
 
 def is_intraday_trending(symbol, time_date, minutes_interval, perc, check_count):
     end_date = time_date
     check_time = 2 * minutes_interval
     for i in range (check_count):
         start_date = end_date - timedelta(minutes = check_time)
-        is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data(symbol, start_date, end_date, minutes_interval)
+        is_data_available, date_time, volume , opn, close, high, low = read.get_current_intraday_data_from_web(symbol, start_date, end_date)
+        
         if not (is_data_available):
             return False
+        
+        tN, vN, oN, cN, hN, lN = time_op.get_N_minute_from_one_minute_interval(minutes_interval, tdate_time, volume , opn, close, high, low)
+
         if (perc > 0):
-            watch = high
+            watch = hN
         else:
-            watch = low
+            watch = lN
+
         watch_per_change_list = percentage.get_intraday_percentage_change(watch)
         if (len (watch_per_change_list) != 1):
             return False

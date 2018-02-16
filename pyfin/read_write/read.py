@@ -28,12 +28,9 @@ def get_date_time_from_timestamp(timestamp):
     return date_time
 
 
-def get_intraday_data_from_web(ticker, start, end):
-    #always get full day data from web
-    start_full_day = start.replace(hour=9, minute=30, second=00)
-    end_full_day = start.replace(hour=16, minute=00, second=00)
-    start_date_time = get_int_time(start_full_day)
-    end_date_time = get_int_time(end_full_day)
+def __get_intraday_data_from_web(ticker, start, end):
+    start_date_time = get_int_time(start)
+    end_date_time = get_int_time(end)
 
     str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, "1m")
     try:
@@ -66,6 +63,18 @@ def get_intraday_data_from_web(ticker, start, end):
     timestamp = result[0]['timestamp']
     date_time = get_date_time_from_timestamp(timestamp)
     return (True, date_time, volume, opn, close, high, low)
+
+
+def get_full_day_intraday_data_from_web(ticker, start, end):
+    start_full_day = start.replace(hour=9, minute=30, second=00)
+    end_full_day = start.replace(hour=16, minute=00, second=00)
+    return __get_intraday_data_from_web(ticker, start_full_day, end_full_day)
+
+
+def get_current_intraday_data_from_web(ticker, start, end):
+    start_current_time = start.replace(second=00)
+    end_current_time = start.replace(second=00)
+    return __get_intraday_data_from_web(ticker, start_current_time, end_current_time)
 
 
 def get_intraday_data_from_file(full_path, start, end):
@@ -196,7 +205,7 @@ def get_intraday_data(ticker, start, end, interval):
             dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, date_time, volume, opn, close, high, low)
             return (is_data_available, dtn, vn, on, cn, hn, ln)
 
-    is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end)
+    is_data_available, date_time, volume, opn, close, high, low = get_full_day_intraday_data_from_web(ticker, start, end)
     if not (is_data_available):
         return (False, [], [], [], [], [], [])
 
@@ -233,7 +242,7 @@ def download_intraday_data(ticker, start, end):
     if isfile(full_path):
         return True
     else:
-        is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_web(ticker, start, end)
+        is_data_available, date_time, volume, opn, close, high, low = get_full_day_intraday_data_from_web(ticker, start, end)
         if not (is_data_available):
             return False
 
@@ -390,7 +399,5 @@ def download_intraday_list_of_tickers(list_file_name, day_count):
         #download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
         #This method is more thorough because it will also download files that don't have full day data
         get_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
-
-
 
 
