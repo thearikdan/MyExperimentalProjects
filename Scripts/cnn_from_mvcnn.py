@@ -20,12 +20,13 @@ for top_dirs in train_test:
     top_dirs_path = join(source_dir, top_dirs)
     classes = file_op.get_only_dirs(top_dirs_path)
     for class_ in classes:
-        target_dir = join(dest_dir, class_)
+        target_dir_1 = join(dest_dir, top_dirs)
+        target_dir = join(target_dir_1, class_)
         class_path = join(top_dirs_path, class_)
         subclasses = file_op.get_only_dirs(class_path)
         for subclass in subclasses:
             subclass_path = join(class_path, subclass)
-            files = file_op.get_only_files(subclass_path)
+            files = sorted(file_op.get_only_files(subclass_path))
             source_file = get_first_file_with_ext(files, ".png")
             if source_file is not None:
                 source_path = join(subclass_path, source_file)
