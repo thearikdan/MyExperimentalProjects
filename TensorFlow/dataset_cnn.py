@@ -1,3 +1,8 @@
+#Based on https://kratzert.github.io/2017/06/15/example-of-tensorflows-new-input-pipeline.html
+
+import tensorflow as tf
+from tensorflow.contrib.data import Dataset, Iterator
+
 import os
 from glob import glob
 from os.path import dirname
@@ -29,9 +34,57 @@ def convert_labels_to_numbers(labels, classes):
 
 train_files = [y for x in os.walk(TRAIN_DIR) for y in glob(os.path.join(x[0], '*.png'))]
 train_labels = get_labels_from_files(train_files)
+
 classes = list(set(train_labels))
+NUM_CLASSES = len(classes)
+
 train_classes = convert_labels_to_numbers(train_labels, classes)
 
 test_files = [y for x in os.walk(TEST_DIR) for y in glob(os.path.join(x[0], '*.png'))]
 test_labels = get_labels_from_files(test_files)
 test_classes = convert_labels_to_numbers(test_labels, classes)
+
+train_images = tf.constant(train_files)
+train_labels = tf.constant(train_classes)
+
+test_images = tf.constant(test_files)
+test_labels = tf.constant(test_classes)
+
+#Create Dataset objects
+train_data = Dataset.from_tensor_slices((train_images, train_labels))
+test_data = Dataset.from_tensor_slices((test_images, test_labels))
+
+
+#Create Iterator object
+iterator = Iterator.from_structure(train_data.output_types, train_data.output_shapes)
+next_element = iterator.get_next()
+
+#Create two initializations to switch between datasets
+train_init_op = iterator.make_initializer(train_data)
+test_init_op = iterator.make_initializer(test_data)
+
+
+with tf.Session() as sess:
+    sess.run(train_init_op)
+
+    while(True):
+        try:
+            elem = sess.run(next_element)
+            print elem
+        except tf.errors.OutOfRangeError:
+            print ("End of training dataset")
+            break
+
+
+
+    sess.run(test_init_op)
+
+    while(True):
+        try:
+            elem = sess.run(next_element)
+            print elem
+        except tf.errors.OutOfRangeError:
+            print ("End of testing dataset")
+            break
+
+#    print sess.run(train_labels)
