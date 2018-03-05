@@ -9,6 +9,7 @@ from os.path import dirname
 
 TRAIN_DIR = "/raid/data/cnn/m40/train"
 TEST_DIR = "/raid/data/cnn/m40/test" 
+BATCH_SIZE = 20
 
 def get_labels_from_files(files):
     labels = []
@@ -31,6 +32,12 @@ def convert_labels_to_numbers(labels, classes):
     return label_numbers
 
 
+def get_dataset(images, labels, batch_size):
+    data = Dataset.from_tensor_slices((images, labels))
+    data = data.shuffle(buffer_size = 10000)
+    data = data.batch(batch_size)
+    return data
+
 
 train_files = [y for x in os.walk(TRAIN_DIR) for y in glob(os.path.join(x[0], '*.png'))]
 train_labels = get_labels_from_files(train_files)
@@ -51,8 +58,8 @@ test_images = tf.constant(test_files)
 test_labels = tf.constant(test_classes)
 
 #Create Dataset objects
-train_data = Dataset.from_tensor_slices((train_images, train_labels))
-test_data = Dataset.from_tensor_slices((test_images, test_labels))
+train_data = get_dataset(train_images, train_labels, BATCH_SIZE)
+test_data = get_dataset(test_images, test_labels, BATCH_SIZE)
 
 
 #Create Iterator object
@@ -71,6 +78,7 @@ with tf.Session() as sess:
         try:
             elem = sess.run(next_element)
             print elem
+            print "------------------------"
         except tf.errors.OutOfRangeError:
             print ("End of training dataset")
             break
@@ -83,6 +91,7 @@ with tf.Session() as sess:
         try:
             elem = sess.run(next_element)
             print elem
+            print "------------------------"
         except tf.errors.OutOfRangeError:
             print ("End of testing dataset")
             break
