@@ -32,8 +32,17 @@ def convert_labels_to_numbers(labels, classes):
     return label_numbers
 
 
+def input_parser(img_path, label):
+    one_hot = tf.one_hot(label, CLASS_COUNT)
+
+    img_file = tf.read_file(img_path)
+    img_decoded = tf.image.decode_image(img_file, channels=1)
+    return img_decoded, one_hot
+
+
 def get_dataset(images, labels, batch_size):
     data = Dataset.from_tensor_slices((images, labels))
+    data = data.map(input_parser)
     data = data.shuffle(buffer_size = 10000)
     data = data.batch(batch_size)
     return data
@@ -43,7 +52,7 @@ train_files = [y for x in os.walk(TRAIN_DIR) for y in glob(os.path.join(x[0], '*
 train_labels = get_labels_from_files(train_files)
 
 classes = list(set(train_labels))
-NUM_CLASSES = len(classes)
+CLASS_COUNT = len(classes)
 
 train_classes = convert_labels_to_numbers(train_labels, classes)
 
