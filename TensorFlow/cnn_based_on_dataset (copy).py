@@ -52,7 +52,6 @@ train_labels = get_labels_from_files(train_files)
 classes = list(set(train_labels))
 CLASS_COUNT = len(classes)
 
-'''
 train_classes = convert_labels_to_numbers(train_labels, classes)
 
 tf_train_files = tf.constant(train_files)
@@ -65,25 +64,25 @@ test_classes = convert_labels_to_numbers(test_labels, classes)
 
 tf_test_files = tf.constant(test_files)
 tf_test_classes = tf.constant(test_classes)
-'''
+
 
 
 def get_dataset(image_files, labels, shuffle, batch_size, repeat_count):
     data = Dataset.from_tensor_slices((image_files, labels))
     data = data.map(input_parser)
-    data = data.repeat(repeat_count)
+    data = dataset.repeat(repeat_count)
     if (shuffle):
         data = data.shuffle(buffer_size = 10000)
     data = data.batch(batch_size)
     return data
 
 
-def cnn_input_fn(dir, classes, batch_size, shuffle=False, repeat_count=1):
+def input_fn(dir, classes, batch_size, shuffle=False, repeat_count=1):
     files = [y for x in os.walk(dir) for y in glob(os.path.join(x[0], '*.png'))]
     labels = get_labels_from_files(files)
     num_labels = convert_labels_to_numbers(labels, classes)
 
-    tf_files = tf.constant(files)
+    tf_files = tf.constant(test_files)
     tf_labels = tf.constant(num_labels)
 
     data = get_dataset(tf_files, tf_labels, shuffle, batch_size, repeat_count)
@@ -94,27 +93,9 @@ def cnn_input_fn(dir, classes, batch_size, shuffle=False, repeat_count=1):
 
 
 
-def cnn_model_fn(features, labels, mode):
-    if mode == tf.estimator.ModeKeys.PREDICT:
-        tf.logging.info("my_model_fn: PREDICT, {}".format(mode))
-    elif mode == tf.estimator.ModeKeys.EVAL:
-        tf.logging.info("my_model_fn: EVAL, {}".format(mode))
-    elif mode == tf.estimator.ModeKeys.TRAIN:
-        tf.logging.info("my_model_fn: TRAIN, {}".format(mode))
-
-    #    feature_columns = [
-#        tf.feature_column.numeric_column(key="Image", dtype=tf.float64, shape=SHAPE),
-#        tf.feature_column.numeric_column(key="Label", dtype=tf.int32)
-#    ]
-
-    feature_columns = [
-#        tf.feature_column.numeric_column(key="Image", dtype=tf.float64, shape=SHAPE)
-        tf.feature_column.numeric_column(key="Image", shape=SHAPE)
-    ]
-
+def cnn_model_fn(images, labels, mode):
     #Input layer
-    input_layer = tf.feature_column.input_layer(features, feature_columns)
-
+    input_layer = tf.reshape(images[x], [-1, 128, 128, 1])
 
     #Convolutional layer
     conv1 = tf.layers.conv2d(input = input_layer,
@@ -180,7 +161,7 @@ def cnn_model_fn(features, labels, mode):
           mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
-'''
+
 #Create Dataset objects
 train_data = get_dataset(tf_train_files, tf_train_classes, BATCH_SIZE)
 test_data = get_dataset(tf_test_files, tf_test_classes, BATCH_SIZE)
@@ -193,15 +174,42 @@ next_element = iterator.get_next()
 #Create two initializations to switch between datasets
 train_init_op = iterator.make_initializer(train_data)
 test_init_op = iterator.make_initializer(test_data)
+
+feature_columns = [
+    tf.feature_column.numeric_column(key="Image", dtype=tf.float64, shape = SHAPE)
+    tf.feature_column.numeric_column(key="Label", dtype=tf.int32)
+    ]
+
+classifier = tf.estimator.Estimator(cnn_model_fn, model_dir="CNN_Model")
+
+
 '''
+with tf.Session() as sess:
+    sess.run(train_init_op)
+
+    while(True):
+        try:
+#            elem = sess.run(next_element)
+#            print elem
+            images, labels = sess.run(next_element)
+            print images, labels
+            cnn_model_fn(images, labels, tf.estimator.ModeKeys.TRAIN)
+
+            print "------------------------"
+        except tf.errors.OutOfRangeError:
+            print ("End of training dataset")
+            break
 
 
-classifier = tf.estimator.Estimator(model_fn=cnn_model_fn,
-        model_dir="CNN_Model")
+    sess.run(test_init_op)
 
-#classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, params={
-#        'feature_columns': cnn_feature_columns})
-
-
-classifier.train(input_fn=lambda: cnn_input_fn(TRAIN_DIR, classes, BATCH_SIZE, shuffle=True, repeat_count=500))
-
+    while(True):
+        try:
+            elem = sess.run(next_element)
+            print elem
+            print "------------------------"
+        except tf.errors.OutOfRangeError:
+            print ("End of testing dataset")
+            break
+            
+'''

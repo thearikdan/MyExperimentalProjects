@@ -95,26 +95,9 @@ def cnn_input_fn(dir, classes, batch_size, shuffle=False, repeat_count=1):
 
 
 def cnn_model_fn(features, labels, mode):
-    if mode == tf.estimator.ModeKeys.PREDICT:
-        tf.logging.info("my_model_fn: PREDICT, {}".format(mode))
-    elif mode == tf.estimator.ModeKeys.EVAL:
-        tf.logging.info("my_model_fn: EVAL, {}".format(mode))
-    elif mode == tf.estimator.ModeKeys.TRAIN:
-        tf.logging.info("my_model_fn: TRAIN, {}".format(mode))
-
-    #    feature_columns = [
-#        tf.feature_column.numeric_column(key="Image", dtype=tf.float64, shape=SHAPE),
-#        tf.feature_column.numeric_column(key="Label", dtype=tf.int32)
-#    ]
-
-    feature_columns = [
-#        tf.feature_column.numeric_column(key="Image", dtype=tf.float64, shape=SHAPE)
-        tf.feature_column.numeric_column(key="Image", shape=SHAPE)
-    ]
-
     #Input layer
+#    input_layer = tf.reshape(features[x], [-1, 128, 128, 1])
     input_layer = tf.feature_column.input_layer(features, feature_columns)
-
 
     #Convolutional layer
     conv1 = tf.layers.conv2d(input = input_layer,
@@ -195,13 +178,12 @@ train_init_op = iterator.make_initializer(train_data)
 test_init_op = iterator.make_initializer(test_data)
 '''
 
-
-classifier = tf.estimator.Estimator(model_fn=cnn_model_fn,
-        model_dir="CNN_Model")
-
-#classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, params={
-#        'feature_columns': cnn_feature_columns})
+feature_columns = [
+    tf.feature_column.numeric_column(key="Image", dtype=tf.float64, shape = SHAPE),
+    tf.feature_column.numeric_column(key="Label", dtype=tf.int32)
+    ]
 
 
+classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir="CNN_Model")
 classifier.train(input_fn=lambda: cnn_input_fn(TRAIN_DIR, classes, BATCH_SIZE, shuffle=True, repeat_count=500))
 
