@@ -44,7 +44,9 @@ def load_image(addr):
     # cv2 load images as BGR, convert it to RGB
     img = cv2.imread(addr)
     img = cv2.resize(img, (128, 128), interpolation=cv2.INTER_CUBIC)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+#    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    # cv2 load images as BGR, convert it to GRAY
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = img.astype(np.float32)
     return img
 

@@ -68,33 +68,37 @@ tf_test_classes = tf.constant(test_classes)
 '''
 
 
-def get_dataset(image_files, labels, shuffle, batch_size, repeat_count):
-    data = Dataset.from_tensor_slices((image_files, labels))
-    data = data.map(input_parser)
-    data = data.repeat(repeat_count)
-    if (shuffle):
-        data = data.shuffle(buffer_size = 10000)
-    data = data.batch(batch_size)
-    return data
+def data_input_fn(filenames, batch_size=1000, shuffle=False):
+    
+    def _parser(record):
+        features={
+            'label': tf.FixedLenFeature([], tf.int64),
+            'image': tf.FixedLenFeature([], tf.string)
+        }
+        parsed_record = tf.parse_single_example(record, features)
+        image = tf.decode_raw(parsed_record['image'], tf.float32)
+
+        label = tf.cast(parsed_record['label'], tf.int32)
+
+        return image, label
+        
+    def _input_fn():
+        dataset = tf.data.TFRecordDataset(filenames)
+        dataset = dataset.map(_parser)
+        if shuffle:
+            dataset = dataset.shuffle(buffer_size=10000)
+
+        dataset = dataset.repeat(None) # Infinite iterations: let experiment determine num_epochs
+        dataset = dataset.batch(batch_size)
+        
+        iterator = dataset.make_one_shot_iterator()
+        features, labels = iterator.get_next()
+        
+        return features, labels
+    return _input_fn
 
 
-def cnn_input_fn(dir, classes, batch_size, shuffle=False, repeat_count=1):
-    files = [y for x in os.walk(dir) for y in glob(os.path.join(x[0], '*.png'))]
-    labels = get_labels_from_files(files)
-    num_labels = convert_labels_to_numbers(labels, classes)
-
-    tf_files = tf.constant(files)
-    tf_labels = tf.constant(num_labels)
-
-    data = get_dataset(tf_files, tf_labels, shuffle, batch_size, repeat_count)
-
-    iterator = data.make_one_shot_iterator()
-    batch_images, batch_labels = iterator.get_next()
-    return batch_images, batch_labels
-
-
-
-def cnn_model_fn(features, labels, mode):
+def cnn_model_fn(features, labels, mode, params):
     if mode == tf.estimator.ModeKeys.PREDICT:
         tf.logging.info("my_model_fn: PREDICT, {}".format(mode))
     elif mode == tf.estimator.ModeKeys.EVAL:
@@ -102,44 +106,35 @@ def cnn_model_fn(features, labels, mode):
     elif mode == tf.estimator.ModeKeys.TRAIN:
         tf.logging.info("my_model_fn: TRAIN, {}".format(mode))
 
-    #    feature_columns = [
-#        tf.feature_column.numeric_column(key="Image", dtype=tf.float64, shape=SHAPE),
-#        tf.feature_column.numeric_column(key="Label", dtype=tf.int32)
-#    ]
-
-    feature_columns = [
-#        tf.feature_column.numeric_column(key="Image", dtype=tf.float64, shape=SHAPE)
-        tf.feature_column.numeric_column(key="Image", shape=SHAPE)
-    ]
 
     #Input layer
-    input_layer = tf.feature_column.input_layer(features, feature_columns)
+    input_layer = tf.reshape(features, [-1, 128, 128, 1], name='input_reshape')
+    tf.summary.image('input', input_layer)
 
 
     #Convolutional layer
-    conv1 = tf.layers.conv2d(input = input_layer,
+    conv1 = tf.layers.conv2d(inputs = input_layer,
                              filters=32,
                              kernel_size=[5,5],
                              padding="same",
+                             strides=(2,2),
                              activation=tf.nn.relu)
 
     #Pooling Layer #1
-    pool1 = tf.layers.max_pooling2D(inputs=conv1,
-                                    pool_size=[2,2],
-                                    strides=2)
+    pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=(2, 2), strides=2, padding='same')
+
 
     #Convolutional Layer#2 and Poling #2
-    conv2 = tf.layers.conv2d(input = pool1,
+    conv2 = tf.layers.conv2d(inputs = pool1,
                              filters=64,
                              kernel_size=[5,5],
                              padding="same",
+                             strides=(2,2),
                              activation=tf.nn.relu)
-    pool2 = tf.layers.max_pooling2D(inputs=conv2,
-                                    pool_size=[2,2],
-                                    strides=2)
+    pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=(2,2), strides=2, padding='same')
 
     #Dense Layer
-    pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
+    pool2_flat = tf.reshape(pool2, [-1, 8 * 8 * 64])
     dense = tf.layers.dense(inputs=pool2_flat,
                             units=1024,
                             activation=tf.nn.relu)
@@ -180,28 +175,39 @@ def cnn_model_fn(features, labels, mode):
           mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
-'''
-#Create Dataset objects
-train_data = get_dataset(tf_train_files, tf_train_classes, BATCH_SIZE)
-test_data = get_dataset(tf_test_files, tf_test_classes, BATCH_SIZE)
+run_config = tf.estimator.RunConfig(
+#    model_dir=args.model_directory, 
+    model_dir="cnn_dataset_model", 
+    save_checkpoints_steps=20, 
+    save_summary_steps=20)
+
+hparams = {
+    'learning_rate': 1e-3, 
+    'dropout_rate': 0.4,
+#    'data_directory': os.path.expanduser(args.data_directory)
+    'data_directory': "."
+}
+
+classifier = tf.estimator.Estimator(
+    model_fn=cnn_model_fn, 
+    config=run_config,
+    params=hparams
+)
 
 
-#Create Iterator object
-iterator = Iterator.from_structure(train_data.output_types, train_data.output_shapes)
-next_element = iterator.get_next()
+train_batch_size = 1000
+    
+#train_input_fn = data_input_fn(glob.glob(os.path.join(hparams['data_directory'], 'train-*.tfrecords')), batch_size=train_batch_size)
+#eval_input_fn = data_input_fn(os.path.join(hparams['data_directory'], 'validation.tfrecords'), batch_size=100)
 
-#Create two initializations to switch between datasets
-train_init_op = iterator.make_initializer(train_data)
-test_init_op = iterator.make_initializer(test_data)
-'''
+train_input_fn = data_input_fn(['train_tfrecords'], batch_size=train_batch_size)
+eval_input_fn = data_input_fn(['test_tfrecords'], batch_size=100)
 
+#train_input_fn = data_input_fn('train-tfrecords', batch_size=train_batch_size)
+#eval_input_fn = data_input_fn('test.tfrecords', batch_size=100)
 
-classifier = tf.estimator.Estimator(model_fn=cnn_model_fn,
-        model_dir="CNN_Model")
+train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=40)
+eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn, steps=100, start_delay_secs=0)
 
-#classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, params={
-#        'feature_columns': cnn_feature_columns})
-
-
-classifier.train(input_fn=lambda: cnn_input_fn(TRAIN_DIR, classes, BATCH_SIZE, shuffle=True, repeat_count=500))
+tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)
 
