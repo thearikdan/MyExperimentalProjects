@@ -8,11 +8,11 @@ import cv2
 import numpy as np
 import sys
 
-#TRAIN_DIR = "/raid/data/cnn/m40/train"
-#TEST_DIR = "/raid/data/cnn/m40/test" 
+TRAIN_DIR = "/raid/data/cnn/m40/train"
+TEST_DIR = "/raid/data/cnn/m40/test" 
 
-TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
-TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
+#TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
+#TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
 
 
 BATCH_SIZE = 20
@@ -76,9 +76,6 @@ writer = tf.python_io.TFRecordWriter(train_filename)
 for i in range (len(train_files)):
     img = load_image(train_files[i])
     label = numeric_train_classes[i]
-
-#    feature = {'train/label': _int64_feature(label),
-#               'train/image': _bytes_feature(tf.compat.as_bytes(img.tostring()))}
 
     feature = {'label': _int64_feature(label),
                'image': _bytes_feature(tf.compat.as_bytes(img.tostring()))}

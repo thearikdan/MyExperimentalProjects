@@ -7,11 +7,11 @@ import os
 from glob import glob
 from os.path import dirname
 
-#TRAIN_DIR = "/raid/data/cnn/m40/train"
-#TEST_DIR = "/raid/data/cnn/m40/test" 
+TRAIN_DIR = "/raid/data/cnn/m40/train"
+TEST_DIR = "/raid/data/cnn/m40/test" 
 
-TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
-TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
+#TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
+#TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
 
 
 BATCH_SIZE = 20
@@ -51,21 +51,6 @@ train_labels = get_labels_from_files(train_files)
 
 classes = list(set(train_labels))
 CLASS_COUNT = len(classes)
-
-'''
-train_classes = convert_labels_to_numbers(train_labels, classes)
-
-tf_train_files = tf.constant(train_files)
-tf_train_classes = tf.constant(train_classes)
-
-
-test_files = [y for x in os.walk(TEST_DIR) for y in glob(os.path.join(x[0], '*.png'))]
-test_labels = get_labels_from_files(test_files)
-test_classes = convert_labels_to_numbers(test_labels, classes)
-
-tf_test_files = tf.constant(test_files)
-tf_test_classes = tf.constant(test_classes)
-'''
 
 
 def data_input_fn(filenames, batch_size=1000, shuffle=False):
@@ -203,11 +188,9 @@ train_batch_size = 1000
 train_input_fn = data_input_fn(['train_tfrecords'], batch_size=train_batch_size)
 eval_input_fn = data_input_fn(['test_tfrecords'], batch_size=100)
 
-#train_input_fn = data_input_fn('train-tfrecords', batch_size=train_batch_size)
-#eval_input_fn = data_input_fn('test.tfrecords', batch_size=100)
 
 train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=40)
 eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn, steps=100, start_delay_secs=0)
 
 tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)
-
+#classifier.train(input_fn=train_input_fn, max_steps=1000)
