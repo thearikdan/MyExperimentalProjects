@@ -8,7 +8,10 @@ from glob import glob
 from os.path import dirname
 
 TRAIN_DIR = "/raid/data/cnn/m40/train"
-TEST_DIR = "/raid/data/cnn/m40/test" 
+TEST_DIR = "/raid/data/cnn/m40/test"
+
+DATA_DIR = "data/cnn/"
+MODEL_DIR = "generated_model/cnn/"
 
 #TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
 #TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
@@ -162,7 +165,7 @@ def cnn_model_fn(features, labels, mode, params):
 
 run_config = tf.estimator.RunConfig(
 #    model_dir=args.model_directory, 
-    model_dir="cnn_dataset_model", 
+    model_dir= MODEL_DIR + "dataset_model",
     save_checkpoints_steps=20, 
     save_summary_steps=20)
 
@@ -185,12 +188,12 @@ train_batch_size = 1000
 #train_input_fn = data_input_fn(glob.glob(os.path.join(hparams['data_directory'], 'train-*.tfrecords')), batch_size=train_batch_size)
 #eval_input_fn = data_input_fn(os.path.join(hparams['data_directory'], 'validation.tfrecords'), batch_size=100)
 
-train_input_fn = data_input_fn(['train_tfrecords'], batch_size=train_batch_size)
-eval_input_fn = data_input_fn(['test_tfrecords'], batch_size=100)
+train_input_fn = data_input_fn([DATA_DIR + 'train_tfrecords'], batch_size=train_batch_size)
+eval_input_fn = data_input_fn([DATA_DIR + 'test_tfrecords'], batch_size=100)
 
 
-train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=40)
+train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=100)
 eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn, steps=100, start_delay_secs=0)
 
 tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)
-#classifier.train(input_fn=train_input_fn, max_steps=1000)
+

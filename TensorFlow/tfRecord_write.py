@@ -10,6 +10,7 @@ import sys
 
 TRAIN_DIR = "/raid/data/cnn/m40/train"
 TEST_DIR = "/raid/data/cnn/m40/test" 
+DATA_DIR = "data/cnn/"
 
 #TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
 #TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
@@ -68,7 +69,7 @@ CLASS_COUNT = len(classes)
 
 numeric_train_classes = convert_labels_to_numbers(train_labels, classes)
 
-train_filename = "train_tfrecords"
+train_filename = DATA_DIR + "train_tfrecords"
 
 writer = tf.python_io.TFRecordWriter(train_filename)
 
@@ -94,7 +95,7 @@ test_labels = get_labels_from_files(test_files)
 numeric_test_classes = convert_labels_to_numbers(test_labels, classes)
 
 
-test_filename = "test_tfrecords"
+test_filename = DATA_DIR + "test_tfrecords"
 
 writer = tf.python_io.TFRecordWriter(test_filename)
 
