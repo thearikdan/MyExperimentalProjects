@@ -15,7 +15,7 @@ from utils import file_op
 TRAIN_DIR = "/media/ara/HDD/data/mvcnn/m40_small/train"
 TEST_DIR = "/media/ara/HDD/data/mvcnn/m40_small/test"
 
-DATA_DIR = "data/mvcnn/"
+TFRECORD_DIR = "data/mvcnn/"
 
 BATCH_SIZE = 20
 SHAPE = [128, 128]
@@ -92,34 +92,35 @@ def _bytes_feature(value):
   return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
 
+def create_tfrecord_file(root_dir, tfrecord_dir):
+    labels = get_labels(root_dir)
 
-labels = get_labels(TRAIN_DIR)
+    for label in labels:
+        train_filename = tfrecord_dir + label + "_tfrecords"
+        writer = tf.python_io.TFRecordWriter(train_filename)
 
-for label in labels:
-    train_filename = DATA_DIR + "train_" + label + "_tfrecords"
-    writer = tf.python_io.TFRecordWriter(train_filename)
+        feature = {}
+        label_index = labels.index(label)
+        objects = get_objects_of_class(root_dir, label)
+        feature['label'] = _int64_feature(label_index)
 
-    feature = {}
-    label_index = labels.index(label)
-    objects = get_objects_of_class(TRAIN_DIR, label)
-    feature['label'] = _int64_feature(label_index)
-
-    for object_ in objects:
-        views = get_views_of_object(TRAIN_DIR, label, object_, ".png")
-        view_count = len(views)
-        feature['view_count'] = _int64_feature(view_count)
-        paths = []
-        for i in range (view_count):
-            path = get_full_path(TRAIN_DIR, label, object_, views[i])
-            img = load_image(path)
-#            desc_key = "description_" + str(i)
-            view_key = "view_" + str(i)
-            feature[view_key] = _bytes_feature(tf.compat.as_bytes(img.tostring()))
+        for object_ in objects:
+            views = get_views_of_object(root_dir, label, object_, ".png")
+            view_count = len(views)
+            feature['view_count'] = _int64_feature(view_count)
+            paths = []
+            for i in range (view_count):
+                path = get_full_path(root_dir, label, object_, views[i])
+                img = load_image(path)
+#                desc_key = "description_" + str(i)
+                view_key = "view_" + str(i)
+                feature[view_key] = _bytes_feature(tf.compat.as_bytes(img.tostring()))
         
-        example = tf.train.Example(features=tf.train.Features(feature=feature))
-        writer.write(example.SerializeToString())
+            example = tf.train.Example(features=tf.train.Features(feature=feature))
+            writer.write(example.SerializeToString())
 
-    writer.close()
-    sys.stdout.flush()
+        writer.close()
+        sys.stdout.flush()
    
-
+create_tfrecord_file(TRAIN_DIR, TFRECORD_DIR + "train/")
+create_tfrecord_file(TEST_DIR, TFRECORD_DIR + "test/")
