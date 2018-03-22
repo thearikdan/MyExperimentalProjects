@@ -112,7 +112,8 @@ def create_tfrecord_file(root_dir, tfrecord_dir):
             for i in range (view_count):
                 path = get_full_path(root_dir, label, object_, views[i])
                 img = load_image(path)
-#                desc_key = "description_" + str(i)
+                desc_key = "description_" + str(i)
+                feature[desc_key] = _bytes_feature(tf.compat.as_bytes(views[i]))
                 view_key = "view_" + str(i)
                 feature[view_key] = _bytes_feature(tf.compat.as_bytes(img.tostring()))
         
