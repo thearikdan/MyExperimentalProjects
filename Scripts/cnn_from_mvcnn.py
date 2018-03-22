@@ -4,8 +4,8 @@ from utils import file_op
 from os.path import join
 
 
-source_dir = "/raid/data/mvcnn/m40"
-dest_dir = "/raid/data/cnn/m40"
+source_dir = "/media/ara/HDD/data/mvcnn/m40"
+dest_dir = "/media/ara/HDD/data/cnn/m40"
 
 
 def get_first_file_with_ext(files, ext):

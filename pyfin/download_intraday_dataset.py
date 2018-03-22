@@ -3,7 +3,7 @@ from read_write import read
 
 start_time = time.clock()
 
-N = 7
+N = 14
 
 names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt", "tickers/nasdaqlisted_full.txt", "tickers/otherlisted.txt"]
 

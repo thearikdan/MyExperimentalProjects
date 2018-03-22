@@ -17,7 +17,8 @@ check_count = 2
 
 
 def send_message_if_trending():
-    date_time = datetime.now() - timedelta(minutes = 5)
+#    date_time = datetime.now() - timedelta(minutes = 5)
+    date_time = datetime.now()
     trending = observation.is_intraday_trending(symbol, date_time, minutes_interval, percentage, check_count)
     if (trending):
         message = "%s %s is trending" % (date_time.strftime("%Y-%m-%d %H:%M"), symbol)

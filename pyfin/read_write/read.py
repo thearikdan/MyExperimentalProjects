@@ -43,7 +43,7 @@ def __get_intraday_data_from_web(ticker, start, end):
         quote = indicators['quote']
 
     except Exception as e:
-        print "Could not download data for " + ticker + " for " + start_full_day.strftime("%Y-%m-%d")
+        print "Could not download data for " + ticker + " for " + start.strftime("%Y-%m-%d")
         return (False, [], [], [], [], [], [])
 
     is_data_available = len(quote[0]) > 0
