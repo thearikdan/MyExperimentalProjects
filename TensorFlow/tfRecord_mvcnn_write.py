@@ -43,33 +43,11 @@ def get_views_of_object(root_dir, class_, object_, ext):
     return views
 
 
-def get_classes_names_from_files(files):
-    classes = []
-    for f in files:
-        directory = dirname(f)
-        dirs = directory.split('/')
-        dirs_len = len(dirs)
-        classes.append(dirs[dirs_len - 2])
-    return classes
-
-
-def convert_labels_to_numbers(labels, classes):
-    label_numbers = []
-    label_count = len(labels)
-    class_count = len(classes)
-    for i in range (label_count):
-        for j in range (class_count):
-            if labels[i] == classes[j]:
-                label_numbers.append(j)
-    return label_numbers
-
-
 def get_full_path(root_dir, class_, object_, view):
     path = join(object_, view)
     path = join(class_, path)
     path = join(root_dir, path)
     return path    
-
 
 
 def load_image(addr):
