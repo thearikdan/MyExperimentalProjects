@@ -86,7 +86,6 @@ def create_tfrecord_file(root_dir, tfrecord_dir):
             views = get_views_of_object(root_dir, label, object_, ".png")
             view_count = len(views)
             feature['view_count'] = _int64_feature(view_count)
-            paths = []
             for i in range (view_count):
                 path = get_full_path(root_dir, label, object_, views[i])
                 img = load_image(path)
