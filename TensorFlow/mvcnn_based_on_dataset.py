@@ -16,7 +16,7 @@ MODEL_DIR = "generated_model/mvcnn/"
 #TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
 
 
-BATCH_SIZE = 32
+BATCH_SIZE = 4
 SHAPE = [128, 128]
 
 
@@ -76,7 +76,8 @@ def data_input_fn(filenames, batch_size=1000, shuffle=False):
         dataset = dataset.repeat()
         dataset = dataset.batch(BATCH_SIZE)
 
-        iterator = dataset.make_initializable_iterator()
+#        iterator = dataset.make_initializable_iterator()
+        iterator = dataset.make_one_shot_iterator()
 
         features, labels = iterator.get_next()
         return features, labels
