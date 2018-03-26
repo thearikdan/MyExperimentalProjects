@@ -24,8 +24,8 @@ def _parser(record):
         view_key = "view_" + str(i)
         descriptions_list.append(parsed_record[desc_key])
         image_decoded = tf.decode_raw(parsed_record[view_key], tf.float32)
-        images_list.append(image_decoded)
-#        image_resized = tf.image.resize_images(image_decoded, [128, 128])
+        image_resized = tf.reshape(image_decoded, [128, 128])
+        images_list.append(image_resized)
 
     images = images_list[0]
     descriptions = [descriptions_list[0]]
@@ -41,7 +41,8 @@ def _parser(record):
     return label, view_count, descriptions, images
 
 
-TRAIN_TFRECORD_DIR = "/media/ara/HDD/MyProjects/TensorFlow/data/mvcnn/train"
+#TRAIN_TFRECORD_DIR = "/media/ara/HDD/MyProjects/TensorFlow/data/mvcnn/train"
+TRAIN_TFRECORD_DIR = "data/mvcnn/train"
 
 
 filenames = tf.placeholder(tf.string, shape=[None])

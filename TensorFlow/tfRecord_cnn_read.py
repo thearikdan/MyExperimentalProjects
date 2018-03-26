@@ -1,12 +1,17 @@
 import tensorflow as tf
 
+DATA_DIR = "data/cnn/"
+OUTPUT_DIR = "output/images/cnn/"
+
+
 def _parser(record):
     features={
         'label': tf.FixedLenFeature([], tf.int64),
         'image': tf.FixedLenFeature([], tf.string)
     }
     parsed_record = tf.parse_single_example(record, features)
-    image = tf.decode_raw(parsed_record['image'], tf.float32)
+    image_decoded = tf.decode_raw(parsed_record['image'], tf.float32)
+    image = tf.reshape(image_decoded, [128, 128])
 
     label = tf.cast(parsed_record['label'], tf.int32)
 
@@ -27,12 +32,14 @@ sess = tf.Session()
 
 #Run tfRecord_write.py to get tfrecord files
 
-training_filenames = ["train_tfrecords"]
+training_filenames = [DATA_DIR + "train_tfrecords"]
 sess.run(iterator.initializer, feed_dict={filenames: training_filenames})
 
 for i in range (100):
     value = sess.run(next_element)
-    print value
+    images = value[0]
+    labels = value[1]
+    print images
 
 
 #validation_filenames = ["test.tfrecords"]
