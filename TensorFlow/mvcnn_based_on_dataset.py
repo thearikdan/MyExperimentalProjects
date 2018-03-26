@@ -74,7 +74,7 @@ def data_input_fn(filenames, batch_size=1000, shuffle=False):
         dataset = dataset.map(_parser)
 
         dataset = dataset.repeat()
-        dataset = dataset.batch(32)
+        dataset = dataset.batch(BATCH_SIZE)
 
         iterator = dataset.make_initializable_iterator()
 
@@ -99,38 +99,76 @@ def mvcnn_model_fn(features, labels, mode, params):
 
     #Input layer
     images = features["images"]
-    input_layer = tf.reshape(images, [-1, 128, 128, 1], name='input_reshape')
+    images_resized = tf.reshape(images, [-1, 80, 128, 128, 1], name='input_resized')
+    shape = images_resized.get_shape()
+    input_layer = tf.reshape(images, [-1, shape[2], shape[3], shape[4]], name='input_layer')
     tf.summary.image('input', input_layer)
 
 
     #Convolutional layer
     conv1 = tf.layers.conv2d(inputs = input_layer,
-                             filters=32,
-                             kernel_size=[5,5],
+                             filters=96,
+                             kernel_size=[7,7],
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
 
     #Pooling Layer #1
-    pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=(2, 2), strides=2, padding='same')
+    pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=(3,3), strides=2, padding='same')
 
 
-    #Convolutional Layer#2 and Poling #2
+    #Convolutional Layer#2 and Pooling #2
     conv2 = tf.layers.conv2d(inputs = pool1,
-                             filters=64,
+                             filters=256,
                              kernel_size=[5,5],
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
-    pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=(2,2), strides=2, padding='same')
+    pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=(3,3), strides=2, padding='same')
 
+
+    #Convolutional Layer#3
+    conv3 = tf.layers.conv2d(inputs = pool2,
+                             filters=512,
+                             kernel_size=[3,3],
+                             padding="same",
+                             strides=(1,1),
+                             activation=tf.nn.relu)
+
+
+    #Convolutional Layer#4
+    conv4 = tf.layers.conv2d(inputs = conv3,
+                             filters=512,
+                             kernel_size=[3,3],
+                             padding="same",
+                             strides=(1,1),
+                             activation=tf.nn.relu)
+
+
+    #Convolutional Layer#5 and Pooling #5
+    conv5 = tf.layers.conv2d(inputs = conv4,
+                             filters=512,
+                             kernel_size=[3,3],
+                             padding="same",
+                             strides=(1,1),
+                             activation=tf.nn.relu)
+    pool5 = tf.layers.max_pooling2d(inputs=conv5, pool_size=(3,3), strides=2, padding='same')
+
+    pool5_shape = pool5.get_shape()
+
+    inf = tf.reshape(pool5, [-1, 80, pool5_shape[1], pool5_shape[2], pool5_shape[3]])
+
+    reduce_inf = tf.reduce_max(inf, reduction_indices=1)
+
+    #not sure id f this is correct!
+    reduce_inf_flat = tf.contrib.layers.flatten(reduce_inf)
     #Dense Layer
-    pool2_flat = tf.reshape(pool2, [-1, 8 * 8 * 64])
-    dense = tf.layers.dense(inputs=pool2_flat,
-                            units=1024,
+
+    dense = tf.layers.dense(inputs=reduce_inf_flat,
+                            units=4096,
                             activation=tf.nn.relu)
     dropout = tf.layers.dropout(inputs=dense,
-                                rate=0.4,
+                                rate=0.5,
                                 training=mode == tf.estimator.ModeKeys.TRAIN)
 
     #Logits layer
