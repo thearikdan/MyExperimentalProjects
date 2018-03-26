@@ -3,18 +3,18 @@ from utils import file_op
 from os.path import join
 
 def _parser(record):
-    features={
+    file_features={
         'label': tf.FixedLenFeature([], tf.int64),
         'view_count': tf.FixedLenFeature([], tf.int64)
     }
     count = 80  #need to determine view_count dynamically
     for i in range(count):
         desc_key = "description_" + str(i)
-        features[desc_key] = tf.FixedLenFeature([], tf.string)
+        file_features[desc_key] = tf.FixedLenFeature([], tf.string)
         view_key = "view_" + str(i)
-        features[view_key] = tf.FixedLenFeature([], tf.string)
+        file_features[view_key] = tf.FixedLenFeature([], tf.string)
 
-    parsed_record = tf.parse_single_example(record, features)
+    parsed_record = tf.parse_single_example(record, file_features)
 
     images_list = []
     descriptions_list = []
@@ -38,7 +38,12 @@ def _parser(record):
     label = tf.cast(parsed_record['label'], tf.int32)
     view_count = tf.cast(parsed_record['view_count'], tf.int32)
 
-    return label, view_count, descriptions, images
+    feature = {}
+    feature["view_count"] = view_count
+    feature["decriptions"] = descriptions
+    feature["images"] = images
+
+    return feature, label
 
 
 #TRAIN_TFRECORD_DIR = "/media/ara/HDD/MyProjects/TensorFlow/data/mvcnn/train"

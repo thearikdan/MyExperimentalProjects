@@ -7,86 +7,88 @@ import os
 from glob import glob
 from os.path import dirname
 
-TRAIN_DIR = "/raid/data/mvcnn/m40_small/train"
-TEST_DIR = "/raid/data/mvcnn/m40_small/test"
+TRAIN_TFRECORD_DIR = "data/mvcnn/train/"
+TEST_TFRECORD_DIR = "data/mvcnn/test/"
 
-DATA_DIR = "data/mvcnn/"
-MODEL_DIR = "generated_model/cnn/"
+MODEL_DIR = "generated_model/mvcnn/"
 
 #TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
 #TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
 
 
-BATCH_SIZE = 20
+BATCH_SIZE = 32
 SHAPE = [128, 128]
 
-def get_labels_from_files(files):
-    labels = []
-    for f in files:
-        directory = dirname(f)
-        dirs = directory.split('/')
-        dirs_len = len(dirs)
-        labels.append(dirs[dirs_len - 1])
-    return labels
 
-
-def convert_labels_to_numbers(labels, classes):
-    label_numbers = []
-    label_count = len(labels)
-    class_count = len(classes)
-    for i in range (label_count):
-        for j in range (class_count):
-            if labels[i] == classes[j]:
-                label_numbers.append(j)
-    return label_numbers
-
-
-def input_parser(img_path, label):
-    one_hot = tf.one_hot(label, CLASS_COUNT)
-
-    img_file = tf.read_file(img_path)
-    img_decoded = tf.image.decode_image(img_file, channels=1)
-    return img_decoded, one_hot
-
-
-train_files = [y for x in os.walk(TRAIN_DIR) for y in glob(os.path.join(x[0], '*.png'))]
-train_labels = get_labels_from_files(train_files)
-
-classes = list(set(train_labels))
-CLASS_COUNT = len(classes)
+CLASS_COUNT = 40
 
 
 def data_input_fn(filenames, batch_size=1000, shuffle=False):
-    
     def _parser(record):
-        features={
+        file_features={
             'label': tf.FixedLenFeature([], tf.int64),
-            'image': tf.FixedLenFeature([], tf.string)
+            'view_count': tf.FixedLenFeature([], tf.int64)
         }
-        parsed_record = tf.parse_single_example(record, features)
-        image = tf.decode_raw(parsed_record['image'], tf.float32)
+        count = 80  #need to determine view_count dynamically
+        for i in range(count):
+            desc_key = "description_" + str(i)
+            file_features[desc_key] = tf.FixedLenFeature([], tf.string)
+            view_key = "view_" + str(i)
+            file_features[view_key] = tf.FixedLenFeature([], tf.string)
+
+        parsed_record = tf.parse_single_example(record, file_features)
+
+        images_list = []
+        descriptions_list = []
+
+        for i in range (count):
+            desc_key = "description_" + str(i)
+            view_key = "view_" + str(i)
+            descriptions_list.append(parsed_record[desc_key])
+            image_decoded = tf.decode_raw(parsed_record[view_key], tf.float32)
+            image_resized = tf.reshape(image_decoded, [128, 128])
+            images_list.append(image_resized)
+
+        images = images_list[0]
+        descriptions = [descriptions_list[0]]
+
+        for i in range (count - 1):
+            images = tf.concat([images, images_list[i+1]], 0)
+            descriptions = tf.concat([descriptions, [descriptions_list[i+1]]], 0)
+
 
         label = tf.cast(parsed_record['label'], tf.int32)
+        view_count = tf.cast(parsed_record['view_count'], tf.int32)
 
-        return image, label
-        
+        feature = {}
+        feature["view_count"] = view_count
+        feature["decriptions"] = descriptions
+        feature["images"] = images
+
+        return feature, label
+
     def _input_fn():
         dataset = tf.data.TFRecordDataset(filenames)
-        dataset = dataset.map(_parser)
-        if shuffle:
-            dataset = dataset.shuffle(buffer_size=10000)
 
-        dataset = dataset.repeat(None) # Infinite iterations: let experiment determine num_epochs
-        dataset = dataset.batch(batch_size)
-        
-        iterator = dataset.make_one_shot_iterator()
+
+        dataset = dataset.map(_parser)
+
+        dataset = dataset.repeat()
+        dataset = dataset.batch(32)
+
+        iterator = dataset.make_initializable_iterator()
+
         features, labels = iterator.get_next()
-        
         return features, labels
+
+#        labels, view_count, descriptions, images = iterator.get_next()
+#        return labels, view_count, descriptions, images
+
     return _input_fn
 
 
-def cnn_model_fn(features, labels, mode, params):
+def mvcnn_model_fn(features, labels, mode, params):
+
     if mode == tf.estimator.ModeKeys.PREDICT:
         tf.logging.info("my_model_fn: PREDICT, {}".format(mode))
     elif mode == tf.estimator.ModeKeys.EVAL:
@@ -96,7 +98,8 @@ def cnn_model_fn(features, labels, mode, params):
 
 
     #Input layer
-    input_layer = tf.reshape(features, [-1, 128, 128, 1], name='input_reshape')
+    images = features["images"]
+    input_layer = tf.reshape(images, [-1, 128, 128, 1], name='input_reshape')
     tf.summary.image('input', input_layer)
 
 
@@ -177,19 +180,15 @@ hparams = {
 }
 
 classifier = tf.estimator.Estimator(
-    model_fn=cnn_model_fn, 
+    model_fn=mvcnn_model_fn,
     config=run_config,
     params=hparams
 )
 
 
-train_batch_size = 1000
-    
-#train_input_fn = data_input_fn(glob.glob(os.path.join(hparams['data_directory'], 'train-*.tfrecords')), batch_size=train_batch_size)
-#eval_input_fn = data_input_fn(os.path.join(hparams['data_directory'], 'validation.tfrecords'), batch_size=100)
 
-train_input_fn = data_input_fn([DATA_DIR + 'train_tfrecords'], batch_size=train_batch_size)
-eval_input_fn = data_input_fn([DATA_DIR + 'test_tfrecords'], batch_size=100)
+train_input_fn = data_input_fn([TRAIN_TFRECORD_DIR + 'bathtub_tfrecords', TRAIN_TFRECORD_DIR + 'bed_tfrecords', TRAIN_TFRECORD_DIR + 'bench_tfrecords'], batch_size=BATCH_SIZE)
+eval_input_fn = data_input_fn([TEST_TFRECORD_DIR + 'bathtub_tfrecords', TEST_TFRECORD_DIR + 'bed_tfrecords', TEST_TFRECORD_DIR + 'bench_tfrecords'], batch_size=100)
 
 
 train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=100)
