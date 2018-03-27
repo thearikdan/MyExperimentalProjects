@@ -1,5 +1,3 @@
-#Based on https://kratzert.github.io/2017/06/15/example-of-tensorflows-new-input-pipeline.html
-
 import tensorflow as tf
 from tensorflow.contrib.data import Dataset, Iterator
 
@@ -12,6 +10,8 @@ TRAIN_TFRECORD_DIR = "data/mvcnn/m40_small/train/"
 TEST_TFRECORD_DIR = "data/mvcnn/m40_small/test/"
 
 MODEL_DIR = "generated_model/mvcnn/m40_small/"
+
+file_op.ensure_dir_exists(MODEL_DIR)
 
 #TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
 #TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
@@ -82,9 +82,6 @@ def data_input_fn(filenames, batch_size=1000, shuffle=False):
 
         features, labels = iterator.get_next()
         return features, labels
-
-#        labels, view_count, descriptions, images = iterator.get_next()
-#        return labels, view_count, descriptions, images
 
     return _input_fn
 
@@ -207,7 +204,6 @@ def mvcnn_model_fn(features, labels, mode, params):
 
 
 run_config = tf.estimator.RunConfig(
-#    model_dir=args.model_directory, 
     model_dir= MODEL_DIR + "dataset_model",
     save_checkpoints_steps=20, 
     save_summary_steps=20)
@@ -215,7 +211,6 @@ run_config = tf.estimator.RunConfig(
 hparams = {
     'learning_rate': 1e-3, 
     'dropout_rate': 0.4,
-#    'data_directory': os.path.expanduser(args.data_directory)
     'data_directory': "."
 }
 

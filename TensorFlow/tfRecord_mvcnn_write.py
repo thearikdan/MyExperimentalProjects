@@ -99,6 +99,11 @@ def create_tfrecord_file(root_dir, tfrecord_dir):
 
         writer.close()
         sys.stdout.flush()
-   
-create_tfrecord_file(TRAIN_DIR, TFRECORD_DIR + "train/")
-create_tfrecord_file(TEST_DIR, TFRECORD_DIR + "test/")
+
+TFRECORD_TRAIN_DIR = TFRECORD_DIR + "train/"
+file_op.ensure_dir_exists(TFRECORD_TRAIN_DIR)
+create_tfrecord_file(TRAIN_DIR, TFRECORD_TRAIN_DIR)
+
+TFRECORD_TEST_DIR = TFRECORD_DIR + "test/"
+file_op.ensure_dir_exists(TFRECORD_TEST_DIR)
+create_tfrecord_file(TEST_DIR, TFRECORD_TEST_DIR)

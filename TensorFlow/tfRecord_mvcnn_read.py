@@ -66,7 +66,8 @@ next_element = iterator.get_next()
 
 sess = tf.Session()
 
-'''
+
+
 fs = file_op.get_only_files(TRAIN_TFRECORD_DIR)
 
 file_count = len(fs)
@@ -75,15 +76,12 @@ training_filenames = []
 for i in range (file_count):
     training_filenames.append(join(TRAIN_TFRECORD_DIR, fs[i]))
 
-
-
 sess.run(iterator.initializer, feed_dict={filenames: training_filenames})
-
 
 for i in range (20):
     value = sess.run(next_element)
     print value
-'''
+
 
 
 
