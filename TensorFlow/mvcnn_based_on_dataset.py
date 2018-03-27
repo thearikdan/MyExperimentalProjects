@@ -6,11 +6,12 @@ from tensorflow.contrib.data import Dataset, Iterator
 import os
 from glob import glob
 from os.path import dirname
+from utils import file_op
 
-TRAIN_TFRECORD_DIR = "data/mvcnn/train/"
-TEST_TFRECORD_DIR = "data/mvcnn/test/"
+TRAIN_TFRECORD_DIR = "data/mvcnn/m40_small/train/"
+TEST_TFRECORD_DIR = "data/mvcnn/m40_small/test/"
 
-MODEL_DIR = "generated_model/mvcnn/"
+MODEL_DIR = "generated_model/mvcnn/m40_small/"
 
 #TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
 #TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
@@ -161,10 +162,10 @@ def mvcnn_model_fn(features, labels, mode, params):
 
     reduce_inf = tf.reduce_max(inf, reduction_indices=1)
 
-    #not sure id f this is correct!
+    #not sure if this is correct!!!
     reduce_inf_flat = tf.contrib.layers.flatten(reduce_inf)
-    #Dense Layer
 
+    #Dense Layer
     dense = tf.layers.dense(inputs=reduce_inf_flat,
                             units=4096,
                             activation=tf.nn.relu)
@@ -225,9 +226,20 @@ classifier = tf.estimator.Estimator(
 )
 
 
+train_files = file_op.get_only_files(TRAIN_TFRECORD_DIR)
+file_count = len(train_files)
+for i in range(file_count):
+    train_files[i] = TRAIN_TFRECORD_DIR + train_files[i]
 
-train_input_fn = data_input_fn([TRAIN_TFRECORD_DIR + 'bathtub_tfrecords', TRAIN_TFRECORD_DIR + 'bed_tfrecords', TRAIN_TFRECORD_DIR + 'bench_tfrecords'], batch_size=BATCH_SIZE)
-eval_input_fn = data_input_fn([TEST_TFRECORD_DIR + 'bathtub_tfrecords', TEST_TFRECORD_DIR + 'bed_tfrecords', TEST_TFRECORD_DIR + 'bench_tfrecords'], batch_size=100)
+train_input_fn = data_input_fn(train_files, batch_size=BATCH_SIZE)
+
+
+test_files = file_op.get_only_files(TEST_TFRECORD_DIR)
+file_count = len(train_files)
+for i in range(file_count):
+    test_files[i] = TEST_TFRECORD_DIR + test_files[i]
+
+eval_input_fn = data_input_fn(test_files, batch_size=100)
 
 
 train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=100)
@@ -235,3 +247,5 @@ eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn, steps=100, start_delay
 
 tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)
 
+#classifier.train(input_fn=train_input_fn, max_steps=100)
+#classifier.evaluate(input_fn=eval_input_fn, steps=100)

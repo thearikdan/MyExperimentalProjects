@@ -46,8 +46,9 @@ def _parser(record):
     return feature, label
 
 
-#TRAIN_TFRECORD_DIR = "/media/ara/HDD/MyProjects/TensorFlow/data/mvcnn/train"
-TRAIN_TFRECORD_DIR = "data/mvcnn/train"
+
+TRAIN_TFRECORD_DIR = "data/mvcnn/m40_small/train"
+TEST_TFRECORD_DIR = "data/mvcnn/m40_small/test"
 
 
 filenames = tf.placeholder(tf.string, shape=[None])
@@ -65,6 +66,7 @@ next_element = iterator.get_next()
 
 sess = tf.Session()
 
+'''
 fs = file_op.get_only_files(TRAIN_TFRECORD_DIR)
 
 file_count = len(fs)
@@ -73,13 +75,29 @@ training_filenames = []
 for i in range (file_count):
     training_filenames.append(join(TRAIN_TFRECORD_DIR, fs[i]))
 
+
+
 sess.run(iterator.initializer, feed_dict={filenames: training_filenames})
+
 
 for i in range (20):
     value = sess.run(next_element)
     print value
+'''
 
 
-#validation_filenames = ["test.tfrecords"]
-#sess.run(iterator.initializer, feed_dict={filenames: validation_filenames})
+
+fs = file_op.get_only_files(TEST_TFRECORD_DIR)
+
+file_count = len(fs)
+test_filenames = []
+
+for i in range(file_count):
+    test_filenames.append(join(TEST_TFRECORD_DIR, fs[i]))
+
+sess.run(iterator.initializer, feed_dict={filenames: test_filenames})
+
+for i in range (20):
+    value = sess.run(next_element)
+    print value
 

@@ -15,7 +15,7 @@ TEST_DIR = "/raid/data/mvcnn/m40_small/test"
 #TRAIN_DIR = "/media/ara/HDD/data/mvcnn/m40_small/train"
 #TEST_DIR = "/media/ara/HDD/data/mvcnn/m40_small/test"
 
-TFRECORD_DIR = "data/mvcnn/"
+TFRECORD_DIR = "data/mvcnn/m40_small/"
 
 BATCH_SIZE = 20
 SHAPE = [128, 128]
@@ -74,8 +74,8 @@ def create_tfrecord_file(root_dir, tfrecord_dir):
     labels = get_labels(root_dir)
 
     for label in labels:
-        train_filename = tfrecord_dir + label + "_tfrecords"
-        writer = tf.python_io.TFRecordWriter(train_filename)
+        filename = tfrecord_dir + label + "_tfrecords"
+        writer = tf.python_io.TFRecordWriter(filename)
 
         feature = {}
         label_index = labels.index(label)
