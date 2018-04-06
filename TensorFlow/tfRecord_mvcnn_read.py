@@ -1,6 +1,8 @@
 import tensorflow as tf
 from utils import file_op
 from os.path import join
+import scipy.misc
+
 
 def _parser(record):
     file_features={
@@ -40,7 +42,7 @@ def _parser(record):
 
     feature = {}
     feature["view_count"] = view_count
-    feature["decriptions"] = descriptions
+    feature["descriptions"] = descriptions
     feature["images"] = images
 
     return feature, label
@@ -50,6 +52,9 @@ def _parser(record):
 TRAIN_TFRECORD_DIR = "data/mvcnn/m40_small/train"
 TEST_TFRECORD_DIR = "data/mvcnn/m40_small/test"
 
+BATCH_SIZE = 20
+OUTPUT_DIR = "output/images/mvcnn/"
+
 
 filenames = tf.placeholder(tf.string, shape=[None])
 dataset = tf.data.TFRecordDataset(filenames)
@@ -58,7 +63,7 @@ dataset = tf.data.TFRecordDataset(filenames)
 dataset = dataset.map(_parser)
 
 dataset = dataset.repeat()
-dataset = dataset.batch(32)
+dataset = dataset.batch(BATCH_SIZE)
 
 iterator = dataset.make_initializable_iterator()
 next_element = iterator.get_next()
@@ -78,13 +83,23 @@ for i in range (file_count):
 
 sess.run(iterator.initializer, feed_dict={filenames: training_filenames})
 
-for i in range (20):
+for i in range (100):
     value = sess.run(next_element)
+    features = value[0]
+    labels = value[1]
+    images =features['images']
+    descriptions = features['descriptions']
+    images = images.reshape(BATCH_SIZE, -1, 128, 128)
+    images_shape = images.shape
+    for j in range (images_shape[0]):
+        for k in range (images_shape[1]):
+            name = descriptions[j][k] + "_" + str(i) + ".png"
+            image_path = OUTPUT_DIR + name
+            scipy.misc.imsave(image_path, images[j][k])
     print value
 
 
-
-
+'''
 fs = file_op.get_only_files(TEST_TFRECORD_DIR)
 
 file_count = len(fs)
@@ -98,4 +113,4 @@ sess.run(iterator.initializer, feed_dict={filenames: test_filenames})
 for i in range (20):
     value = sess.run(next_element)
     print value
-
+'''

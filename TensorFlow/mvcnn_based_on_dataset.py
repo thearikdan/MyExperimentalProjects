@@ -6,10 +6,10 @@ from glob import glob
 from os.path import dirname
 from utils import file_op
 
-TRAIN_TFRECORD_DIR = "data/mvcnn/m40_small/train/"
-TEST_TFRECORD_DIR = "data/mvcnn/m40_small/test/"
+TRAIN_TFRECORD_DIR = "data/mvcnn/shapeNet_depth/train/"
+TEST_TFRECORD_DIR = "data/mvcnn/shapeNet_depth/test/"
 
-MODEL_DIR = "generated_model/mvcnn/m40_small/"
+MODEL_DIR = "generated_model/mvcnn/shapeNet_depth/"
 
 file_op.ensure_dir_exists(MODEL_DIR)
 
@@ -20,8 +20,8 @@ file_op.ensure_dir_exists(MODEL_DIR)
 BATCH_SIZE = 4
 SHAPE = [128, 128]
 
-
-CLASS_COUNT = 40
+VIEW_COUNT = 20
+CLASS_COUNT = 55
 
 
 def data_input_fn(filenames, batch_size=1000, shuffle=False):
@@ -30,7 +30,7 @@ def data_input_fn(filenames, batch_size=1000, shuffle=False):
             'label': tf.FixedLenFeature([], tf.int64),
             'view_count': tf.FixedLenFeature([], tf.int64)
         }
-        count = 80  #need to determine view_count dynamically
+        count = VIEW_COUNT  #need to determine view_count dynamically
         for i in range(count):
             desc_key = "description_" + str(i)
             file_features[desc_key] = tf.FixedLenFeature([], tf.string)
@@ -98,7 +98,7 @@ def mvcnn_model_fn(features, labels, mode, params):
 
     #Input layer
     images = features["images"]
-    images_resized = tf.reshape(images, [-1, 80, 128, 128, 1], name='input_resized')
+    images_resized = tf.reshape(images, [-1, VIEW_COUNT, 128, 128, 1], name='input_resized')
     shape = images_resized.get_shape()
     input_layer = tf.reshape(images, [-1, shape[2], shape[3], shape[4]], name='input_layer')
     tf.summary.image('input', input_layer)
@@ -155,7 +155,7 @@ def mvcnn_model_fn(features, labels, mode, params):
 
     pool5_shape = pool5.get_shape()
 
-    inf = tf.reshape(pool5, [-1, 80, pool5_shape[1], pool5_shape[2], pool5_shape[3]])
+    inf = tf.reshape(pool5, [-1, VIEW_COUNT, pool5_shape[1], pool5_shape[2], pool5_shape[3]])
 
     reduce_inf = tf.reduce_max(inf, reduction_indices=1)
 
@@ -240,7 +240,8 @@ eval_input_fn = data_input_fn(test_files, batch_size=100)
 train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=100)
 eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn, steps=100, start_delay_secs=0)
 
-tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)
+#tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)
 
-#classifier.train(input_fn=train_input_fn, max_steps=100)
-#classifier.evaluate(input_fn=eval_input_fn, steps=100)
+classifier.train(input_fn=train_input_fn, max_steps=100000)
+ret = classifier.evaluate(input_fn=eval_input_fn, steps=1000)
+print ret
