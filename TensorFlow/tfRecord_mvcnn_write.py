@@ -9,13 +9,13 @@ import numpy as np
 import sys
 from utils import file_op
 
-TRAIN_DIR = "/raid/data/mvcnn/shapeNet_depth/train"
-TEST_DIR = "/raid/data/mvcnn/shapeNet_depth/test"
+TRAIN_DIR = "/raid/data/mvcnn/m40/train"
+TEST_DIR = "/raid/data/mvcnn/m40/test"
 
 #TRAIN_DIR = "/media/ara/HDD/data/mvcnn/m40_small/train"
 #TEST_DIR = "/media/ara/HDD/data/mvcnn/m40_small/test"
 
-TFRECORD_DIR = "data/mvcnn/shapeNet_depth/"
+TFRECORD_DIR = "data/mvcnn/m40/"
 
 BATCH_SIZE = 20
 SHAPE = [128, 128]

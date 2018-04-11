@@ -9,7 +9,7 @@ from utils import file_op
 TRAIN_TFRECORD_DIR = "data/mvcnn/m40_small/train/"
 TEST_TFRECORD_DIR = "data/mvcnn/m40_small/test/"
 
-MODEL_DIR = "generated_model/mvcnn/m40_small/"
+MODEL_DIR = "generated_model/mvcnn_tiled/m40_small/"
 
 file_op.ensure_dir_exists(MODEL_DIR)
 
@@ -20,8 +20,8 @@ file_op.ensure_dir_exists(MODEL_DIR)
 BATCH_SIZE = 4
 SHAPE = [128, 128]
 
-
 CLASS_COUNT = 40
+VIEW_COUNT = 80
 
 
 def data_input_fn(filenames, batch_size=1000, shuffle=False):
@@ -30,7 +30,7 @@ def data_input_fn(filenames, batch_size=1000, shuffle=False):
             'label': tf.FixedLenFeature([], tf.int64),
             'view_count': tf.FixedLenFeature([], tf.int64)
         }
-        count = 80  #need to determine view_count dynamically
+        count = VIEW_COUNT
         for i in range(count):
             desc_key = "description_" + str(i)
             file_features[desc_key] = tf.FixedLenFeature([], tf.string)
@@ -86,7 +86,17 @@ def data_input_fn(filenames, batch_size=1000, shuffle=False):
     return _input_fn
 
 
-def mvcnn_model_fn(features, labels, mode, params):
+
+def concat_width(inf):
+    items = tf.unstack(inf)
+    conc = items[0]
+    ln = len(items)
+    for i in range (1, ln):
+       conc = tf.concat([conc, items[i]], 1)
+    return conc
+
+
+def mvcnn_tiled_model_fn(features, labels, mode, params):
 
     if mode == tf.estimator.ModeKeys.PREDICT:
         tf.logging.info("my_model_fn: PREDICT, {}".format(mode))
@@ -98,7 +108,7 @@ def mvcnn_model_fn(features, labels, mode, params):
 
     #Input layer
     images = features["images"]
-    images_resized = tf.reshape(images, [-1, 80, 128, 128, 1], name='input_resized')
+    images_resized = tf.reshape(images, [-1, VIEW_COUNT, 128, 128, 1], name='input_resized')
     shape = images_resized.get_shape()
     input_layer = tf.reshape(images, [-1, shape[2], shape[3], shape[4]], name='input_layer')
     tf.summary.image('input', input_layer)
@@ -112,58 +122,91 @@ def mvcnn_model_fn(features, labels, mode, params):
                              strides=(2,2),
                              activation=tf.nn.relu)
 
-    #Pooling Layer #1
-    pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=(3,3), strides=2, padding='same')
-
-
     #Convolutional Layer#2 and Pooling #2
-    conv2 = tf.layers.conv2d(inputs = pool1,
+    conv2 = tf.layers.conv2d(inputs = conv1,
+                             filters=96,
+                             kernel_size=[3,3],
+                             padding="same",
+                             strides=(2,2),
+                             activation=tf.nn.relu)
+
+    conv3 = tf.layers.conv2d(inputs = conv2,
                              filters=256,
                              kernel_size=[5,5],
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
-    pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=(3,3), strides=2, padding='same')
 
-
-    #Convolutional Layer#3
-    conv3 = tf.layers.conv2d(inputs = pool2,
-                             filters=512,
-                             kernel_size=[3,3],
-                             padding="same",
-                             strides=(1,1),
-                             activation=tf.nn.relu)
-
-
-    #Convolutional Layer#4
     conv4 = tf.layers.conv2d(inputs = conv3,
-                             filters=512,
+                             filters=256,
                              kernel_size=[3,3],
                              padding="same",
-                             strides=(1,1),
+                             strides=(2,2),
                              activation=tf.nn.relu)
 
-
-    #Convolutional Layer#5 and Pooling #5
     conv5 = tf.layers.conv2d(inputs = conv4,
                              filters=512,
                              kernel_size=[3,3],
                              padding="same",
                              strides=(1,1),
                              activation=tf.nn.relu)
-    pool5 = tf.layers.max_pooling2d(inputs=conv5, pool_size=(3,3), strides=2, padding='same')
 
-    pool5_shape = pool5.get_shape()
 
-    inf = tf.reshape(pool5, [-1, 80, pool5_shape[1], pool5_shape[2], pool5_shape[3]])
+    conv6 = tf.layers.conv2d(inputs = conv5,
+                             filters=512,
+                             kernel_size=[3,3],
+                             padding="same",
+                             strides=(1,1),
+                             activation=tf.nn.relu)
 
-    reduce_inf = tf.reduce_max(inf, reduction_indices=1)
+
+    conv6_shape = conv6.get_shape()
+
+    inf = tf.reshape(conv6, [BATCH_SIZE, VIEW_COUNT, conv6_shape[1], conv6_shape[2], conv6_shape[3]])
+
+    items = tf.unstack(inf)
+    concats = []
+
+    for item in items:
+        conc = concat_width(item)
+        concats.append(conc)
+
+
+    reduce_inf = tf.stack(concats)
+
+    conv7 = tf.layers.conv2d(inputs = reduce_inf,
+                             filters=512,
+                             kernel_size=[3,3],
+                             padding="same",
+                             strides=(1,1),
+                             activation=tf.nn.relu)
+
+    conv8 = tf.layers.conv2d(inputs = conv7,
+                             filters=512,
+                             kernel_size=[3,3],
+                             padding="same",
+                             strides=(2,2),
+                             activation=tf.nn.relu)
+
+    conv9 = tf.layers.conv2d(inputs = conv8,
+                             filters=512,
+                             kernel_size=[3,3],
+                             padding="same",
+                             strides=(2,2),
+                             activation=tf.nn.relu)
+
+    conv10 = tf.layers.conv2d(inputs = conv9,
+                             filters=512,
+                             kernel_size=[4,4],
+                             padding="same",
+                             strides=(3,3),
+                             activation=tf.nn.relu)
 
     #not sure if this is correct!!!
-    reduce_inf_flat = tf.contrib.layers.flatten(reduce_inf)
+    conv10_flat = tf.contrib.layers.flatten(conv10)
 
     #Dense Layer
-    dense = tf.layers.dense(inputs=reduce_inf_flat,
+    dense = tf.layers.dense(inputs=conv10_flat,
                             units=4096,
                             activation=tf.nn.relu)
     dropout = tf.layers.dropout(inputs=dense,
@@ -215,7 +258,7 @@ hparams = {
 }
 
 classifier = tf.estimator.Estimator(
-    model_fn=mvcnn_model_fn,
+    model_fn=mvcnn_tiled_model_fn,
     config=run_config,
     params=hparams
 )
