@@ -6,10 +6,10 @@ from glob import glob
 from os.path import dirname
 from utils import file_op
 
-TRAIN_TFRECORD_DIR = "data/mvcnn/m40_small/train/"
-TEST_TFRECORD_DIR = "data/mvcnn/m40_small/test/"
+TRAIN_TFRECORD_DIR = "data/mvcnn/m40/train/"
+TEST_TFRECORD_DIR = "data/mvcnn/m40/test/"
 
-MODEL_DIR = "generated_model/mvcnn_tiled/m40_small/"
+MODEL_DIR = "generated_model/mvcnn_tiled/m40/"
 
 file_op.ensure_dir_exists(MODEL_DIR)
 
@@ -280,8 +280,8 @@ for i in range(file_count):
 eval_input_fn = data_input_fn(test_files, batch_size=100)
 
 
-train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=100)
-eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn, steps=100, start_delay_secs=0)
+train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=50000)
+eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn, steps=1000, start_delay_secs=0)
 
 tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)
 

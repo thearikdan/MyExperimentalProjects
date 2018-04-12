@@ -19,6 +19,8 @@ TFRECORD_DIR = "data/mvcnn/m40/"
 
 BATCH_SIZE = 20
 SHAPE = [128, 128]
+VIEW_COUNT = 80
+EXTENSION = ".png"
 
 
 def get_labels(root_dir):
@@ -83,8 +85,11 @@ def create_tfrecord_file(root_dir, tfrecord_dir):
         feature['label'] = _int64_feature(label_index)
 
         for object_ in objects:
-            views = get_views_of_object(root_dir, label, object_, ".png")
+            views = get_views_of_object(root_dir, label, object_, EXTENSION)
             view_count = len(views)
+            if (view_count != VIEW_COUNT):
+            #corrupt directory, skip it
+                continue
             feature['view_count'] = _int64_feature(view_count)
             for i in range (view_count):
                 path = get_full_path(root_dir, label, object_, views[i])
