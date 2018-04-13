@@ -23,8 +23,12 @@ SHAPE = [128, 128]
 CLASS_COUNT = 40
 VIEW_COUNT = 80
 
+LEARNING_RATE_DECAY_FACTOR = 0.1
+INITIAL_LEARNING_RATE = 0.001
+NUM_EPOCHS_PER_DECAY = 20
 
-def data_input_fn(filenames, batch_size=1000, shuffle=False):
+
+def data_input_fn(filenames, batch_size=1000, shuffle=True):
     def _parser(record):
         file_features={
             'label': tf.FixedLenFeature([], tf.int64),
@@ -68,6 +72,7 @@ def data_input_fn(filenames, batch_size=1000, shuffle=False):
 
         return feature, label
 
+
     def _input_fn():
         dataset = tf.data.TFRecordDataset(filenames)
 
@@ -76,6 +81,10 @@ def data_input_fn(filenames, batch_size=1000, shuffle=False):
 
         dataset = dataset.repeat()
         dataset = dataset.batch(BATCH_SIZE)
+
+        if shuffle:
+            # Shuffle the input unless we are predicting
+            dataset = dataset.shuffle(buffer_size=1000)
 
 #        iterator = dataset.make_initializable_iterator()
         iterator = dataset.make_one_shot_iterator()
@@ -216,6 +225,9 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
     #Logits layer
     logits = tf.layers.dense(inputs=dropout, units = CLASS_COUNT)
 
+    tf.summary.text('labels', tf.as_string(labels))
+    tf.summary.text('logits', tf.as_string(tf.argmax(input=logits, axis=1)))
+
     predictions = {
       # Generate predictions (for PREDICT and EVAL mode)
       "classes": tf.argmax(input=logits, axis=1),
@@ -232,7 +244,15 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
 
     # Configure the Training Op (for TRAIN mode)
     if mode == tf.estimator.ModeKeys.TRAIN:
-        optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+#        optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+        learning_rate = tf.train.exponential_decay (INITIAL_LEARNING_RATE, tf.train.get_global_step() * BATCH_SIZE,  (7880 * NUM_EPOCHS_PER_DECAY) / BATCH_SIZE, LEARNING_RATE_DECAY_FACTOR, True)
+#            (sample_count * NUM_EPOCHS_PER_DECAY) / BATCH_SIZE,  # Decay step.
+#            7880 * NUM_EPOCHS_PER_DECAY) / BATCH_SIZE,
+#            LEARNING_RATE_DECAY_FACTOR,  # Decay rate.
+#            staircase=True)
+        tf.summary.scalar('leaning rate', learning_rate)
+
+        optimizer = tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=0.9)
         train_op = optimizer.minimize(
             loss=loss,
             global_step=tf.train.get_global_step())
