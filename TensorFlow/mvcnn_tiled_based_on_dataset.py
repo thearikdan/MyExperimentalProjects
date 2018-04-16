@@ -5,6 +5,7 @@ import os
 from glob import glob
 from os.path import dirname
 from utils import file_op
+import random
 
 TRAIN_TFRECORD_DIR = "data/mvcnn/m40/train/"
 TEST_TFRECORD_DIR = "data/mvcnn/m40/test/"
@@ -12,10 +13,6 @@ TEST_TFRECORD_DIR = "data/mvcnn/m40/test/"
 MODEL_DIR = "generated_model/mvcnn_tiled/m40/"
 
 file_op.ensure_dir_exists(MODEL_DIR)
-
-#TRAIN_DIR = "/media/ara/HDD/data/cnn/m40/train"
-#TEST_DIR = "/media/ara/HDD/data/cnn/m40/test"
-
 
 BATCH_SIZE = 4
 SHAPE = [128, 128]
@@ -74,8 +71,14 @@ def data_input_fn(filenames, batch_size=1000, shuffle=True):
 
 
     def _input_fn():
-        dataset = tf.data.TFRecordDataset(filenames)
+        if shuffle:
+            #randomly shuffle the list of filenames
+            input_filenames = random.sample(filenames, len(filenames))
+        else:
+            input_filenames = filenames
 
+        dataset = tf.data.TFRecordDataset(input_filenames)
+#        dataset = tf.data.TFRecordDataset(filenames)
 
         dataset = dataset.map(_parser)
 
@@ -84,7 +87,7 @@ def data_input_fn(filenames, batch_size=1000, shuffle=True):
 
         if shuffle:
             # Shuffle the input unless we are predicting
-            dataset = dataset.shuffle(buffer_size=1000)
+            dataset = dataset.shuffle(buffer_size=BATCH_SIZE*4)
 
 #        iterator = dataset.make_initializable_iterator()
         iterator = dataset.make_one_shot_iterator()
@@ -130,6 +133,8 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
+    tf.summary.histogram('conv1', conv1)
+
 
     #Convolutional Layer#2 and Pooling #2
     conv2 = tf.layers.conv2d(inputs = conv1,
@@ -138,6 +143,7 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
+    tf.summary.histogram('conv2', conv2)
 
     conv3 = tf.layers.conv2d(inputs = conv2,
                              filters=256,
@@ -145,6 +151,7 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
+    tf.summary.histogram('conv3', conv3)
 
     conv4 = tf.layers.conv2d(inputs = conv3,
                              filters=256,
@@ -152,6 +159,7 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
+    tf.summary.histogram('conv4', conv4)
 
     conv5 = tf.layers.conv2d(inputs = conv4,
                              filters=512,
@@ -159,6 +167,7 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(1,1),
                              activation=tf.nn.relu)
+#    tf.summary.histogram('conv5', conv5)
 
 
     conv6 = tf.layers.conv2d(inputs = conv5,
@@ -167,7 +176,7 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(1,1),
                              activation=tf.nn.relu)
-
+    tf.summary.histogram('conv6', conv6)
 
     conv6_shape = conv6.get_shape()
 
@@ -189,6 +198,7 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(1,1),
                              activation=tf.nn.relu)
+    tf.summary.histogram('conv7', conv7)
 
     conv8 = tf.layers.conv2d(inputs = conv7,
                              filters=512,
@@ -196,6 +206,8 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
+    tf.summary.histogram('conv8', conv8)
+#    conv8_flat = tf.contrib.layers.flatten(conv8)
 
     conv9 = tf.layers.conv2d(inputs = conv8,
                              filters=512,
@@ -203,24 +215,25 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
                              padding="same",
                              strides=(2,2),
                              activation=tf.nn.relu)
+    tf.summary.histogram('conv9', conv9)
+    conv9_flat = tf.contrib.layers.flatten(conv9)
 
-    conv10 = tf.layers.conv2d(inputs = conv9,
-                             filters=512,
-                             kernel_size=[4,4],
-                             padding="same",
-                             strides=(3,3),
-                             activation=tf.nn.relu)
+#    conv10 = tf.layers.conv2d(inputs = conv9,
+#                             filters=512,
+#                             kernel_size=[4,4],
+#                             padding="same",
+#                             strides=(3,3),
+#                             activation=tf.nn.relu)
+#    tf.summary.histogram('conv10', conv10)
 
     #not sure if this is correct!!!
-    conv10_flat = tf.contrib.layers.flatten(conv10)
+#    conv10_flat = tf.contrib.layers.flatten(conv10)
 
     #Dense Layer
-    dense = tf.layers.dense(inputs=conv10_flat,
-                            units=4096,
-                            activation=tf.nn.relu)
-    dropout = tf.layers.dropout(inputs=dense,
-                                rate=0.5,
-                                training=mode == tf.estimator.ModeKeys.TRAIN)
+#    dense = tf.layers.dense(inputs=conv10_flat, units=4096, activation=tf.nn.relu)
+    dense = tf.layers.dense(inputs=conv9_flat, units=2048, activation=tf.nn.relu)
+#    dense = tf.layers.dense(inputs=conv8_flat, units=2048, activation=tf.nn.relu)
+    dropout = tf.layers.dropout(inputs=dense, rate=0.5, training=mode == tf.estimator.ModeKeys.TRAIN)
 
     #Logits layer
     logits = tf.layers.dense(inputs=dropout, units = CLASS_COUNT)
@@ -245,11 +258,11 @@ def mvcnn_tiled_model_fn(features, labels, mode, params):
     # Configure the Training Op (for TRAIN mode)
     if mode == tf.estimator.ModeKeys.TRAIN:
 #        optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
-        learning_rate = tf.train.exponential_decay (INITIAL_LEARNING_RATE, tf.train.get_global_step() * BATCH_SIZE,  (7880 * NUM_EPOCHS_PER_DECAY) / BATCH_SIZE, LEARNING_RATE_DECAY_FACTOR, True)
-#            (sample_count * NUM_EPOCHS_PER_DECAY) / BATCH_SIZE,  # Decay step.
-#            7880 * NUM_EPOCHS_PER_DECAY) / BATCH_SIZE,
-#            LEARNING_RATE_DECAY_FACTOR,  # Decay rate.
-#            staircase=True)
+        learning_rate = tf.train.exponential_decay (INITIAL_LEARNING_RATE, 20000, LEARNING_RATE_DECAY_FACTOR, True)
+
+#tf.train.get_global_step() * BATCH_SIZE, (7880 * NUM_EPOCHS_PER_DECAY) / BATCH_SIZE, LEARNING_RATE_DECAY_FACTOR, True)
+#10000, LEARNING_RATE_DECAY_FACTOR, True)
+            
         tf.summary.scalar('leaning rate', learning_rate)
 
         optimizer = tf.train.MomentumOptimizer(learning_rate=learning_rate, momentum=0.9)
@@ -300,7 +313,7 @@ for i in range(file_count):
 eval_input_fn = data_input_fn(test_files, batch_size=100)
 
 
-train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=50000)
+train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=100000)
 eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn, steps=1000, start_delay_secs=0)
 
 tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)

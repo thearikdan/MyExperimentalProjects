@@ -9,11 +9,11 @@ import numpy as np
 import sys
 from utils import file_op
 
-TRAIN_DIR = "/raid/data/mvcnn/m40/train"
-TEST_DIR = "/raid/data/mvcnn/m40/test"
+#TRAIN_DIR = "/raid/data/mvcnn/m40/train"
+#TEST_DIR = "/raid/data/mvcnn/m40/test"
 
-#TRAIN_DIR = "/media/ara/HDD/data/mvcnn/m40_small/train"
-#TEST_DIR = "/media/ara/HDD/data/mvcnn/m40_small/test"
+TRAIN_DIR = "/media/ara/HDD/data/mvcnn/m40/train"
+TEST_DIR = "/media/ara/HDD/data/mvcnn/m40/test"
 
 TFRECORD_DIR = "data/mvcnn/m40/"
 
