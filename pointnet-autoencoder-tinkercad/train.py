@@ -62,7 +62,7 @@ BN_DECAY_CLIP = 0.99
 HOSTNAME = socket.gethostname()
 
 # Shapenet official train/test split
-DATA_PATH = os.path.join(BASE_DIR, 'data/shapenetcore_partanno_segmentation_benchmark_v0')
+DATA_PATH = os.path.join(BASE_DIR, 'data/numpy_mean_0_normalized')
 TRAIN_DATASET = part_dataset.PartDataset(root=DATA_PATH, npoints=NUM_POINT, classification=False, class_choice=FLAGS.category, split='trainval')
 TEST_DATASET = part_dataset.PartDataset(root=DATA_PATH, npoints=NUM_POINT, classification=False, class_choice=FLAGS.category, split='test')
 
@@ -174,7 +174,8 @@ def get_batch(dataset, idxs, start_idx, end_idx):
     for i in range(bsize):
         ps,seg = dataset[idxs[i+start_idx]]
         batch_data[i,...] = ps
-        batch_label[i,:] = seg
+#        batch_label[i,:] = seg
+        batch_label[i, :] = "0"
     return batch_data, batch_label
 
 def train_one_epoch(sess, ops, train_writer):

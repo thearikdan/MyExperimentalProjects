@@ -72,6 +72,7 @@ def get_model(point_cloud, is_training, bn_decay=None):
     net = tf_util.fully_connected(net, num_point*3, activation_fn=None, scope='fc3')
     net = tf.reshape(net, (batch_size, num_point, 3))
 
+#    return net, end_points, end_points['embedding']
     return net, end_points
 
 def get_loss(pred, label, end_points):

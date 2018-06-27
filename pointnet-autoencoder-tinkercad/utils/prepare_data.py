@@ -9,7 +9,8 @@ from random import shuffle
 
 import json
 
-ROOT_DIR = "/raid/data/tinkercad/sample2/point_clouds/numpy/2048/numpy_mean_0_normalized"
+ROOT_DIR = "/raid/Github/MyProjects/pointnet-autoencoder-tinkercad/data/numpy_mean_0_normalized"
+OUT_DIR = join(ROOT_DIR, "train_test_split")
 POINTS_DIR = "points"
 
 data_dir = join(ROOT_DIR, POINTS_DIR)
@@ -32,9 +33,9 @@ train_data = full_path[:train_size]
 test_data = full_path[train_size:(train_size + test_size)]
 val_data = full_path[(train_size + test_size):]
 
-train_file_name = join(ROOT_DIR, "shuffled_train_file_list.json")
-test_file_name = join(ROOT_DIR, "shuffled_test_file_list.json")
-val_file_name = join(ROOT_DIR, "shuffled_val_file_list.json")
+train_file_name = join(OUT_DIR, "shuffled_train_file_list.json")
+test_file_name = join(OUT_DIR, "shuffled_test_file_list.json")
+val_file_name = join(OUT_DIR, "shuffled_val_file_list.json")
 
 with open(train_file_name, 'w') as outfile:
     json.dump(train_data, outfile)

@@ -30,7 +30,7 @@ MODEL_PATH = FLAGS.model_path
 GPU_INDEX = FLAGS.gpu
 NUM_POINT = FLAGS.num_point
 MODEL = importlib.import_module(FLAGS.model) # import network module
-DATA_PATH = os.path.join(BASE_DIR, 'data/shapenetcore_partanno_segmentation_benchmark_v0')
+DATA_PATH = os.path.join(BASE_DIR, 'data/numpy_mean_0_normalized')
 TEST_DATASET = part_dataset.PartDataset(root=DATA_PATH, npoints=NUM_POINT, classification=False, class_choice=FLAGS.category, split='test',normalize=True)
 print(len(TEST_DATASET))
 
@@ -80,7 +80,7 @@ if __name__=='__main__':
     np.random.shuffle(indices)
     for i in range(len(TEST_DATASET)):
         ps, seg = TEST_DATASET[indices[i]]
-        pred = inference(sess, ops, np.expand_dims(ps,0), batch_size=1) 
+        pred = inference(sess, ops, np.expand_dims(ps,0), batch_size=1)
         pred = pred.squeeze()
 
         show3d_balls.showpoints(ps, ballradius=8)
