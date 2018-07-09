@@ -11,11 +11,12 @@ import email
 #
 # ------------------------------------------------
 
-def read_email_from_gmail(smtp_server, account, password):
+def read_email_from_gmail(smtp_server, account, password, label):
     try:
         mail = imaplib.IMAP4_SSL(smtp_server)
         mail.login(account,password)
-        mail.select('inbox')
+#        mail.select('inbox')
+        mail.select(label)
 
         type, data = mail.search(None, 'ALL')
         mail_ids = data[0]
@@ -31,9 +32,6 @@ def read_email_from_gmail(smtp_server, account, password):
             for response_part in data:
                 if isinstance(response_part, tuple):
                     msg = email.message_from_string(response_part[1])
-#                    email_label = msg['label']
-#                    if email_label is not None:
-#                        print email_label
                     email_subject = msg['subject']
                     email_from = msg['from']
                     print 'From : ' + email_from + '\n'
@@ -43,4 +41,8 @@ def read_email_from_gmail(smtp_server, account, password):
         print str(e)
 
 
-read_email_from_gmail("smtp.gmail.com", "account", "password")
+
+labels = ['Crime', 'Design', 'Fashion', 'Lifestyle', 'News', 'Transportation', 'Travel']
+
+for label in labels:
+    read_email_from_gmail("smtp.gmail.com", account, password, label)
