@@ -11,6 +11,25 @@ import email
 #
 # ------------------------------------------------
 
+def find_sub_list(sub_list,this_list):
+    return (this_list.index(sub_list[0]),len(sub_list))
+
+
+def parse_body(body):
+    parts = body.split('\n')
+    pattern = "Unsubscribe from this Google Alert:" +'\r'
+    pos = parts.index(pattern)
+    content = parts[2 : pos - 2]
+    block_length = 7
+    block_count = len(content) / block_length
+    dict = {}
+    for i in range(block_count):
+        dict['Title'] = content[block_length * i]
+        dict['URL'] = content[block_length * i + 5]
+
+    return dict
+
+
 def read_email_from_gmail(smtp_server, account, password, label):
     try:
         mail = imaplib.IMAP4_SSL(smtp_server)
@@ -34,8 +53,26 @@ def read_email_from_gmail(smtp_server, account, password, label):
                     msg = email.message_from_string(response_part[1])
                     email_subject = msg['subject']
                     email_from = msg['from']
-                    print 'From : ' + email_from + '\n'
-                    print 'Subject : ' + email_subject + '\n'
+#                    print 'From : ' + email_from + '\n'
+#                    print 'Subject : ' + email_subject + '\n'
+
+                    body =""
+                    if msg.is_multipart():
+                        for part in msg.walk():
+                            ctype = part.get_content_type()
+                            cdispo = str(part.get('Content-Disposition'))
+
+                            # skip any text/plain (txt) attachments
+                            if ctype == 'text/plain' and 'attachment' not in cdispo:
+                                body = part.get_payload(decode=True)  # decode
+                                break
+                    # not multipart - i.e. plain text, no attachments, keeping fingers crossed
+                    else:
+                        body = msg.get_payload(decode=True)
+
+                    content = parse_body(body)
+
+                    print content
 
     except Exception, e:
         print str(e)
