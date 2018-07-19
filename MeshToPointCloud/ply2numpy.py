@@ -15,8 +15,8 @@ import numpy as np
 POINT_COUNT = 2048
 POINT_COUNT_STR = str(POINT_COUNT)
 
-SOURCE_DIR = '/raid/data/tinkercad/sample2/point_clouds/ply/' + POINT_COUNT_STR + '/ascii/'
-DEST_DIR = '/raid/data/tinkercad/sample2/point_clouds/ply/' + POINT_COUNT_STR + '/numpy/'
+SOURCE_DIR = '/raid/data/tinkercad/point_clouds/clean_ply/' + POINT_COUNT_STR + '/ascii/'
+DEST_DIR = '/raid/data/tinkercad/point_clouds/clean_numpy/' + POINT_COUNT_STR
 
 # Load PLY file
 def load_ply_data(filename, point_num):
@@ -30,6 +30,7 @@ def convert(f):
     in_file = join(SOURCE_DIR, f)
     data = load_ply_data(in_file, POINT_COUNT)
     out_file = join(DEST_DIR, name + ".txt")
+    print "Converting file " + f
     np.savetxt(out_file, data, fmt="%.5f")
 
 file_op.ensure_dir_exists(DEST_DIR)

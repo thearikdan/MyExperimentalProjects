@@ -8,7 +8,7 @@ import os
 import scipy.misc
 import sys
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-OUT_DIR = "/raid/data/tinkercad/signatures/pointnet-autoencoder"
+OUT_DIR = "/raid/data/tinkercad/signatures/clean/pointnet-autoencoder"
 ROOT_DIR = BASE_DIR
 sys.path.append(BASE_DIR) # model
 sys.path.append(ROOT_DIR) # provider
@@ -31,7 +31,7 @@ MODEL_PATH = FLAGS.model_path
 GPU_INDEX = FLAGS.gpu
 NUM_POINT = FLAGS.num_point
 MODEL = importlib.import_module(FLAGS.model) # import network module
-DATA_PATH = os.path.join(BASE_DIR, 'data/numpy_mean_0_normalized')
+DATA_PATH = os.path.join(BASE_DIR, 'data/numpy_mean_0_normalized_clean')
 TEST_DATASET = part_dataset.PartDataset(root=DATA_PATH, npoints=NUM_POINT, classification=False, class_choice=FLAGS.category, split='test',normalize=True)
 print(len(TEST_DATASET))
 
@@ -79,14 +79,14 @@ def inference(sess, ops, pc, batch_size):
 
 
 def get_design_name_from_file(name_tuple):
-    suffix = "-ascii.txt"
-    suffix_length = len(suffix)
+#    suffix = "-ascii.txt"
+#    suffix_length = len(suffix)
     name = name_tuple[1]
     base_name = os.path.basename(name)
-    base_name_length = len(base_name)
-    design_name = base_name[:(base_name_length - suffix_length)]
-    return design_name
-
+#    base_name_length = len(base_name)
+#    design_name = base_name[:(base_name_length - suffix_length)]
+#    return design_name
+    return base_name
 
 
 if __name__=='__main__':
@@ -106,7 +106,7 @@ if __name__=='__main__':
 #        pred = pred.squeeze()
         signature = inference(sess, ops, np.expand_dims(ps,0), batch_size=1)
         file_name = os.path.join(OUT_DIR, design_name)
-        file_name = file_name + ".txt"
+#        file_name = file_name + ".txt"
         np.savetxt(file_name, signature, fmt="%.8f")
 
 

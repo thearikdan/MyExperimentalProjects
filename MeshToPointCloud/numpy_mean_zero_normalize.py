@@ -14,8 +14,8 @@ import numpy as np
 POINT_COUNT = 2048
 POINT_COUNT_STR = str(POINT_COUNT)
 
-SOURCE_DIR = '/raid/data/tinkercad/sample2/point_clouds/ply/' + POINT_COUNT_STR + '/numpy_mean_0/'
-DEST_DIR = '/raid/data/tinkercad/sample2/point_clouds/ply/' + POINT_COUNT_STR + '/numpy_mean_0_normalized/'
+SOURCE_DIR = '/raid/data/tinkercad/point_clouds/clean_numpy/' + POINT_COUNT_STR + '/numpy_mean_0/'
+DEST_DIR = '/raid/data/tinkercad/point_clouds/clean_numpy/' + POINT_COUNT_STR + '/numpy_mean_0_normalized/'
 
 def normalize(f):
     radius = 0

@@ -12,7 +12,7 @@ import os
 #load pointnet autoencoder data
 DATA_DIR = "/raid/data/tinkercad/signatures/pointnet-autoencoder"
 
-LABELS_FILE = "labels_min_100.txt"
+LABELS_FILE = "labels_min_5.txt"
 
 def load_signatures(data_dir, files):
     count = len(files)
@@ -35,7 +35,7 @@ count = len(files)
 data = load_signatures(DATA_DIR, files)
 
 print ("Performing HDBSCAN...")
-clusterer = hdbscan.HDBSCAN(min_cluster_size=100, gen_min_span_tree=True)
+clusterer = hdbscan.HDBSCAN(min_cluster_size=5, gen_min_span_tree=True)
 clusterer.fit(data)
 
 print ("Saving labels...")

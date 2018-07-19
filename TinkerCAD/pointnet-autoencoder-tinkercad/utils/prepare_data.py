@@ -9,7 +9,7 @@ from random import shuffle
 
 import json
 
-ROOT_DIR = "/raid/Github/MyProjects/pointnet-autoencoder-tinkercad/data/numpy_mean_0_normalized"
+ROOT_DIR = "/raid/Github/MyProjects/TinkerCAD/pointnet-autoencoder-tinkercad/data/numpy_mean_0_normalized_clean"
 OUT_DIR = join(ROOT_DIR, "train_test_split")
 POINTS_DIR = "points"
 
