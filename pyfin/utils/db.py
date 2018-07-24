@@ -17,3 +17,13 @@ def connect_to_database(settings_file_name):
 
     return conn, cursor
 
+
+
+def insert_names(table, cursor, names):
+    count = len(names)
+
+    for i in range (count):
+        sql = "INSERT INTO " + table +"(name) SELECT('"+names[i]+"') WHERE NOT EXISTS (SELECT * FROM " + table + " WHERE name='"+names[i]+"');"
+        print sql
+        cursor.execute(sql)
+
