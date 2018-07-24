@@ -172,7 +172,7 @@ def get_batch(dataset, idxs, start_idx, end_idx):
     batch_data = np.zeros((bsize, NUM_POINT, 3))
     batch_label = np.zeros((bsize, NUM_POINT), dtype=np.int32)
     for i in range(bsize):
-        ps,seg = dataset[idxs[i+start_idx]]
+        ps,_,seg = dataset[idxs[i+start_idx]]
         batch_data[i,...] = ps
 #        batch_label[i,:] = seg
         batch_label[i, :] = "0"

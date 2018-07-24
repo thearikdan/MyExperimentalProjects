@@ -13,4 +13,5 @@ generated/
 generated_debug/
 generated_model/
 log/
+log_orig/
 database_settings.txt
