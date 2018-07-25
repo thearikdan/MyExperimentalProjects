@@ -146,7 +146,7 @@ class PartDataset():
             return point_set, cls, fn
         else:
 #            return point_set, seg
-            return point_set, None, fn
+            return point_set, None, None
 
     def __len__(self):
         return len(self.datapath)

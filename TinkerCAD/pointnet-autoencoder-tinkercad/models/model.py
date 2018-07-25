@@ -17,8 +17,8 @@ sys.path.append(os.path.join(ROOT_DIR, 'tf_ops/nn_distance'))
 import tf_nndistance
 
 def placeholder_inputs(batch_size, num_point):
-    pointclouds_pl = tf.placeholder(tf.float32, shape=(batch_size, num_point, 3))
-    labels_pl = tf.placeholder(tf.float32, shape=(batch_size, num_point, 3))
+    pointclouds_pl = tf.placeholder(tf.float32, shape=(batch_size, num_point, 3),name="input_point_cloud")
+    labels_pl = tf.placeholder(tf.float32, shape=(batch_size, num_point, 3),name="input_label")
     return pointclouds_pl, labels_pl
 
 
@@ -63,7 +63,7 @@ def get_model(point_cloud, is_training, bn_decay=None):
     global_feat = tf_util.max_pool2d(net, [num_point,1],
                                      padding='VALID', scope='maxpool')
 
-    net = tf.reshape(global_feat, [batch_size, -1])
+    net = tf.reshape(global_feat, [batch_size, -1], name="output_signature")
     end_points['embedding'] = net
 
     # FC Decoder
