@@ -192,11 +192,12 @@ def heal_intraday_data(date_time, volume, opn, close, high, low):
         return date_time, volume, opn, close, high, low
 '''
 
-def get_intraday_data(ticker, start, end, interval):
+def get_intraday_data(data_dir, ticker, start, end, interval):
     interval_string = "1m"
     dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
+    dir_name = join(data_dir, dir_name)
     filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
-    dir_name = join(constants.DATA_ROOT, dir_name)
+#    dir_name = join(constants.DATA_ROOT, dir_name)
     full_path = join(dir_name, filename)
     if isfile(full_path):
         is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_file(full_path, start, end)

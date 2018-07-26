@@ -5,8 +5,8 @@ import time
 N = 36
 now = datetime.now()
 
-from_time = datetime(2000, 1, 1, 10, 00, 00)
-to_time = datetime(2000, 1, 1, 11, 30, 00)
+from_time = datetime(2018, 1, 1, 10, 00, 00)
+to_time = datetime(2018, 1, 1, 11, 30, 00)
 #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
 
 
