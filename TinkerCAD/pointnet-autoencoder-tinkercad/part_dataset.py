@@ -122,10 +122,10 @@ class PartDataset():
         self.cache_size = 18000
                
     def __getitem__(self, index):
+        fn = self.datapath[index]
         if index in self.cache:
             point_set, seg, cls = self.cache[index]
         else:
-            fn = self.datapath[index]
 #            cls = self.classes[self.datapath[index][0]]
 #            cls = np.array([cls]).astype(np.int32)
             point_set = np.loadtxt(fn[1]).astype(np.float32)
@@ -134,7 +134,7 @@ class PartDataset():
 #            seg = np.loadtxt(fn[2]).astype(np.int64) - 1
             if len(self.cache) < self.cache_size:
 #                self.cache[index] = (point_set, seg, cls)
-                self.cache[index] = (point_set, None, None)
+                self.cache[index] = (point_set, None, fn)
 
         
 #        choice = np.random.choice(len(seg), self.npoints, replace=True)
@@ -146,7 +146,7 @@ class PartDataset():
             return point_set, cls, fn
         else:
 #            return point_set, seg
-            return point_set, None, None
+            return point_set, None, fn
 
     def __len__(self):
         return len(self.datapath)
