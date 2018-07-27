@@ -7,8 +7,8 @@ import numpy as np
 from viz import vertical_plots
 
 
-start_date = datetime(2018, 7, 26, 9, 30)
-end_date = datetime(2018, 7, 26, 10, 10)
+start_date = datetime(2018, 7, 27, 9, 30)
+end_date = datetime(2018, 7, 27, 13, 30)
 
 days_count = 50
 

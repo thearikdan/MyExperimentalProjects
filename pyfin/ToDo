@@ -3,3 +3,6 @@ Conditional probability of price going up / down from time x + 1 to 13:59, given
 Conditional probability of price going up / down, given index price up / down
 Add interval to parameters of percentage change closeness
 Store daily prices in files
+Store data in database
+Sore business news about companies in database. Then look which analyst has the best forecast, and follow them
+https://finance.yahoo.com/quote/amzn/analysis?ltr=1
