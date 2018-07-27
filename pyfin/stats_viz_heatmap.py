@@ -21,7 +21,7 @@ import dateutil
 
 symbol = "AMZN"
 end_date = datetime.today() #today
-start_date = end_date + dateutil.relativedelta.relativedelta(months=-1) #month ago
+start_date = end_date + dateutil.relativedelta.relativedelta(months=-2) #month ago
 
 date, num_data = read.get_data_from_web(symbol, start_date, end_date)
 sh = np.shape(date)

@@ -234,7 +234,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
         return (True, dtn, vn, on, cn, hn, ln)
 
 
-def download_intraday_data(ticker, start, end):
+def download_intraday_data(data_dir, ticker, start, end):
     interval_string = "1m"
     dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
     filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
@@ -243,7 +243,7 @@ def download_intraday_data(ticker, start, end):
     if isfile(full_path):
         return True
     else:
-        is_data_available, date_time, volume, opn, close, high, low = get_full_day_intraday_data_from_web(ticker, start, end)
+        is_data_available, date_time, volume, opn, close, high, low = get_full_day_intraday_data_from_web(data_dir, ticker, start, end)
         if not (is_data_available):
             return False
 
@@ -349,7 +349,7 @@ def get_volume_from_file(filename):
     return get_volume_from_numeric_data(data)
 
 
-def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_time, to_time):
+def get_all_intraday_prices_for_N_days_to_date (data_dir, ticker, N, last_date, from_time, to_time):
     #in from_time and to_time only hour, minutes and seconds are important;                                                   years and months are ignored
     date_time_list = []
     volume_list = []
@@ -363,7 +363,7 @@ def get_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_time,
         start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
         end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
 
-        is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(ticker, start_date, end_date, 1)
+        is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(data_dir, ticker, start_date, end_date, 1)
         if (is_data_available):
             date_time_list.append(date_time)
             volume_list.append(volume)
@@ -384,7 +384,7 @@ def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_
 
         download_intraday_data(ticker, start_date, end_date)
 
-def download_intraday_list_of_tickers(list_file_name, day_count):
+def download_intraday_list_of_tickers(data_dir, list_file_name, day_count):
     now = datetime.now()
     from_time = datetime(2000, 1, 1, 9, 30, 00)
     to_time = datetime(2000, 1, 1, 15, 59, 00)
@@ -399,6 +399,6 @@ def download_intraday_list_of_tickers(list_file_name, day_count):
         print "Downloading intraday prices from list " + list_file_name + " for symbol " + tickers[i]
         #download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
         #This method is more thorough because it will also download files that don't have full day data
-        get_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
+        get_all_intraday_prices_for_N_days_to_date (data_dir, tickers[i], day_count, now, from_time, to_time)
 
 

@@ -11,7 +11,7 @@ names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cann
 
 
 for name in names:
-    read.download_intraday_list_of_tickers(name, N)
+    read.download_intraday_list_of_tickers("data", name, N)
 
 seconds = time.clock() - start_time
 

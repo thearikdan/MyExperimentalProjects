@@ -72,7 +72,7 @@ def get_local_minimum_index_list(lst, neighb_point_count):
     return indices
 
 
-def get_historical_data(symbol, start_date, end_date, days_count):
+def get_historical_data(data_dir, symbol, start_date, end_date, days_count):
     date_time_list = []
     volume_per_list = []
     open_per_list = []
@@ -84,7 +84,7 @@ def get_historical_data(symbol, start_date, end_date, days_count):
         new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
         new_end_date = time_op.get_date_N_days_ago_from_date(i, end_date)
 
-        is_data_available_before, date_time_before, volume_before , open_before, close_before, high_before, low_before = read.get_intraday_data(symbol, new_start_date, new_end_date, 1)
+        is_data_available_before, date_time_before, volume_before , open_before, close_before, high_before, low_before = read.get_intraday_data(data_dir, symbol, new_start_date, new_end_date, 1)
         if not (is_data_available_before):
             continue
 

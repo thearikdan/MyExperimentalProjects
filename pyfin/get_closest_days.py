@@ -7,10 +7,10 @@ import numpy as np
 from viz import vertical_plots
 
 
-start_date = datetime(2018, 1, 31, 9, 30)
-end_date = datetime(2018, 1, 31, 13, 20)
+start_date = datetime(2018, 7, 26, 9, 30)
+end_date = datetime(2018, 7, 26, 10, 10)
 
-days_count = 30
+days_count = 50
 
 display_count = 5
 
@@ -23,9 +23,9 @@ symbol = "AMZN"
 
 
 
-date_time, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = percentage.get_percentage_change_distance_data(symbol, start_date, end_date, days_count)
+date_time, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = percentage.get_percentage_change_distance_data("data", symbol, start_date, end_date, days_count)
 
-date_time_list, volume_list, open_list, close_list, high_list, low_list = absolute.get_historical_data(symbol, start_date, end_date, days_count)
+date_time_list, volume_list, open_list, close_list, high_list, low_list = absolute.get_historical_data("data", symbol, start_date, end_date, days_count)
 
 sorted_ind = sort_op.get_sorted_indices(dist_close_per_list)
 
