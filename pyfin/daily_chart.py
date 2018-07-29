@@ -6,10 +6,12 @@ import numpy as np
 #start_date = datetime(2018, 1, 5, 9, 30)
 #end_date = datetime(2018, 1, 5, 15, 39)
 
+interval = 1
+
 start_date = datetime(2018, 6, 12, 9, 30)
 end_date = datetime(2018, 6, 12, 15, 39)
 
-is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data("data", "AMZN", start_date, end_date, 1)
+is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data("data", "AMZN", start_date, end_date, interval)
 
 if not (is_data_available):
     exit(0)

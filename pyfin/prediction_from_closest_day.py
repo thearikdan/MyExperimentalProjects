@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 start_date = datetime(2018, 7, 27, 9, 30)
 end_date = datetime(2018, 7, 27, 13, 20)
 
-days_count = 15
+days_count = 50
 
-interp_count = 3
+interp_count = 20
 
 
 #symbol = "WEED.TO"
