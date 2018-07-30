@@ -92,8 +92,14 @@ def get_start_time_for_symbol(symbol):
     start_time = {"" : "9:30",
                  "TO" : "9:30",
                  "V" : "11:00",
-                 "L" : "9:30"}
-    time = start_time[suffix]
+                 "L" : "3:00",
+                 "AS" : "20:00",
+                 "CMX" : "8:20",
+                 "SI" : "18:00"}
+    if suffix in start_time:
+        time = start_time[suffix]
+    else:
+        time = "9:30"
     hour, minute = time.split(":")
     return int(hour), int(minute)
 
@@ -107,8 +113,14 @@ def get_end_time_for_symbol(symbol):
     end_time = {"" : "15:39",
                  "TO" : "15:39",
                  "V" : "15:59",
-                 "L" : "11:29"}
-    time = end_time[suffix]
+                 "L" : "11:29",
+                 "AS" : "1:59",
+                 "CMX" : "1:29",
+                 "SI" : "11:59"}
+    if suffix in end_time:
+        time = end_time[suffix]
+    else:
+        time = "15:39"
     hour, minute = time.split(":")
     return int(hour), int(minute)
 

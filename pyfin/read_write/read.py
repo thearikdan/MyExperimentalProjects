@@ -244,7 +244,7 @@ def download_intraday_data(data_dir, ticker, start, end):
     interval_string = "1m"
     dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
     filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
-    dir_name = join(constants.DATA_ROOT, dir_name)
+    dir_name = join(data_dir, dir_name)
     full_path = join(dir_name, filename)
     if isfile(full_path):
         return True
@@ -355,7 +355,7 @@ def get_volume_from_file(filename):
     return get_volume_from_numeric_data(data)
 
 
-def get_all_intraday_prices_for_N_days_to_date (data_dir, ticker, N, last_date, from_time, to_time):
+def get_all_intraday_prices_for_N_days_to_date (data_dir, ticker, N, last_date):
     #in from_time and to_time only hour, minutes and seconds are important;                                                   years and months are ignored
     date_time_list = []
     volume_list = []
@@ -363,37 +363,48 @@ def get_all_intraday_prices_for_N_days_to_date (data_dir, ticker, N, last_date, 
     close_list = []
     high_list = []
     low_list = []
+
+    start_hour, start_minute = time_op.get_start_time_for_symbol(ticker)
+    end_hour, end_minute = time_op.get_end_time_for_symbol(ticker)
+
+    print "Downloading intraday prices for symbol " + ticker
+
     for i in range (N):
-        date = time_op.get_date_N_days_ago_from_date(i, last_date)
+        try:
+            date = time_op.get_date_N_days_ago_from_date(i, last_date)
 
-        start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
-        end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
+            start_date = date.replace(hour=start_hour, minute=start_minute, second=00, microsecond=00)
+            end_date = date.replace(hour=end_hour, minute=end_minute, second=00, microsecond=00)
 
-        is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(data_dir, ticker, start_date, end_date, 1)
-        if (is_data_available):
-            date_time_list.append(date_time)
-            volume_list.append(volume)
-            open_list.append(opn)
-            close_list.append(close)
-            high_list.append(high)
-            low_list.append(low)
+            is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(data_dir, ticker, start_date, end_date, 1)
+            if (is_data_available):
+                date_time_list.append(date_time)
+                volume_list.append(volume)
+                open_list.append(opn)
+                close_list.append(close)
+                high_list.append(high)
+                low_list.append(low)
+        except:
+            print "Caught exception in reading data for " + ticker
+            continue
 
     return date_time_list, volume_list, open_list, close_list, high_list, low_list
 
 
-def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date, from_time, to_time):
+def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date):
+    start_hour, start_minute = time_op.get_start_time_for_symbol(ticker)
+    end_hour, end_minute = time_op.get_end_time_for_symbol(ticker)
+
     for i in range (N):
         date = time_op.get_date_N_days_ago_from_date(i, last_date)
 
-        start_date = date.replace(hour=from_time.hour, minute=from_time.minute, second=00, microsecond=00)
-        end_date = date.replace(hour=to_time.hour, minute=to_time.minute, second=00, microsecond=00)
+        start_date = date.replace(hour=start_hour, minute=start_minute, second=00, microsecond=00)
+        end_date = date.replace(hour=end_hour, minute=end_minute, second=00, microsecond=00)
 
         download_intraday_data(ticker, start_date, end_date)
 
 def download_intraday_list_of_tickers(data_dir, list_file_name, day_count):
     now = datetime.now()
-    from_time = datetime(2000, 1, 1, 9, 30, 00)
-    to_time = datetime(2000, 1, 1, 15, 59, 00)
     #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
 
     with open(list_file_name) as f:
@@ -405,7 +416,7 @@ def download_intraday_list_of_tickers(data_dir, list_file_name, day_count):
         print "Downloading intraday prices from list " + list_file_name + " for symbol " + tickers[i]
         #download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
         #This method is more thorough because it will also download files that don't have full day data
-        get_all_intraday_prices_for_N_days_to_date (data_dir, tickers[i], day_count, now, from_time, to_time)
+        get_all_intraday_prices_for_N_days_to_date (data_dir, tickers[i], day_count, now)
 
 
 @contextmanager
@@ -416,18 +427,15 @@ def poolcontext(*args, **kwargs):
 
 
 def merge_params(ticker, args):
-    get_all_intraday_prices_for_N_days_to_date (args[0], ticker, args[1], args[2], args[3], args[4])
+    get_all_intraday_prices_for_N_days_to_date (args[0], ticker, args[1], args[2])
 
 
 def parallel_download_intraday_list_of_tickers(data_dir, tickers, day_count):
     now = datetime.now()
-    from_time = datetime(2000, 1, 1, 9, 30, 00)
-    to_time = datetime(2000, 1, 1, 15, 59, 00)
     #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
 
-
     with poolcontext(processes=multiprocessing.cpu_count()) as pool:
-        pool.map(partial(merge_params, args = (data_dir, day_count, now, from_time, to_time)), tickers)
+        pool.map(partial(merge_params, args = (data_dir, day_count, now)), tickers)
 
 
 
