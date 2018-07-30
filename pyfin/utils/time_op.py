@@ -91,7 +91,8 @@ def get_start_time_for_symbol(symbol):
         suffix = s[count-1]
     start_time = {"" : "9:30",
                  "TO" : "9:30",
-                 "V" : "11:00"}
+                 "V" : "11:00",
+                 "L" : "9:30"}
     time = start_time[suffix]
     hour, minute = time.split(":")
     return int(hour), int(minute)
@@ -105,7 +106,8 @@ def get_end_time_for_symbol(symbol):
         suffix = s[count-1]
     end_time = {"" : "15:39",
                  "TO" : "15:39",
-                 "V" : "15:59"}
+                 "V" : "15:59",
+                 "L" : "11:29"}
     time = end_time[suffix]
     hour, minute = time.split(":")
     return int(hour), int(minute)
