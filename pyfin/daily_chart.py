@@ -2,16 +2,22 @@ from read_write import read
 from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
+from utils import time_op
 
 #start_date = datetime(2018, 1, 5, 9, 30)
 #end_date = datetime(2018, 1, 5, 15, 39)
 
 interval = 1
+symbol = "EIL.V"
 
-start_date = datetime(2018, 6, 12, 9, 30)
-end_date = datetime(2018, 6, 12, 15, 39)
+start_hour, start_min = time_op.get_start_time_for_symbol(symbol)
+end_hour, end_min = time_op.get_end_time_for_symbol(symbol)
 
-is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data("data", "AMZN", start_date, end_date, interval)
+start_date = datetime(2018, 7, 25, start_hour, start_min)
+end_date = datetime(2018, 7, 25, end_hour, end_min)
+
+#is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data("data", "HGZ18.CMX", start_date, end_date, interval)
+is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data("data", "EIL.V", start_date, end_date, interval)
 
 if not (is_data_available):
     exit(0)

@@ -59,6 +59,10 @@ def get_nasdaq_downloaded_csv_data(filename):
     return symbols, names, last_sales, market_caps, ipo_years, sectors, industries, summary_quotes
 
 
+def get_all_symbols(data_dir):
+    return get_only_dirs(data_dir)
+
+
 
   
 

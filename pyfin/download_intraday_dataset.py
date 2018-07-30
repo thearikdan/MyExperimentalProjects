@@ -1,17 +1,16 @@
 import time
+from utils import db
 from read_write import read
 
 start_time = time.clock()
 
 N = 24
 
-names = ["tickers/cannabis.txt", "tickers/cannot_be_positive.txt", "tickers/cannot_be_negative.txt", "tickers/battery.txt", "tickers/nasdaqlisted_full.txt", "tickers/otherlisted.txt"]
+symbols = db.get_all_symbols("database/database_settings.txt")
+#print len(symbols)
+#print symbols
 
-#names = ["tickers/otherlisted.txt"]
-
-
-for name in names:
-    read.download_intraday_list_of_tickers("data", name, N)
+read.parallel_download_intraday_list_of_tickers("data", symbols, N)
 
 seconds = time.clock() - start_time
 

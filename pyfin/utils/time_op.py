@@ -83,3 +83,31 @@ def get_N_minute_from_one_minute_interval(N, date_time, volume , opn, close, hig
     return date_time_N, volume_N , open_N, close_N, high_N, low_N
 
 
+def get_start_time_for_symbol(symbol):
+    suffix = ""
+    s = symbol.split(".")
+    count = len(s)
+    if (count != 1):
+        suffix = s[count-1]
+    start_time = {"" : "9:30",
+                 "TO" : "9:30",
+                 "V" : "11:00"}
+    time = start_time[suffix]
+    hour, minute = time.split(":")
+    return int(hour), int(minute)
+
+
+def get_end_time_for_symbol(symbol):
+    suffix = ""
+    s = symbol.split(".")
+    count = len(s)
+    if (count != 1):
+        suffix = s[count-1]
+    end_time = {"" : "15:39",
+                 "TO" : "15:39",
+                 "V" : "15:59"}
+    time = end_time[suffix]
+    hour, minute = time.split(":")
+    return int(hour), int(minute)
+
+

@@ -28,11 +28,29 @@ def insert_names(table, cursor, names):
         cursor.execute(sql)
 
 
-def insert_companies(table, cursor, symbols, names, ipo_years, sectors, industries, summary_quotes, stock_exchanges):
+
+def insert_companies(table, cursor, symbols, names, ipo_years, sectors, industries, summary_quotes, stock_exchanges, symbol_suffix):
     count = len(names)
 
     for i in range (count):
-        sql = "INSERT INTO " + table +"(symbol, name, ipo_year, sector_id, industry_id, summary_quote, stock_exchange) VALUES('" + symbols[i] + "','" + names[i] + "','" + ipo_years[i] + "', (SELECT sector_id from public.sectors WHERE name='" + sectors[i] + "'), (SELECT industry_id from public.industries WHERE name='" + industries[i] + "'), '" + summary_quotes[i] + "', '" + stock_exchanges[i] + "');"
+        sql = "INSERT INTO " + table +"(symbol, name, ipo_year, sector_id, industry_id, summary_quote, stock_exchange, symbol_suffix) VALUES('" + symbols[i] + "','" + names[i] + "','" + ipo_years[i] + "', (SELECT sector_id from public.sectors WHERE name='" + sectors[i] + "'), (SELECT industry_id from public.industries WHERE name='" + industries[i] + "'), '" + summary_quotes[i] + "', '" + stock_exchanges[i] + "', '" + symbol_suffix[i] +"');"
         print sql
         cursor.execute(sql)
 
+
+
+def get_all_symbols(settings_file_name):
+    symbols = []
+    conn, cursor = connect_to_database(settings_file_name)
+    sql = "SELECT symbol, symbol_suffix FROM public.companies;"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for row in rows:
+        s = row[0]
+        if row[1] is not None:
+            s = s + row[1]
+        symbols.append(s)
+
+    cursor.close()
+    conn.close()
+    return symbols

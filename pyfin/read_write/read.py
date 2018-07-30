@@ -12,6 +12,12 @@ from os.path import join, isfile
 from utils import time_op, string_op, constants
 from os.path import join
 
+#https://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments
+import multiprocessing
+from functools import partial
+from contextlib import contextmanager
+
+
 
 def get_int_time(date_time):
     date_time_tuple = date_time.timetuple()
@@ -400,5 +406,28 @@ def download_intraday_list_of_tickers(data_dir, list_file_name, day_count):
         #download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
         #This method is more thorough because it will also download files that don't have full day data
         get_all_intraday_prices_for_N_days_to_date (data_dir, tickers[i], day_count, now, from_time, to_time)
+
+
+@contextmanager
+def poolcontext(*args, **kwargs):
+    pool = multiprocessing.Pool(*args, **kwargs)
+    yield pool
+    pool.terminate()
+
+
+def merge_params(ticker, args):
+    get_all_intraday_prices_for_N_days_to_date (args[0], ticker, args[1], args[2], args[3], args[4])
+
+
+def parallel_download_intraday_list_of_tickers(data_dir, tickers, day_count):
+    now = datetime.now()
+    from_time = datetime(2000, 1, 1, 9, 30, 00)
+    to_time = datetime(2000, 1, 1, 15, 59, 00)
+    #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
+
+
+    with poolcontext(processes=multiprocessing.cpu_count()) as pool:
+        pool.map(partial(merge_params, args = (data_dir, day_count, now, from_time, to_time)), tickers)
+
 
 

@@ -1,0 +1,33 @@
+Symbol	Description
+DW	Durum Wheat
+IC	NCI National Corn
+IC.C	NCI National Corn Continuation
+ICN18	NCI National Corn {Jul 18}
+ICQ18	NCI National Corn {Aug 18}
+IH	HRWI Hard Red
+IH.C	HRWI Hard Red Continuation
+IHN18	HRWI Hard Red {Jul 18}
+IHQ18	HRWI Hard Red {Aug 18}
+IP	HRSI Hard Red Spring
+IP.C	HRSI Hard Red Spring Continuation
+IPN18	HRSI Hard Red Spring {Jul 18}
+IPQ18	HRSI Hard Red Spring {Aug 18}
+IS	NSI National Soybean
+IS.C	NSI National Soybean Continuation
+ISN18	NSI National Soybean {Jul 18}
+ISQ18	NSI National Soybean {Aug 18}
+IW	SRWI Soft Red Wheat
+IW.C	SRWI Soft Red Wheat Continuation
+IWN18	SRWI Soft Red Wheat {Jul 18}
+IWQ18	SRWI Soft Red Wheat {Aug 18}
+MW	Spring Wheat
+MW.C	Spring Wheat Continuation
+MWH19	Spring Wheat {Mar 19}
+MWK19	Spring Wheat {May 19}
+MWN18	Spring Wheat {Jul 18}
+MWN19	Spring Wheat {Jul 19}
+MWU18	Spring Wheat {Sep 18}
+MWU19	Spring Wheat {Sep 19}
+MWZ18	Spring Wheat {Dec 18}
+MWZ19	Spring Wheat {Dec 19}
+NW	White Wheat
