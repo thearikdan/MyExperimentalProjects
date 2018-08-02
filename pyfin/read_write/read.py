@@ -83,6 +83,12 @@ def get_current_intraday_data_from_web(ticker, start, end):
     return __get_intraday_data_from_web(ticker, start_current_time, end_current_time)
 
 
+def get_all_intraday_data_from_file(full_path):
+    with open(full_path, "rb") as f:
+        date_time, volume, opn, close, high, low = pickle.load(f)
+        return (date_time, volume, opn, close, high, low)
+
+
 def get_intraday_data_from_file(full_path, start, end):
     with open(full_path, "rb") as f:
         date_time, volume, opn, close, high, low = pickle.load(f)

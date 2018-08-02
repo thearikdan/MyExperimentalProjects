@@ -110,13 +110,13 @@ def get_end_time_for_symbol(symbol):
     count = len(s)
     if (count != 1):
         suffix = s[count-1]
-    end_time = {"" : "15:39",
-                 "TO" : "15:39",
+    end_time = {"" : "15:59",
+                 "TO" : "15:59",
                  "V" : "15:59",
                  "L" : "11:29",
                  "AS" : "1:59",
                  "CMX" : "1:29",
-                 "SI" : "11:59"}
+                 "SI" : "23:59"}
     if suffix in end_time:
         time = end_time[suffix]
     else:

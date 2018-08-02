@@ -42,13 +42,15 @@ def insert_companies(table, cursor, symbols, names, ipo_years, sectors, industri
 def get_all_symbols(settings_file_name):
     symbols = []
     conn, cursor = connect_to_database(settings_file_name)
-    sql = "SELECT symbol, symbol_suffix FROM public.companies;"
+#    sql = "SELECT symbol, symbol_suffix FROM public.companies;"
+    sql = "SELECT symbol FROM public.companies;"
     cursor.execute(sql)
     rows = cursor.fetchall()
     for row in rows:
         s = row[0]
-        if row[1] is not None:
-            s = s + row[1]
+#temp hack!
+#        if row[1] is not None:
+#            s = s + row[1]
         symbols.append(s)
 
     cursor.close()

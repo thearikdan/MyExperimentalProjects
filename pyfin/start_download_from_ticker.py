@@ -1,3 +1,4 @@
+#if during download, just press ctrl-c. It will continue the download.
 import time
 from utils import db
 from read_write import read
@@ -6,7 +7,12 @@ start_time = time.clock()
 
 N = 29
 
+last_symbol="NNOMF"
+
 symbols = db.get_all_symbols("database/database_settings.txt")
+pos = symbols.index(last_symbol)
+symbols = symbols[pos+1:]
+
 #print len(symbols)
 #print symbols
 
