@@ -90,12 +90,11 @@ def get_all_intraday_data_from_file(full_path):
         return (date_time, volume, opn, close, high, low)
 
 
-def is_all_intraday_data_from_file_corrupt(full_path):
-    date_time, volume, opn, close, high, low = get_all_intraday_data_from_file(full_path)
-    count = len(close)
+def is_price_list_corrupt(price_list):
+    count = len(price_list)
     none_count = 0
     for i in range (count):
-        if close[i] == None:
+        if price_list[i] == None:
             none_count = none_count + 1
     none_ratio = float(none_count) / count
     if none_ratio > constants.FILE_CORRUPT_RATIO:
