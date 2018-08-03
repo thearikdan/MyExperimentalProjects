@@ -11,6 +11,7 @@ from datetime import datetime
 from os.path import join, isfile
 from utils import time_op, string_op, constants
 from os.path import join
+from utils import constants
 
 #https://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments
 import multiprocessing
@@ -87,6 +88,20 @@ def get_all_intraday_data_from_file(full_path):
     with open(full_path, "rb") as f:
         date_time, volume, opn, close, high, low = pickle.load(f)
         return (date_time, volume, opn, close, high, low)
+
+
+def is_all_intraday_data_from_file_corrupt(full_path):
+    date_time, volume, opn, close, high, low = get_all_intraday_data_from_file(full_path)
+    count = len(close)
+    none_count = 0
+    for i in range (count):
+        if close[i] == None:
+            none_count = none_count + 1
+    none_ratio = float(none_count) / count
+    if none_ratio > constants.FILE_CORRUPT_RATIO:
+        return True
+    else:
+        return False
 
 
 def get_intraday_data_from_file(full_path, start, end):
