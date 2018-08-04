@@ -38,28 +38,7 @@ def insert_companies(table, cursor, symbols, names, ipo_years, sectors, industri
         cursor.execute(sql)
 
 
-
-def get_all_symbols(settings_file_name):
-    symbols = []
-    conn, cursor = connect_to_database(settings_file_name)
-#    sql = "SELECT symbol, symbol_suffix FROM public.companies;"
-    sql = "SELECT symbol FROM public.companies;"
-    cursor.execute(sql)
-    rows = cursor.fetchall()
-    for row in rows:
-        s = row[0]
-#temp hack!
-#        if row[1] is not None:
-#            s = s + row[1]
-        symbols.append(s)
-
-    cursor.close()
-    conn.close()
-    return symbols
-
-
-def get_yahoo_suffix_and_trading_hours_from_symbol(settings_file_name, symbol):
-    conn, cursor = connect_to_database(settings_file_name)
+def get_yahoo_suffix_and_trading_hours_from_symbol(connection, cursor, symbol):
     sql = "SELECT yahoo_suffix, start_time, end_time FROM public.companies INNER JOIN stock_exchanges ON (exchange_id=public.companies.stock_exchange_id) AND (public.companies.symbol='" + symbol + "');"
     cursor.execute(sql)
     rows = cursor.fetchall()
@@ -71,7 +50,21 @@ def get_yahoo_suffix_and_trading_hours_from_symbol(settings_file_name, symbol):
         suffix = row[0]
         start_time = row[1]
         end_time = row[2]
+    return suffix, start_time, end_time
+
+
+def get_all_symbols(settings_file_name):
+    symbols = []
+    conn, cursor = connect_to_database(settings_file_name)
+    sql = "SELECT symbol FROM public.companies;"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for row in rows:
+        s = row[0]
+        suffix, _, _ = get_yahoo_suffix_and_trading_hours_from_symbol(conn, cursor, s)
+        symbols.append(s + suffix)
+
     cursor.close()
     conn.close()
-    return suffix, start_time, end_time
+    return symbols
 
