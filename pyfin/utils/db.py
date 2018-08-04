@@ -56,3 +56,22 @@ def get_all_symbols(settings_file_name):
     cursor.close()
     conn.close()
     return symbols
+
+
+def get_yahoo_suffix_and_trading_hours_from_symbol(settings_file_name, symbol):
+    conn, cursor = connect_to_database(settings_file_name)
+    sql = "SELECT yahoo_suffix, start_time, end_time FROM public.companies INNER JOIN stock_exchanges ON (exchange_id=public.companies.stock_exchange_id) AND (public.companies.symbol='" + symbol + "');"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    suffix = ""
+    start_time = ""
+    end_time = ""
+
+    for row in rows:
+        suffix = row[0]
+        start_time = row[1]
+        end_time = row[2]
+    cursor.close()
+    conn.close()
+    return suffix, start_time, end_time
+
