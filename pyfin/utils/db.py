@@ -68,3 +68,54 @@ def get_all_symbols(settings_file_name):
     conn.close()
     return symbols
 
+
+def is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
+    sql = "SELECT * FROM public.corrupt_intraday_prices INNER JOIN public.companies ON (public.corrupt_intraday_prices.company_id=public.companies.company_id) WHERE (public.companies.symbol='" + symbol + "') AND (public.corrupt_intraday_prices.date='" + date + "'::date);"
+    cur.execute(sql)
+    rows = cur.fetchall()
+    if len(rows) == 0:
+        return False
+    else:
+        return True
+
+
+def add_to_corrupt_intraday_prices(conn, cur, symbol, suffix, date):
+    if is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
+        return
+    sql = ""
+    if suffix =="":
+        sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES((SELECT company_id FROM public.companies WHERE symbol='" + symbol + "'),'" + date + "'::date);"
+    else:
+        exchange_id = get_exchange_id_from_suffix(conn, cur, suffix)
+        sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES((SELECT company_id FROM public.companies WHERE symbol='" + symbol + "' AND stock_exchange_id="+str(exchange_id)+"),'" + date + "'::date);"
+    cur.execute(sql)
+
+
+def get_suffix_list(settings_file_name):
+    suffix_list = []
+    conn, cursor = connect_to_database(settings_file_name)
+    sql = "SELECT yahoo_suffix FROM public.stock_exchanges;"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for row in rows:
+        s = row[0]
+        if (s != ""):
+            suffix_list.append(s)
+
+    cursor.close()
+    conn.close()
+    return suffix_list
+
+
+def get_exchange_id_from_suffix(conn, cursor, suffix):
+    if suffix == "":
+        return None
+    sql = "SELECT exchange_id FROM public.stock_exchanges WHERE yahoo_suffix='" + suffix + "';"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for row in rows:
+        s = row[0]
+        if (s != ""):
+            return s
+
+    return None

@@ -4,11 +4,10 @@ from read_write import read
 
 start_time = time.clock()
 
-N = 29
+N = 7
 
 symbols = db.get_all_symbols("database/database_settings.txt")
-#print len(symbols)
-#print symbols
+print symbols
 
 read.parallel_download_intraday_list_of_tickers("data", symbols, N)
 
