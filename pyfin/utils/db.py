@@ -1,5 +1,6 @@
 import psycopg2
 import sys
+from utils import time_op
  
 def connect_to_database(settings_file_name):
     with open(settings_file_name) as f:
@@ -53,20 +54,19 @@ def get_yahoo_suffix_and_trading_hours_from_symbol(connection, cursor, symbol):
     return suffix, start_time, end_time
 
 
-def get_all_symbols(settings_file_name):
+def get_all_symbols_and_markets(conn, cursor):
     symbols = []
-    conn, cursor = connect_to_database(settings_file_name)
-    sql = "SELECT symbol FROM public.companies;"
+    markets = []
+    sql = "SELECT symbol, stock_exchanges.name, stock_exchanges.yahoo_suffix FROM public.companies INNER JOIN public.stock_exchanges ON stock_exchange_id=exchange_id;"
     cursor.execute(sql)
     rows = cursor.fetchall()
     for row in rows:
         s = row[0]
-        suffix, _, _ = get_yahoo_suffix_and_trading_hours_from_symbol(conn, cursor, s)
+        m = row[1]
+        suffix = row[2]
         symbols.append(s + suffix)
-
-    cursor.close()
-    conn.close()
-    return symbols
+        markets.append(m)
+    return symbols, markets
 
 
 def is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
@@ -79,21 +79,94 @@ def is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
         return True
 
 
+def is_record_in_intraday_prices_on_that_day_and_time(conn, cur, symbol, date, time):
+    sql = "SELECT * FROM public.intraday_prices INNER JOIN public.companies ON (public.intraday_prices.company_id=public.companies.company_id) WHERE (public.companies.symbol='" + symbol + "') AND (public.intraday_prices.date='" + date + "'::date) AND (public.intraday_prices.time='" + time + "'::time);"
+    cur.execute(sql)
+    rows = cur.fetchall()
+    if len(rows) == 0:
+        return False
+    else:
+        return True
+
+
+def get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix):
+    ids=[]
+    exchange_id = get_exchange_id_from_suffix(conn, cur, suffix)
+    sql = ""
+    if exchange_id == None:
+        sql ="SELECT company_id FROM public.companies WHERE symbol='" + symbol + "';"
+    else:
+         sql = "SELECT company_id FROM public.companies WHERE symbol='" + symbol + "' AND stock_exchange_id='"+str(exchange_id)+"';"
+    cur.execute(sql)
+    rows = cur.fetchall()
+    for row in rows:
+        ids.append(row[0])
+    return ids
+
+
 def add_to_corrupt_intraday_prices(conn, cur, symbol, suffix, date):
     if is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
         return
-    sql = ""
-    if suffix =="":
-        sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES((SELECT company_id FROM public.companies WHERE symbol='" + symbol + "'),'" + date + "'::date);"
+    company_ids = get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix)
+    count = len(company_ids)
+    if count != 1:
+        return
     else:
-        exchange_id = get_exchange_id_from_suffix(conn, cur, suffix)
-        sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES((SELECT company_id FROM public.companies WHERE symbol='" + symbol + "' AND stock_exchange_id="+str(exchange_id)+"),'" + date + "'::date);"
-    cur.execute(sql)
+        sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
+        print "Adding to corrupt intraday prices"
+        print sql
+        cur.execute(sql)
 
 
-def get_suffix_list(settings_file_name):
+def add_to_corrupt_intraday_prices_without_check_for_duplicates(conn, cur, symbol, suffix, date):
+    if is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
+        return
+    company_ids = get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix)
+    count = len(company_ids)
+    if count != 1:
+        return
+    else:
+        sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
+        print "Adding to corrupt intraday prices"
+        print sql
+        cur.execute(sql)
+
+
+def add_to_intraday_prices(conn, cur, symbol, suffix, date_time, volume, opn, close, high, low):
+    company_ids = get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix)
+    count = len(company_ids)
+    if count != 1:
+        return
+
+    count = len(date_time)
+    for i in range(count):
+        date, time = time_op.get_date_time_from_datetime(date_time[i])
+        if is_record_in_intraday_prices_on_that_day_and_time(conn, cur, symbol, date, time):
+            continue
+        sql = "INSERT INTO public.intraday_prices (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
+        print "Adding to intraday prices"
+        print sql
+        cur.execute(sql)
+
+
+def add_to_intraday_prices_without_check_for_duplicates(conn, cur, symbol, suffix, date_time, volume, opn, close, high, low):
+    company_ids = get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix)
+    count = len(company_ids)
+    if count != 1:
+        return
+
+    count = len(date_time)
+    for i in range(count):
+        date, time = time_op.get_date_time_from_datetime(date_time[i])
+        sql = "INSERT INTO public.intraday_prices (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
+        print "Adding to intraday prices"
+        print sql
+        cur.execute(sql)
+
+
+def get_suffix_list(conn, cursor):
     suffix_list = []
-    conn, cursor = connect_to_database(settings_file_name)
+#    conn, cursor = connect_to_database(settings_file_name)
     sql = "SELECT yahoo_suffix FROM public.stock_exchanges;"
     cursor.execute(sql)
     rows = cursor.fetchall()
@@ -102,8 +175,8 @@ def get_suffix_list(settings_file_name):
         if (s != ""):
             suffix_list.append(s)
 
-    cursor.close()
-    conn.close()
+#    cursor.close()
+#    conn.close()
     return suffix_list
 
 

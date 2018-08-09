@@ -28,9 +28,9 @@ def insert_items_into_database(conn, cur, item_to_db):
             symbol = string_op.get_symbol_without_suffix(item[1], suffix_list)
             suffix = string_op.get_suffix_without_symbol(item[1], suffix_list)
             if read.is_price_list_corrupt(close):
-                db.add_to_corrupt_intraday_prices(conn, cur, symbol, suffix, item[2])
+                db.add_to_corrupt_intraday_prices_without_check_for_duplicates(conn, cur, symbol, suffix, item[2])
             else:
-                db.add_to_intraday_prices(conn, cur, symbol, suffix, date_time, volume, opn, close, high, low)
+                db.add_to_intraday_prices_without_check_for_duplicates(conn, cur, symbol, suffix, date_time, volume, opn, close, high, low)
         conn.commit()
 
 

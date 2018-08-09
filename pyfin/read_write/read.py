@@ -447,14 +447,26 @@ def poolcontext(*args, **kwargs):
 
 
 def merge_params(ticker, args):
-    get_all_intraday_prices_for_N_days_to_date (args[0], ticker, args[1], args[2])
+    data_dir = args[0]
+    day_count = args[1]
+    last_date = args[2]
+    symbol, market = ticker.split(":")
+    get_all_intraday_prices_for_N_days_to_date (join(data_dir, market), symbol, day_count, last_date)
 
 
-def parallel_download_intraday_list_of_tickers(data_dir, tickers, day_count):
-    now = datetime.now()
+def parallel_download_intraday_list_of_tickers(data_dir, tickers, markets, day_count):
     #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
+    now = datetime.now()
+    # combine tickers with markets to pass param for parallel processing
+    count = len(tickers)
+    for i in range(count):
+        m = markets[i]
+        if m =="n/a":
+            m = "n_a"
+        tickers[i] = tickers[i] + ":" + m
 
     with poolcontext(processes=multiprocessing.cpu_count()) as pool:
+
         pool.map(partial(merge_params, args = (data_dir, day_count, now)), tickers)
 
 

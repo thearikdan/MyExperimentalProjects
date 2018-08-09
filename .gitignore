@@ -2,9 +2,11 @@
 *.pkl
 *.json
 *.*~
+*.txt
 .ipynb_checkpoints/
 .DS_Store
 data/
+new_data
 summary/
 output/
 debug/

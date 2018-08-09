@@ -125,3 +125,8 @@ def get_end_time_for_symbol(symbol):
     return int(hour), int(minute)
 
 
+def get_date_time_from_datetime(date_time):
+    date = str(date_time.year) +"-" + str(date_time.month) + "-" + str(date_time.day)
+    time = str(date_time.hour) +":" + str(date_time.minute) + ":" + str(date_time.second)
+    return date, time
+
