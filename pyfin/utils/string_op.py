@@ -17,11 +17,11 @@ def get_directory_from_ticker_day_interval(ticker, day, interval):
 
 
 def get_symbol_without_suffix(name, suffix_list):
-    count = len(name)
     pos = name.rfind(".")
     suffix = name[pos:]
     if suffix in suffix_list:
-        symbol = name[:(count - pos + 1)]
+        suffix_len = len(suffix)
+        symbol = name[:-suffix_len]
         return symbol
     else:
         return name

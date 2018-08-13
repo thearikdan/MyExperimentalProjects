@@ -4,7 +4,7 @@ from read_write import read
 
 start_time = time.clock()
 
-N = 7
+N = 40
 
 conn, cur = db.connect_to_database("database/database_settings.txt")
 
@@ -14,7 +14,7 @@ print symbols, markets
 cur.close()
 conn.close()
 
-read.parallel_download_intraday_list_of_tickers("new_data", symbols, markets, N)
+read.parallel_download_intraday_list_of_tickers("data_v2", symbols, markets, N)
 
 seconds = time.clock() - start_time
 

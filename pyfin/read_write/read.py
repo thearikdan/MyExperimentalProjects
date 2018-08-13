@@ -1,6 +1,10 @@
 import numpy as np
 from numpy import genfromtxt
+
+import pandas as pd
+pd.core.common.is_list_like = pd.api.types.is_list_like
 import pandas_datareader as pdr
+
 from datetime import datetime
 import urllib2
 import json

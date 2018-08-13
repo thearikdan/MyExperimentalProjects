@@ -69,29 +69,9 @@ def get_all_symbols_and_markets(conn, cursor):
     return symbols, markets
 
 
-def is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
-    sql = "SELECT * FROM public.corrupt_intraday_prices INNER JOIN public.companies ON (public.corrupt_intraday_prices.company_id=public.companies.company_id) WHERE (public.companies.symbol='" + symbol + "') AND (public.corrupt_intraday_prices.date='" + date + "'::date);"
-    cur.execute(sql)
-    rows = cur.fetchall()
-    if len(rows) == 0:
-        return False
-    else:
-        return True
-
-
-def is_record_in_intraday_prices_on_that_day_and_time(conn, cur, symbol, date, time):
-    sql = "SELECT * FROM public.intraday_prices INNER JOIN public.companies ON (public.intraday_prices.company_id=public.companies.company_id) WHERE (public.companies.symbol='" + symbol + "') AND (public.intraday_prices.date='" + date + "'::date) AND (public.intraday_prices.time='" + time + "'::time);"
-    cur.execute(sql)
-    rows = cur.fetchall()
-    if len(rows) == 0:
-        return False
-    else:
-        return True
-
-
-def get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix):
+def get_company_ids_from_market_and_symbol(conn, cur, market, symbol):
     ids=[]
-    exchange_id = get_exchange_id_from_suffix(conn, cur, suffix)
+    exchange_id = get_exchange_id_from_market(conn, cur, market)
     sql = ""
     if exchange_id == None:
         sql ="SELECT company_id FROM public.companies WHERE symbol='" + symbol + "';"
@@ -104,44 +84,69 @@ def get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix):
     return ids
 
 
-def add_to_corrupt_intraday_prices(conn, cur, symbol, suffix, date):
-    if is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
-        return
-    company_ids = get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix)
-    count = len(company_ids)
-    if count != 1:
-        return
+def is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, market, symbol, date):
+    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
+    if len(company_ids) != 1:
+        return True
+
+    sql = "SELECT * FROM public.corrupt_intraday_prices WHERE (company_id='" + str(company_ids[0]) + "') AND (date='" + date + "'::date);"
+    cur.execute(sql)
+    rows = cur.fetchall()
+    if len(rows) == 0:
+        return False
     else:
-        sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
-        print "Adding to corrupt intraday prices"
-        print sql
-        cur.execute(sql)
+        return True
 
 
-def add_to_corrupt_intraday_prices_without_check_for_duplicates(conn, cur, symbol, suffix, date):
-    if is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, symbol, date):
-        return
-    company_ids = get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix)
-    count = len(company_ids)
-    if count != 1:
-        return
+def is_record_in_intraday_prices_on_that_day_and_time(conn, cur, market, symbol, date, time):
+    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
+    if len(company_ids) != 1:
+        return False
+
+    sql = "SELECT * FROM public.intraday_prices WHERE (company_id='" + str(company_ids[0]) + "') AND (public.intraday_prices.date='" + date + "'::date) AND (public.intraday_prices.time='" + time + "'::time);"
+    cur.execute(sql)
+    rows = cur.fetchall()
+    if len(rows) == 0:
+        return False
     else:
-        sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
-        print "Adding to corrupt intraday prices"
-        print sql
-        cur.execute(sql)
+        return True
 
 
-def add_to_intraday_prices(conn, cur, symbol, suffix, date_time, volume, opn, close, high, low):
-    company_ids = get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix)
-    count = len(company_ids)
-    if count != 1:
+
+
+def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
+    if is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, market, symbol, date):
+        return
+    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
+    if len(company_ids) != 1:
+        return
+
+    sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
+    print "Adding to corrupt intraday prices"
+    print sql
+    cur.execute(sql)
+
+
+def add_to_corrupt_intraday_prices_without_check_for_duplicates(conn, cur, market, symbol, date):
+    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
+    if len(company_ids) != 1:
+        return
+
+    sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
+    print "Adding to corrupt intraday prices"
+    print sql
+    cur.execute(sql)
+
+
+def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low):
+    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
+    if len(company_ids) != 1:
         return
 
     count = len(date_time)
     for i in range(count):
         date, time = time_op.get_date_time_from_datetime(date_time[i])
-        if is_record_in_intraday_prices_on_that_day_and_time(conn, cur, symbol, date, time):
+        if is_record_in_intraday_prices_on_that_day_and_time(conn, cur, market, symbol, date, time):
             continue
         sql = "INSERT INTO public.intraday_prices (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
         print "Adding to intraday prices"
@@ -149,10 +154,9 @@ def add_to_intraday_prices(conn, cur, symbol, suffix, date_time, volume, opn, cl
         cur.execute(sql)
 
 
-def add_to_intraday_prices_without_check_for_duplicates(conn, cur, symbol, suffix, date_time, volume, opn, close, high, low):
-    company_ids = get_company_id_from_symbol_and_suffix(conn, cur, symbol, suffix)
-    count = len(company_ids)
-    if count != 1:
+def add_to_intraday_prices_without_check_for_duplicates(conn, cur, market, symbol, date_time, volume, opn, close, high, low):
+    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
+    if len(company_ids) != 1:
         return
 
     count = len(date_time)
@@ -180,10 +184,10 @@ def get_suffix_list(conn, cursor):
     return suffix_list
 
 
-def get_exchange_id_from_suffix(conn, cursor, suffix):
-    if suffix == "":
-        return None
-    sql = "SELECT exchange_id FROM public.stock_exchanges WHERE yahoo_suffix='" + suffix + "';"
+def get_exchange_id_from_market(conn, cursor, market):
+    if market == "n_a":
+        market = "n/a"
+    sql = "SELECT exchange_id FROM public.stock_exchanges WHERE name='" + market + "';"
     cursor.execute(sql)
     rows = cursor.fetchall()
     for row in rows:
