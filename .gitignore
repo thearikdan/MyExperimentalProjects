@@ -5,8 +5,9 @@
 *.txt
 .ipynb_checkpoints/
 .DS_Store
+data_v1/
+data_v2/
 data/
-new_data
 summary/
 output/
 debug/
