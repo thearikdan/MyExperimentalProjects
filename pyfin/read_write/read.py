@@ -90,13 +90,19 @@ def get_current_intraday_data_from_web(ticker, start, end):
 
 def get_all_intraday_data_from_file(full_path):
     with open(full_path, "rb") as f:
-        date_time, volume, opn, close, high, low = pickle.load(f)
-        return (date_time, volume, opn, close, high, low)
+        try:
+            date_time, volume, opn, close, high, low = pickle.load(f)
+            return (date_time, volume, opn, close, high, low)
+        except:
+            return ([], [], [], [], [], [])
 
 
 def is_price_list_corrupt(price_list):
     count = len(price_list)
     none_count = 0
+    if (count == 0):
+        return True
+
     for i in range (count):
         if price_list[i] == None:
             none_count = none_count + 1
@@ -109,20 +115,23 @@ def is_price_list_corrupt(price_list):
 
 def get_intraday_data_from_file(full_path, start, end):
     with open(full_path, "rb") as f:
-        date_time, volume, opn, close, high, low = pickle.load(f)
-        start_index = date_time.index(start) if start in date_time else None
-        end_index = date_time.index(end) if end in date_time else None
+        try:
+            date_time, volume, opn, close, high, low = pickle.load(f)
+            start_index = date_time.index(start) if start in date_time else None
+            end_index = date_time.index(end) if end in date_time else None
 
-        if ((start_index == None) or (end_index == None)):
+            if ((start_index == None) or (end_index == None)):
+                return (False, [], [], [], [], [], [])
+            else:
+                return (True,
+                    date_time[start_index:end_index],
+                    volume[start_index:end_index],
+                    opn[start_index:end_index],
+                    close[start_index:end_index],
+                    high[start_index:end_index],
+                    low[start_index:end_index])
+        except:         
             return (False, [], [], [], [], [], [])
-        else:
-            return (True,
-                date_time[start_index:end_index],
-                volume[start_index:end_index],
-                opn[start_index:end_index],
-                close[start_index:end_index],
-                high[start_index:end_index],
-                low[start_index:end_index])
 
 
 def is_corrupt_value(a):

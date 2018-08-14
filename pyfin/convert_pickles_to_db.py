@@ -9,7 +9,7 @@ from read_write import read
 DATA_DIR = "data_v2"
 
 #find index of start day
-start_with_day = '2018-7-5'
+start_with_day = '2018-8-6'
 
 
 def get_filename_from_item(item):
