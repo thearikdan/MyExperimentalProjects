@@ -2,8 +2,8 @@ Average of absolute price percentage changes between high and low, instead of av
 Conditional probability of price going up / down from time x + 1 to 13:59, given the prive change between 9:30 and time x
 Conditional probability of price going up / down, given index price up / down
 Add interval to parameters of percentage change closeness
-Store daily prices in files
-Store data in database
+Store daily prices in files - done
+Store data in database - done
 Sore business news about companies in database. Then look which analyst has the best forecast, and follow them
 https://finance.yahoo.com/quote/amzn/analysis?ltr=1
 Find how patterns work for stocks specifically and store that info in database

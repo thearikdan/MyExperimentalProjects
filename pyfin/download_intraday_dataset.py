@@ -1,10 +1,10 @@
 import time
-from utils import db
+from utils import db, constants
 from read_write import read
 
 start_time = time.clock()
 
-N = 40
+N = 10
 
 conn, cur = db.connect_to_database("database/database_settings.txt")
 
@@ -14,7 +14,7 @@ print symbols, markets
 cur.close()
 conn.close()
 
-read.parallel_download_intraday_list_of_tickers("data_v2", symbols, markets, N)
+read.parallel_download_intraday_list_of_tickers(constants.DATA_ROOT, symbols, markets, N)
 
 seconds = time.clock() - start_time
 

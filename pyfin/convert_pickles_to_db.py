@@ -1,15 +1,15 @@
-from utils import file_op, db, string_op
+from utils import file_op, db, string_op, constants
 import os
 import datetime
 import time
 from read_write import read
+from argparse import ArgumentParser
+import sys
 
 
 
-DATA_DIR = "data_v2"
-
-#find index of start day
-start_with_day = '2018-8-6'
+def print_usage():
+    print "Usage: convert_pickles_to_db.py - d yyyy-mm-dd, -c y/n"
 
 
 def get_filename_from_item(item):
@@ -21,7 +21,7 @@ def get_filename_from_item(item):
     return filename
 
 
-def insert_items_into_database(conn, cur, item_to_db):
+def insert_items_into_database(conn, cur, item_to_db, check):
     count = len(item_to_db)
     for i in range(count):
         item_count = len(item_to_db[i])
@@ -32,11 +32,18 @@ def insert_items_into_database(conn, cur, item_to_db):
             suffix_list = db.get_suffix_list(conn, cur)
             market = item[1]
             symbol = string_op.get_symbol_without_suffix(item[2], suffix_list)
-            suffix = string_op.get_suffix_without_symbol(item[2], suffix_list)
-            if read.is_price_list_corrupt(close):
-                db.add_to_corrupt_intraday_prices(conn, cur, market, symbol, item[3])
+            if check:
+                if read.is_price_list_corrupt(close):
+                    db.add_to_corrupt_intraday_prices(conn, cur, market, symbol, item[3])
+                else:
+                    db.add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
             else:
-                db.add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
+                if read.is_price_list_corrupt(close):
+                    db.add_to_corrupt_intraday_prices_without_check_for_duplicates(conn, cur, market, symbol, item[3])
+                else:
+                    db.add_to_intraday_prices_without_check_for_duplicates(conn, cur, market, symbol, date_time, volume,
+                                                                           opn, close, high, low)
+
         conn.commit()
 
 
@@ -83,7 +90,7 @@ def get_hierarchy_list(data_dir):
 
     markets = file_op.get_only_dirs(data_dir)
     for market in markets:
-        market_dir = os.path.join(DATA_DIR, market)
+        market_dir = os.path.join(data_dir, market)
         tickers = file_op.get_only_dirs(market_dir)
         ticker_count = len(tickers)
 
@@ -101,31 +108,47 @@ def get_hierarchy_list(data_dir):
                     files = file_op.get_only_files(sub_sub_sub_dir)
                     file_count = len(files)
                     for l in range(file_count):
-                        item = (DATA_DIR, market, tickers[i], dates[j], intervals[k], files[l])
+                        item = (data_dir, market, tickers[i], dates[j], intervals[k], files[l])
 #                        print item
                         items.append((item))
     return items
 
 
 
+parser = ArgumentParser()
+
+parser.add_argument("-d", "--date", dest="start_date", help="Specify starting date yyyy-mm-dd")
+parser.add_argument("-c", "--check_for_duplicates", dest="check_for_duplicates", help="Specify whether or not to check for duplicate record in database: y/n")
+
+args = parser.parse_args()
+
+param_count = len(sys.argv)
+
+if param_count != 5:
+    print_usage()
+    exit()
+
+params = vars(args)
+start_with_date = params['start_date']
+check_for_duplicates = params["check_for_duplicates"]
+
+check = False
+if check_for_duplicates =="y":
+    check = True
+elif check_for_duplicates=="n":
+    check = False
+else:
+    print_usage()
+    exit()
+
+
 conn, cursor = db.connect_to_database("database/database_settings.txt")
 
-start_time = time.clock()
-print ("Getting hierarchy of files")
+data_dir = constants.DATA_ROOT
 
-print ("Starting time:")
-print(datetime.datetime.now())
-
-items = get_hierarchy_list(DATA_DIR)
+items = get_hierarchy_list(data_dir)
 write_items_to_file("items.txt", items)
 
-print ("Got hierarchy at time:")
-print(datetime.datetime.now())
-
-print "Item count: " + str(len(items))
-
-start_time = time.clock()
-print "Sorting by ascending" 
 
 items_asc = sorted(items, key=lambda t: t[3], reverse=False)
 write_items_to_file("items_asc.txt", items_asc)
@@ -133,7 +156,7 @@ write_items_to_file("items_asc.txt", items_asc)
 item_count = len(items_asc)
 found = False
 for  ind in range (item_count):
-    if items_asc[ind][3] == start_with_day:
+    if items_asc[ind][3] == start_with_date:
         found = True
         break
 
@@ -146,10 +169,7 @@ if not found:
 items_asc = items_asc[ind:]
 
 items_to_db = group_items_by_dates(items_asc)
-insert_items_into_database(conn, cursor, items_to_db)
-
-print ("Ending time:")
-print(datetime.datetime.now())
+insert_items_into_database(conn, cursor, items_to_db, check)
 
 
 cursor.close()
