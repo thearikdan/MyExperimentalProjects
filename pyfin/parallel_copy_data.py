@@ -9,7 +9,7 @@ import multiprocessing
 from multiprocessing import Pool
 
 
-SOURCE_DIR = '/media/ara/Passport1_2GB/pyfin/data_v1'
+SOURCE_DIR = '/media/ara/Passport1_2TB/pyfin/data_v1'
 
 DEST_DIR = '/media/hddx/datasets/pyfin/data_v1' 
 
@@ -20,13 +20,17 @@ def get_list_of_files(source_dir):
     symbols = file_op.get_only_dirs(source_dir)
     for symbol in symbols:
         symbol_dir = join(source_dir, symbol)
-        times = file_op.get_only_dirs(symbol_dir)
-        for t in times:
-            time_dir = join(symbol_dir, t)
-            files = file_op.get_only_files(time_dir)
-            for f in files:
-                full_path = join(time_dir, f)
-                file_list.append(full_path)
+        dates = file_op.get_only_dirs(symbol_dir)
+        for d in dates:
+            date_dir = join(symbol_dir, d)
+            times = file_op.get_only_dirs(date_dir)
+            for t in times:
+                time_dir = join(date_dir, t)
+                files = file_op.get_only_files(time_dir)
+                for f in files:
+                    full_path = join(time_dir, f)
+                    print "Adding file: " + full_path
+                    file_list.append(full_path)
     return file_list
 
 
@@ -43,6 +47,7 @@ def parallel_copy(f):
         os.system(cmd)
 
 
+file_op.ensure_dir_exists(DEST_DIR)
 print "Getting the list of files..."
 files = get_list_of_files(SOURCE_DIR)
 

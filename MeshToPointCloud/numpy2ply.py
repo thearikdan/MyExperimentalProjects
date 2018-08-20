@@ -19,24 +19,36 @@ POINT_COUNT_STR = str(POINT_COUNT)
 #SOURCE_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_ply/' + POINT_COUNT_STR + '/ascii/'
 #DEST_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_numpy/' + POINT_COUNT_STR
 
-SOURCE_DIR = "data/ply"
-DEST_DIR = "data/numpy"
+SOURCE_DIR = "data/numpy_centered_normalised"
+DEST_DIR = "data/restored_ply_centered_normalised"
 
-# Load PLY file
-def load_ply_data(filename, point_num):
-    plydata = PlyData.read(filename)
-#    pc = plydata['vertex'].data[:point_num]
-    pc = plydata['vertex'].data
-    pc_array = np.array([[x, y, z] for x,y,z in pc])
-    return pc_array
+
+##########################
+def write_point_cloud_to_file(filename, cloud):
+    point_count = cloud.shape[0]
+
+    vertex = np.zeros((point_count,),
+                      dtype=[('x', 'f4'), ('y', 'f4'),
+                             ('z', 'f4')])
+
+    for i in range (point_count):
+        x = cloud[i][0]
+        y = cloud[i][1]
+        z = cloud[i][2]
+        print "x = " + str(x) + "; y = " + str(y) + "; z = " + str(z)
+        vertex[i] = (x, y, z)
+
+    el = PlyElement.describe(vertex, 'vertex')
+    PlyData([el]).write(filename)
+
 
 def convert(f):
     name, ext = splitext(f)
     in_file = join(SOURCE_DIR, f)
-    data = load_ply_data(in_file, POINT_COUNT)
-    out_file = join(DEST_DIR, name + ".txt")
+    np_cloud = np.loadtxt(in_file)
+    out_file = join(DEST_DIR, name + ".ply")
     print "Converting file " + f
-    np.savetxt(out_file, data, fmt="%.5f")
+    write_point_cloud_to_file(out_file, np_cloud)
 
 file_op.ensure_dir_exists(DEST_DIR)
 files = file_op.get_only_files(SOURCE_DIR)
