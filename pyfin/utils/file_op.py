@@ -17,9 +17,9 @@ def ensure_dir_exists(directory):
 
 def if_file_exists(filename):
     if isfile(filename):
-        return true
+        return True
     else:
-        return false
+        return False
 
 
 def get_only_files(directory): 
