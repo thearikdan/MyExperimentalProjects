@@ -15,8 +15,8 @@ import numpy as np
 POINT_COUNT = 2048
 POINT_COUNT_STR = str(POINT_COUNT)
 
-SOURCE_DIR = '/raid/data/tinkercad/point_clouds/clean_ply/' + POINT_COUNT_STR + '/ascii/'
-DEST_DIR = '/raid/data/tinkercad/point_clouds/clean_numpy/' + POINT_COUNT_STR
+SOURCE_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_ply/' + POINT_COUNT_STR + '/ascii/'
+DEST_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_numpy/' + POINT_COUNT_STR
 
 # Load PLY file
 def load_ply_data(filename, point_num):

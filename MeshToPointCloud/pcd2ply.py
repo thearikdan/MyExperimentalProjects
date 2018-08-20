@@ -12,8 +12,8 @@ from multiprocessing import Pool
 POINT_COUNT = 2048
 POINT_COUNT_STR = str(POINT_COUNT)
 
-SOURCE_DIR = '/raid/data/tinkercad/point_clouds/clean_pcd/' + POINT_COUNT_STR
-DEST_DIR = '/raid/data/tinkercad/point_clouds/clean_ply/' + POINT_COUNT_STR + '/ascii/'
+SOURCE_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_pcd/' + POINT_COUNT_STR
+DEST_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_ply/' + POINT_COUNT_STR + '/ascii/'
 
 def convert(f):
     name, ext = splitext(f)

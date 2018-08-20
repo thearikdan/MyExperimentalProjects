@@ -8,8 +8,8 @@ import os
 import multiprocessing
 from multiprocessing import Pool
 
-SOURCE_DIR = '/raid/data/tinkercad/clean_stl'
-DEST_DIR = '/raid/data/tinkercad/clean_obj'
+SOURCE_DIR = '/raid/data/tinkercad/manually_clean_stl'
+DEST_DIR = '/raid/data/tinkercad/manually_clean_obj'
 
 
 def convert(f):

@@ -11,8 +11,8 @@ from multiprocessing import Pool
 POINT_COUNT = 2048
 POINT_COUNT_STR = str(POINT_COUNT)
 
-SOURCE_DIR = '/raid/data/tinkercad/clean_obj'
-DEST_DIR = '/raid/data/tinkercad/point_clouds/clean_pcd/' + POINT_COUNT_STR
+SOURCE_DIR = '/raid/data/tinkercad/manually_clean_obj'
+DEST_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_pcd/' + POINT_COUNT_STR
 
 
 def convert(f):

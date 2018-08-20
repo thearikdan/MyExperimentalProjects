@@ -9,6 +9,6 @@ params = {"formatted": "true",
         "modules": "defaultKeyStatistics,financialData,calendarEvents",
         "corsDomain": "finance.yahoo.com"}
 
-r = requests.get("https://query1.finance.yahoo.com/v10/finance/quoteSummary/GSB", params=params)
+r = requests.get("https://query1.finance.yahoo.com/v10/finance/quoteSummary/AMZN", params=params)
 data = r.json()[u'quoteSummary']["result"][0]
 print data
