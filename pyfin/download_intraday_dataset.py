@@ -4,7 +4,7 @@ from read_write import read
 
 start_time = time.clock()
 
-N = 10
+N = 15
 
 conn, cur = db.connect_to_database("database/database_settings.txt")
 

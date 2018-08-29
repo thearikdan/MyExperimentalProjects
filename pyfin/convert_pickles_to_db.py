@@ -85,35 +85,6 @@ def group_items_by_dates(items):
     return items_to_db
 
 
-def get_hierarchy_list(data_dir):
-    items = []
-
-    markets = file_op.get_only_dirs(data_dir)
-    for market in markets:
-        market_dir = os.path.join(data_dir, market)
-        tickers = file_op.get_only_dirs(market_dir)
-        ticker_count = len(tickers)
-
-        for i in range (ticker_count):
-#    for i in range(10):
-            sub_dir = os.path.join(market_dir, tickers[i])
-            dates = file_op.get_only_dirs(sub_dir)
-            date_count = len(dates)
-            for j in range(date_count):
-                sub_sub_dir = os.path.join(sub_dir, dates[j])
-                intervals = file_op.get_only_dirs(sub_sub_dir)
-                interval_count = len(intervals)
-                for k in range(interval_count):
-                    sub_sub_sub_dir= os.path.join(sub_sub_dir, intervals[k])
-                    files = file_op.get_only_files(sub_sub_sub_dir)
-                    file_count = len(files)
-                    for l in range(file_count):
-                        item = (data_dir, market, tickers[i], dates[j], intervals[k], files[l])
-#                        print item
-                        items.append((item))
-    return items
-
-
 
 parser = ArgumentParser()
 
@@ -146,7 +117,7 @@ conn, cursor = db.connect_to_database("database/database_settings.txt")
 
 data_dir = constants.DATA_ROOT
 
-items = get_hierarchy_list(data_dir)
+items = file_op.get_hierarchy_list_v2(data_dir)
 write_items_to_file("items.txt", items)
 
 

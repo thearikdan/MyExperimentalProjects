@@ -130,3 +130,8 @@ def get_date_time_from_datetime(date_time):
     time = str(date_time.hour) +":" + str(date_time.minute) + ":" + str(date_time.second)
     return date, time
 
+
+def convert_date_to_datetime(dat):
+    year, month, day = dat.split("-")
+    dt = datetime(year=int(year), month=int(month), day=int(day))
+    return dt

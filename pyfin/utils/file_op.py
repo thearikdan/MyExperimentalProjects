@@ -3,6 +3,7 @@ from os.path import isfile, join, isdir
 import os
 import shutil
 import csv
+import time_op
 
 def recreate_new_dir(directory):
     if os.path.exists(directory):
@@ -61,6 +62,38 @@ def get_nasdaq_downloaded_csv_data(filename):
 
 def get_all_symbols(data_dir):
     return get_only_dirs(data_dir)
+
+
+
+def get_hierarchy_list_v2(data_dir):
+    items = []
+
+    markets = get_only_dirs(data_dir)
+    for market in markets:
+        market_dir = os.path.join(data_dir, market)
+        tickers = get_only_dirs(market_dir)
+        ticker_count = len(tickers)
+
+        for i in range (ticker_count):
+#    for i in range(10):
+            sub_dir = os.path.join(market_dir, tickers[i])
+            dates = get_only_dirs(sub_dir)
+            date_count = len(dates)
+            for j in range(date_count):
+                sub_sub_dir = os.path.join(sub_dir, dates[j])
+                intervals = get_only_dirs(sub_sub_dir)
+                interval_count = len(intervals)
+                for k in range(interval_count):
+                    sub_sub_sub_dir= os.path.join(sub_sub_dir, intervals[k])
+                    files = get_only_files(sub_sub_sub_dir)
+                    file_count = len(files)
+                    for l in range(file_count):
+                        item = (data_dir, market, tickers[i], time_op.convert_date_to_datetime(dates[j]), intervals[k], files[l])
+#                        print item
+                        items.append((item))
+    return items
+
+
 
 
 

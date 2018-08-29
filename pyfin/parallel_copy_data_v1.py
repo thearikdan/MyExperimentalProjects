@@ -11,7 +11,7 @@ from multiprocessing import Pool
 
 SOURCE_DIR = '/media/ara/Passport1_2TB/pyfin/data_v1'
 
-DEST_DIR = '/media/hddx/datasets/pyfin/data_v1' 
+DEST_DIR = '/media/ara/Passport2_4TB/datasets/pyfin/data_v1' 
 
 
 
