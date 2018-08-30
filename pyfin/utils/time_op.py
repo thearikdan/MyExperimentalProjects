@@ -125,9 +125,24 @@ def get_end_time_for_symbol(symbol):
     return int(hour), int(minute)
 
 
+
+def get_date_string_without_padded_zeros(date):
+    date_str = date.strftime('%Y-%m-%d').replace("-0", "-")
+    return date_str
+
+
+def get_time_string(date):
+    time_str = date.strftime('%H:%M:%S')
+#    if time_str[0]=='0':
+#        time_str = time_str[1:]
+    return time_str
+
+
 def get_date_time_from_datetime(date_time):
-    date = str(date_time.year) +"-" + str(date_time.month) + "-" + str(date_time.day)
-    time = str(date_time.hour) +":" + str(date_time.minute) + ":" + str(date_time.second)
+#    date = str(date_time.year) +"-" + str(date_time.month) + "-" + str(date_time.day)
+    date = get_date_string_without_padded_zeros(date_time)
+#    time = str(date_time.hour) +":" + str(date_time.minute) + ":" + str(date_time.second)
+    time = get_time_string(date_time)
     return date, time
 
 
@@ -135,3 +150,38 @@ def convert_date_to_datetime(dat):
     year, month, day = dat.split("-")
     dt = datetime(year=int(year), month=int(month), day=int(day))
     return dt
+
+
+
+def get_dates_list(records, date_index):
+    dates = []
+    dates.append(records[0][date_index])
+
+    for item in records:
+        count = len(dates)
+        if item[date_index] != dates[count - 1]:
+            dates.append(item[date_index])
+    return dates
+
+
+
+def group_intraday_file_records_by_dates(records, date_index):
+    dates = get_dates_list(records, date_index)
+    dates_count = len(dates)
+
+    grouped_records = []
+    for i in range(dates_count):
+        grouped_records.append([])
+
+    for item in records:
+        for i in range(dates_count):
+            if item[date_index] == dates[i]:
+                grouped_records[i].append(item)
+
+    return grouped_records
+
+
+
+
+
+

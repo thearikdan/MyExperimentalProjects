@@ -1,7 +1,9 @@
 import psycopg2
 import sys
-from utils import time_op
- 
+from utils import time_op, string_op
+import os
+from read_write import read
+
 def connect_to_database(settings_file_name):
     with open(settings_file_name) as f:
         lines = f.readlines()
@@ -121,21 +123,11 @@ def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
     if len(company_ids) != 1:
         return
 
-    sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
+    sql = "INSERT INTO public.corrupt_intraday_prices_new (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
     print "Adding to corrupt intraday prices"
     print sql
     cur.execute(sql)
 
-
-def add_to_corrupt_intraday_prices_without_check_for_duplicates(conn, cur, market, symbol, date):
-    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
-    if len(company_ids) != 1:
-        return
-
-    sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
-    print "Adding to corrupt intraday prices"
-    print sql
-    cur.execute(sql)
 
 
 def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low):
@@ -148,29 +140,17 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
         date, time = time_op.get_date_time_from_datetime(date_time[i])
         if is_record_in_intraday_prices_on_that_day_and_time(conn, cur, market, symbol, date, time):
             continue
-        sql = "INSERT INTO public.intraday_prices (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
+#        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
+        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date, to_timestamp('" + time + "', 'hh24:mi:ss')" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
         print "Adding to intraday prices"
         print sql
         cur.execute(sql)
 
 
-def add_to_intraday_prices_without_check_for_duplicates(conn, cur, market, symbol, date_time, volume, opn, close, high, low):
-    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
-    if len(company_ids) != 1:
-        return
-
-    count = len(date_time)
-    for i in range(count):
-        date, time = time_op.get_date_time_from_datetime(date_time[i])
-        sql = "INSERT INTO public.intraday_prices (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
-        print "Adding to intraday prices"
-        print sql
-        cur.execute(sql)
 
 
 def get_suffix_list(conn, cursor):
     suffix_list = []
-#    conn, cursor = connect_to_database(settings_file_name)
     sql = "SELECT yahoo_suffix FROM public.stock_exchanges;"
     cursor.execute(sql)
     rows = cursor.fetchall()
@@ -179,8 +159,6 @@ def get_suffix_list(conn, cursor):
         if (s != ""):
             suffix_list.append(s)
 
-#    cursor.close()
-#    conn.close()
     return suffix_list
 
 
@@ -196,3 +174,38 @@ def get_exchange_id_from_market(conn, cursor, market):
             return s
 
     return None
+
+
+
+def get_filename_from_item(item):
+    filename = os.path.join(item[0], item[1])
+    filename = os.path.join(filename, item[2])
+    date = time_op.get_date_string_without_padded_zeros(item[3])
+    filename = os.path.join(filename, date)
+    filename = os.path.join(filename, item[4])
+    filename = os.path.join(filename, item[5])
+    return filename
+
+
+
+def insert_intraday_file_records_into_database(conn, cur, records):
+    count = len(records)
+    for i in range(count):
+        item_count = len(records[i])
+        for j in range (item_count):
+            item = records[i][j]
+            filename = get_filename_from_item(item)
+            date_time, volume, opn, close, high, low = read.get_all_intraday_data_from_file(filename)
+            suffix_list = get_suffix_list(conn, cur)
+            market = item[1]
+            symbol_with_suffix = item[2]
+            symbol = string_op.get_symbol_without_suffix(symbol_with_suffix, suffix_list)
+            date = time_op.get_date_string_without_padded_zeros(item[3])
+            if read.is_price_list_corrupt(close):
+                add_to_corrupt_intraday_prices(conn, cur, market, symbol, date)
+            else:
+                add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
+
+        conn.commit()
+
+
