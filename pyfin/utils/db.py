@@ -126,8 +126,12 @@ def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
     sql = "INSERT INTO public.corrupt_intraday_prices_new (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
     print "Adding to corrupt intraday prices"
     print sql
-    cur.execute(sql)
-
+    try:
+        cur.execute(sql)
+    except psycopg2.IntegrityError:
+        conn.rollback()
+    else:
+        conn.commit()
 
 
 def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low):
@@ -140,13 +144,18 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
         date, time = time_op.get_date_time_from_datetime(date_time[i])
         if is_record_in_intraday_prices_on_that_day_and_time(conn, cur, market, symbol, date, time):
             continue
-#        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
-        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date, to_timestamp('" + time + "', 'hh24:mi:ss')" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
+        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
+#        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
+
+#        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date, to_timestamp('" + time + "', 'hh24:mi:ss')" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
         print "Adding to intraday prices"
         print sql
-        cur.execute(sql)
-
-
+        try:
+            cur.execute(sql)
+        except psycopg2.IntegrityError:
+            conn.rollback()
+        else:
+            conn.commit()
 
 
 def get_suffix_list(conn, cursor):
@@ -206,6 +215,6 @@ def insert_intraday_file_records_into_database(conn, cur, records):
             else:
                 add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
 
-        conn.commit()
+
 
 
