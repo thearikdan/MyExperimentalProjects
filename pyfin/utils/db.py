@@ -228,23 +228,51 @@ def insert_intraday_file_records_into_database(conn, cur, records):
                 add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
 
 
-def get_exchange_name_from_symbol(conn, cursor, symbol):
+def get_exchange_names_from_symbol(conn, cursor, symbol):
+    names = []
     sql = "SELECT public.stock_exchanges.name from public.stock_exchanges INNER JOIN public.companies ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "';"
     print sql
     cursor.execute(sql)
     rows = cursor.fetchall()
+    for row in rows:
+        n = row[0]
+        names.append(n)
+    return names
+
+
     if len(rows) != 1 or name == "n/a":
         return "n_a"
     else:
         return rows[0][0]
 
 
-def get_exchange_id_from_symbol(conn, cursor, symbol):
+def get_exchange_ids_from_symbol(conn, cursor, symbol):
+    ids = []
     sql = "SELECT public.companies.stock_exchange_id FROM public.companies WHERE public.companies.symbol='" + symbol + "';"
-    print sql
     cursor.execute(sql)
     rows = cursor.fetchall()
-    if len(rows) != 1:
-        return 10 #n/a
-    else:
-        return rows[0][0]
+    for row in rows:
+        id = row[0]
+        ids.append(id)
+    return ids
+
+
+def get_yahoo_suffix_from_exchange_name(conn, cursor, name):
+    sql = "SELECT public.stock_exchanges.yahoo_suffix FROM public.stock_exchanges WHERE public.stock_exchanges.name='" + name + "';"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    suffix = rows[0][0]
+    return suffix
+
+
+def get_data_v1_exchange_names_from_symbol(conn, cursor, symbol):
+    #because data_v1 doesn't store exchange names, we will add the exchange extension and compare with symbol to find the right market
+    v1_names = []
+    names = get_exchange_names_from_symbol(conn, cursor, symbol)
+    for name in names:
+        suffix = get_yahoo_suffix_from_exchange_name(conn, cursor, name)
+        full_symbol = symbol + suffix
+        if (full_symbol == symbol):
+            v1_names.append(name)
+    return v1_names
+
