@@ -228,5 +228,23 @@ def insert_intraday_file_records_into_database(conn, cur, records):
                 add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
 
 
+def get_exchange_name_from_symbol(conn, cursor, symbol):
+    sql = "SELECT public.stock_exchanges.name from public.stock_exchanges INNER JOIN public.companies ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "';"
+    print sql
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    if len(rows) != 1 or name == "n/a":
+        return "n_a"
+    else:
+        return rows[0][0]
 
 
+def get_exchange_id_from_symbol(conn, cursor, symbol):
+    sql = "SELECT public.companies.stock_exchange_id FROM public.companies WHERE public.companies.symbol='" + symbol + "';"
+    print sql
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    if len(rows) != 1:
+        return 10 #n/a
+    else:
+        return rows[0][0]
