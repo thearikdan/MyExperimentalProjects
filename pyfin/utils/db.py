@@ -134,6 +134,15 @@ def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
         conn.commit()
 
 
+def process_numeric_value(val):
+    processed = '0'
+    if val is None:
+        processed = 'NaN'
+    else:
+        processed = str(val)
+    return processed
+
+
 def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low):
     company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
     if len(company_ids) != 1:
@@ -144,12 +153,15 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
         date, time = time_op.get_date_time_from_datetime(date_time[i])
         if is_record_in_intraday_prices_on_that_day_and_time(conn, cur, market, symbol, date, time):
             continue
-        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
-#        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
-
-#        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date, to_timestamp('" + time + "', 'hh24:mi:ss')" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
+        timestamp = date + " " + time
+        vo = process_numeric_value(volume[i])
+        op = process_numeric_value(opn[i])
+        cl = process_numeric_value(close[i])
+        hi = process_numeric_value(high[i])
+        lo = process_numeric_value(low[i])
+        sql = "INSERT INTO public.intraday_prices_new (company_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
+#        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
         print "Adding to intraday prices"
-        print sql
         try:
             cur.execute(sql)
         except psycopg2.IntegrityError:
