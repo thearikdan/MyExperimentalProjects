@@ -117,14 +117,12 @@ def is_record_in_intraday_prices_on_that_day_and_time(conn, cur, market, symbol,
 
 
 def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
-    if is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, market, symbol, date):
-        return
     company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
     if len(company_ids) != 1:
         return
 
-    sql = "INSERT INTO public.corrupt_intraday_prices_new (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
-    print "Adding to corrupt intraday prices"
+    sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
+#    sql = "INSERT INTO public.corrupt_intraday_prices_no_pkey (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
     print sql
     try:
         cur.execute(sql)
@@ -151,17 +149,15 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
     count = len(date_time)
     for i in range(count):
         date, time = time_op.get_date_time_from_datetime(date_time[i])
-        if is_record_in_intraday_prices_on_that_day_and_time(conn, cur, market, symbol, date, time):
-            continue
         timestamp = date + " " + time
         vo = process_numeric_value(volume[i])
         op = process_numeric_value(opn[i])
         cl = process_numeric_value(close[i])
         hi = process_numeric_value(high[i])
         lo = process_numeric_value(low[i])
-        sql = "INSERT INTO public.intraday_prices_new (company_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
-#        sql = "INSERT INTO public.intraday_prices_new (company_id, date, time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + date + "'::date,'" + time + "'::time" + ",'" + str(volume[i]) + "','" + str(opn[i]) + "','" + str(close[i]) + "','" + str(high[i]) + "','" + str(low[i]) + "');"
-        print "Adding to intraday prices"
+        sql = "INSERT INTO public.intraday_prices (company_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
+#        sql = "INSERT INTO public.intraday_prices_no_pkey (company_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
+        print sql
         try:
             cur.execute(sql)
         except psycopg2.IntegrityError:
@@ -196,9 +192,36 @@ def get_exchange_id_from_market(conn, cursor, market):
 
     return None
 
+def get_filename_v1_from_item(item):
+    filename = os.path.join(item[0], item[1])
+    date = time_op.get_date_string_without_padded_zeros(item[2])
+    filename = os.path.join(filename, date)
+    filename = os.path.join(filename, item[3])
+    filename = os.path.join(filename, item[4])
+    return filename
 
 
-def get_filename_from_item(item):
+def insert_intraday_file_records_v1_into_database(conn, cur, records):
+    exchange_dict = {}
+    count = len(records)
+    for i in range(count):
+        item_count = len(records[i])
+        for j in range (item_count):
+            item = records[i][j]
+            filename = get_filename_v1_from_item(item)
+            date_time, volume, opn, close, high, low = read.get_all_intraday_data_from_file(filename)
+            suffix_list = get_suffix_list(conn, cur)
+            symbol_with_suffix = item[1]
+            symbol = string_op.get_symbol_without_suffix(symbol_with_suffix, suffix_list)
+            market, exchange_dict = get_data_v1_exchange_name_from_symbol(conn, cur, symbol, exchange_dict)
+            date = time_op.get_date_string_without_padded_zeros(item[2])
+            if read.is_price_list_corrupt(close):
+                add_to_corrupt_intraday_prices(conn, cur, market, symbol, date)
+            else:
+                add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
+
+
+def get_filename_v2_from_item(item):
     filename = os.path.join(item[0], item[1])
     filename = os.path.join(filename, item[2])
     date = time_op.get_date_string_without_padded_zeros(item[3])
@@ -209,13 +232,13 @@ def get_filename_from_item(item):
 
 
 
-def insert_intraday_file_records_into_database(conn, cur, records):
+def insert_intraday_file_records_v2_into_database(conn, cur, records):
     count = len(records)
     for i in range(count):
         item_count = len(records[i])
         for j in range (item_count):
             item = records[i][j]
-            filename = get_filename_from_item(item)
+            filename = get_filename_v2_from_item(item)
             date_time, volume, opn, close, high, low = read.get_all_intraday_data_from_file(filename)
             suffix_list = get_suffix_list(conn, cur)
             market = item[1]
@@ -231,19 +254,12 @@ def insert_intraday_file_records_into_database(conn, cur, records):
 def get_exchange_names_from_symbol(conn, cursor, symbol):
     names = []
     sql = "SELECT public.stock_exchanges.name from public.stock_exchanges INNER JOIN public.companies ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "';"
-    print sql
     cursor.execute(sql)
     rows = cursor.fetchall()
     for row in rows:
         n = row[0]
         names.append(n)
     return names
-
-
-    if len(rows) != 1 or name == "n/a":
-        return "n_a"
-    else:
-        return rows[0][0]
 
 
 def get_exchange_ids_from_symbol(conn, cursor, symbol):
@@ -265,14 +281,23 @@ def get_yahoo_suffix_from_exchange_name(conn, cursor, name):
     return suffix
 
 
-def get_data_v1_exchange_names_from_symbol(conn, cursor, symbol):
+def get_data_v1_exchange_name_from_symbol(conn, cursor, symbol, exchange_dict):
     #because data_v1 doesn't store exchange names, we will add the exchange extension and compare with symbol to find the right market
-    v1_names = []
-    names = get_exchange_names_from_symbol(conn, cursor, symbol)
-    for name in names:
-        suffix = get_yahoo_suffix_from_exchange_name(conn, cursor, name)
-        full_symbol = symbol + suffix
-        if (full_symbol == symbol):
-            v1_names.append(name)
-    return v1_names
+    if symbol in exchange_dict:
+        return exchange_dict[symbol], exchange_dict
+    else:
+        market = "n_a"
+        v1_names = []
+        names = get_exchange_names_from_symbol(conn, cursor, symbol)
+        for name in names:
+            suffix = get_yahoo_suffix_from_exchange_name(conn, cursor, name)
+            full_symbol = symbol + suffix
+            if (full_symbol == symbol):
+                v1_names.append(name)
+        if len(v1_names) == 1:
+            market = v1_names[0]
+            if market == "n/a":
+                market = "n_a"
+            exchange_dict[symbol] = market
+    return market, exchange_dict
 

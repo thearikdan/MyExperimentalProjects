@@ -7,7 +7,6 @@ import os
 import datetime
 import time
 from read_write import read
-from argparse import ArgumentParser
 import sys
 
 
@@ -20,9 +19,9 @@ def write_items_to_file(name, items):
 
 
 
-conn, cursor = db.connect_to_database("../database/database_settings.txt")
+conn, cursor = db.connect_to_database("database_settings.txt")
 
-data_dir = "/media/hddx/datasets/pyfin/v2_test"
+data_dir = "/media/hddx/datasets/pyfin/data"
 
 items = file_op.get_hierarchy_list_v2(data_dir)
 write_items_to_file("items.txt", items)
