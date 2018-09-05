@@ -19,8 +19,8 @@ POINT_COUNT_STR = str(POINT_COUNT)
 #SOURCE_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_ply/' + POINT_COUNT_STR + '/ascii/'
 #DEST_DIR = '/raid/data/tinkercad/point_clouds/manually_clean_numpy/' + POINT_COUNT_STR
 
-SOURCE_DIR = "data/numpy_centered_normalised"
-DEST_DIR = "data/restored_ply_centered_normalised"
+SOURCE_DIR = "/raid/data/tinkercad/output_point_clouds/pointnet-autoencoder"
+DEST_DIR = "/raid/data/tinkercad/output_point_clouds/pointnet-autoencoder-ply"
 
 
 ##########################
