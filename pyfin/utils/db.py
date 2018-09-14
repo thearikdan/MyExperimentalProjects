@@ -122,13 +122,13 @@ def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
         return
 
     sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
-#    sql = "INSERT INTO public.corrupt_intraday_prices_no_pkey (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
-    print sql
     try:
         cur.execute(sql)
     except psycopg2.IntegrityError:
+        print "SKIPPING " + sql
         conn.rollback()
     else:
+        print sql
         conn.commit()
 
 
@@ -157,12 +157,13 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
         lo = process_numeric_value(low[i])
         sql = "INSERT INTO public.intraday_prices (company_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
 #        sql = "INSERT INTO public.intraday_prices_no_pkey (company_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
-        print sql
         try:
             cur.execute(sql)
         except psycopg2.IntegrityError:
+            print "SKIPPING " + sql
             conn.rollback()
         else:
+            print sql
             conn.commit()
 
 
@@ -300,4 +301,46 @@ def get_data_v1_exchange_name_from_symbol(conn, cursor, symbol, exchange_dict):
                 market = "n_a"
             exchange_dict[symbol] = market
     return market, exchange_dict
+
+
+
+def get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime):
+    date_time = []
+    volume=[]
+    opn = []
+    cls = []
+    high = []
+    low = []
+    sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices INNER JOIN public.companies ON public.intraday_prices.company_id=public.companies.company_id \
+INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" + market + \
+"' AND public.intraday_prices.date_time BETWEEN '" + start_datetime + "' AND '" + end_datetime + "';"
+    print sql
+    cur.execute(sql)
+    rows = cur.fetchall()
+    count = len(rows)
+    if count==0:
+        return False, [], [], [], [], [], []
+    for row in rows:
+        dt = row[0]
+        v = row[1]
+        o = row[2]
+        c = row[3]
+        h = row[4]
+        l = row[5]
+        date_time.append(dt)
+        volume.append(v)
+        opn.append(o)
+        cls.append(c)
+        high.append(h)
+        low.append(l)
+    return True, date_time, volume, opn, cls, high, low
+
+
+
+
+
+def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval):
+    is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime)
+    return is_data_available, date_time, volume, opn, close, high, low
+
 
