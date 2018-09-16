@@ -15,7 +15,7 @@ from datetime import datetime
 from os.path import join, isfile
 from utils import time_op, string_op, constants
 from os.path import join
-from utils import constants
+from utils import constants, heal
 
 #https://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments
 import multiprocessing
@@ -134,62 +134,6 @@ def get_intraday_data_from_file(full_path, start, end):
             return (False, [], [], [], [], [], [])
 
 
-def is_corrupt_value(a):
-    if (a == 0) or (a is None):
-        return True
-    else:
-        return False
-
-
-def find_next_good_value(lst, index):
-    val = None
-    count = len(lst)
-
-    if (index >= count):
-        return val
-
-    for i in range(index + 1, count):
-        if not is_corrupt_value(lst[i]):
-            val = lst[i]
-            return val
-    return val
-
-
-def find_previous_good_value(lst, index):
-    val = None
-    count = len(lst)
-
-    if (index >= count):
-        return val
-
-    if (index <= 0):
-        return val
-
-    for i in range(0, index - 1):
-        if not is_corrupt_value(lst[i]):
-            val = lst[i]
-            return val
-    return val
-
-
-def heal_list(lst):
-    count = len(lst)
-    for i in range(count):
-        if is_corrupt_value(lst[i]):
-            lst[i] = find_next_good_value(lst, i)
-            if (lst[i] is None):
-                lst[i] = find_previous_good_value(lst, i)
-    return lst
-
-
-def heal_intraday_data(volume, opn, close, high, low):
-    v = heal_list(volume)
-    o = heal_list(opn)
-    c = heal_list(close)
-    h = heal_list(high)
-    l = heal_list(low)
-    return (v, o, c, h, l)
-
 '''
 def delete_element(date_time, volume, opn, close, high, low, index):
     del date_time[index]
@@ -241,7 +185,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
     if isfile(full_path):
         is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_file(full_path, start, end)
         if (is_data_available):
-            volume, opn, close, high, low = heal_intraday_data(volume, opn, close, high, low)
+            volume, opn, close, high, low = heal.heal_intraday_data(volume, opn, close, high, low)
             dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, date_time, volume, opn, close, high, low)
             return (is_data_available, dtn, vn, on, cn, hn, ln)
 
@@ -252,7 +196,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
     #Write original data, even if some values are corrupt (0, or None)
     write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
 
-    volume, opn, close, high, low = heal_intraday_data(volume, opn, close, high, low)
+    volume, opn, close, high, low = heal.heal_intraday_data(volume, opn, close, high, low)
 
     start_index = date_time.index(start) if start in date_time else None
     end_index = date_time.index(end) if end in date_time else None

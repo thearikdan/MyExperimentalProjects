@@ -1,6 +1,6 @@
 import psycopg2
 import sys
-from utils import time_op, string_op
+from utils import time_op, string_op, heal
 import os
 from read_write import read
 
@@ -313,7 +313,7 @@ def get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetim
     low = []
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices INNER JOIN public.companies ON public.intraday_prices.company_id=public.companies.company_id \
 INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" + market + \
-"' AND public.intraday_prices.date_time BETWEEN '" + start_datetime + "' AND '" + end_datetime + "';"
+"' AND public.intraday_prices.date_time BETWEEN '" + start_datetime + "' AND '" + end_datetime + "' ORDER BY date_time ASC" +  ";"
     print sql
     cur.execute(sql)
     rows = cur.fetchall()
@@ -341,6 +341,12 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 
 def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval):
     is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime)
-    return is_data_available, date_time, volume, opn, close, high, low
+    if (is_data_available):
+        volume, opn, close, high, low = heal.heal_intraday_data(volume, opn, close, high, low)
+        dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, date_time, volume, opn, close,
+                                                                                high, low)
+        return (is_data_available, dtn, vn, on, cn, hn, ln)
+    else:
+        return is_data_available, date_time, volume, opn, close, high, low
 
 
