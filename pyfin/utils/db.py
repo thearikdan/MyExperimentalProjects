@@ -122,6 +122,7 @@ def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
         return
 
     sql = "INSERT INTO public.corrupt_intraday_prices (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
+#    sql = "INSERT INTO public.corrupt_intraday_prices_no_pkey (company_id, date) VALUES('" + str(company_ids[0]) + "','" + date + "'::date);"
     try:
         cur.execute(sql)
     except psycopg2.IntegrityError:
@@ -245,11 +246,11 @@ def insert_intraday_file_records_v2_into_database(conn, cur, records):
             market = item[1]
             symbol_with_suffix = item[2]
             symbol = string_op.get_symbol_without_suffix(symbol_with_suffix, suffix_list)
-            date = time_op.get_date_string_without_padded_zeros(item[3])
-            if read.is_price_list_corrupt(close):
-                add_to_corrupt_intraday_prices(conn, cur, market, symbol, date)
-            else:
-                add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
+#            date = time_op.get_date_string_without_padded_zeros(item[3])
+#            if read.is_price_list_corrupt(close):
+#                add_to_corrupt_intraday_prices(conn, cur, market, symbol, date)
+#            else:
+            add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
 
 
 def get_exchange_names_from_symbol(conn, cursor, symbol):
@@ -342,11 +343,11 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval):
     is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime)
     if (is_data_available):
-        volume, opn, close, high, low = heal.heal_intraday_data(volume, opn, close, high, low)
+        volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
         dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, date_time, volume, opn, close,
                                                                                 high, low)
-        return (is_data_available, dtn, vn, on, cn, hn, ln)
+        return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
     else:
-        return is_data_available, date_time, volume, opn, close, high, low
+        return is_data_available, date_time, volume, opn, close, high, low, 0.0, 0.0, 0.0, 0.0, 0.0
 
 

@@ -9,8 +9,8 @@ N = 10
 conn, cur = db.connect_to_database("database/database_settings.txt")
 
 #data_root = "/media/hddx/datasets/pyfin/data"
-data_root = "/media/ara/Passport2_4TB/datasets/pyfin/data_v2" 
-#data_root = "/media/ara/Passport1_2TB/datasets/pyfin/data_v2"
+#data_root = "/media/ara/Passport2_4TB/datasets/pyfin/data_v2" 
+data_root = "/media/ara/Passport1_2TB/datasets/pyfin/data_v2"
 
 symbols, markets = db.get_all_symbols_and_markets(conn, cur)
 print symbols, markets

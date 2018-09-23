@@ -12,6 +12,6 @@ CLOSING_PRICE = 3
 HIGH_PRICE = 4
 LOW_PRICE = 5
 
-FILE_CORRUPT_RATIO = 0.5
+FILE_CORRUPT_RATIO = 0.8
 
 DATA_ROOT = '/media/hddx/datasets/pyfin/data'

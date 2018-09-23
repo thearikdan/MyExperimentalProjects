@@ -19,7 +19,7 @@ def write_items_to_file(name, items):
 
 
 
-conn, cursor = db.connect_to_database("database_settings.txt")
+conn, cursor = db.connect_to_database("database/database_settings.txt")
 
 data_dir = "/media/hddx/datasets/pyfin/data"
 

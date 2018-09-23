@@ -97,16 +97,23 @@ def get_all_intraday_data_from_file(full_path):
             return ([], [], [], [], [], [])
 
 
-def is_price_list_corrupt(price_list):
+
+def get_corrupt_ratio(price_list):
     count = len(price_list)
     none_count = 0
     if (count == 0):
         return True
 
     for i in range (count):
-        if price_list[i] == None:
+        if heal.is_corrupt_value(price_list[i]):
             none_count = none_count + 1
     none_ratio = float(none_count) / count
+    return none_ratio
+
+
+
+def is_price_list_corrupt(price_list):
+    none_ratio = get_corrupt_ratio(price_list)
     if none_ratio > constants.FILE_CORRUPT_RATIO:
         return True
     else:
@@ -185,9 +192,9 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
     if isfile(full_path):
         is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_file(full_path, start, end)
         if (is_data_available):
-            volume, opn, close, high, low = heal.heal_intraday_data(volume, opn, close, high, low)
+            volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
             dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, date_time, volume, opn, close, high, low)
-            return (is_data_available, dtn, vn, on, cn, hn, ln)
+            return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
 
     is_data_available, date_time, volume, opn, close, high, low = get_full_day_intraday_data_from_web(ticker, start, end)
     if not (is_data_available):
@@ -196,7 +203,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
     #Write original data, even if some values are corrupt (0, or None)
     write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
 
-    volume, opn, close, high, low = heal.heal_intraday_data(volume, opn, close, high, low)
+    volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
 
     start_index = date_time.index(start) if start in date_time else None
     end_index = date_time.index(end) if end in date_time else None
@@ -214,7 +221,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
         dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, dt, v, o,
                                                                                 c, h, l)
 
-        return (True, dtn, vn, on, cn, hn, ln)
+        return (True, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
 
 
 def download_intraday_data(data_dir, ticker, start, end):
