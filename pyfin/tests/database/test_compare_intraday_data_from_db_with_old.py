@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, "../")
+sys.path.insert(0, "../..")
 
 from read_write import read
 from datetime import datetime
@@ -15,7 +15,7 @@ is_data_available, date_time, volume , opn, close, high, low = read.get_intraday
 
 print date_time
 
-conn, cur = db.connect_to_database("../database/database_settings.txt")
+conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
 is_data_available_db, date_time_db, volume_db, opn_db, close_db, high_db, low_db = db.get_intraday_data(conn, cur, "nasdaq", "AMZN", "2018-5-2", "2018-5-3", 1)
 

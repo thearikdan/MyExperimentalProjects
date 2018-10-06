@@ -312,9 +312,13 @@ def get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetim
     cls = []
     high = []
     low = []
+
+    start_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M")
+    end_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M")
+
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices INNER JOIN public.companies ON public.intraday_prices.company_id=public.companies.company_id \
 INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" + market + \
-"' AND public.intraday_prices.date_time BETWEEN '" + start_datetime + "' AND '" + end_datetime + "' ORDER BY date_time ASC" +  ";"
+"' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
     print sql
     cur.execute(sql)
     rows = cur.fetchall()

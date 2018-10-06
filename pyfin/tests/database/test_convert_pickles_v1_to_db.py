@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../")
+sys.path.append("../..")
 
 from utils import file_op, time_op, db
 import os
@@ -15,7 +15,7 @@ def write_items_to_file(name, items):
     for item in items:
         items_file.write("%s, %s, %s, %s, %s\n" % (item[0], item[1], item[2], item[3], item[4]))
 
-conn, cursor = db.connect_to_database("../database/database_settings.txt")
+conn, cursor = db.connect_to_database("../../database/database_settings.txt")
 
 data_dir = "/media/hddx/datasets/pyfin/v1_test"
 

@@ -21,6 +21,9 @@ def write_items_to_file(name, items):
 
 conn, cursor = db.connect_to_database("database/database_settings.txt")
 
+start_date = "2018-8-22"
+
+
 data_dir = "/media/hddx/datasets/pyfin/data"
 
 items = file_op.get_hierarchy_list_v2(data_dir)
@@ -30,8 +33,26 @@ write_items_to_file("items.txt", items)
 items_asc = sorted(items, key=lambda t: t[3], reverse=False)
 write_items_to_file("items_asc.txt", items_asc)
 
-items_to_db = time_op.group_intraday_file_records_by_dates(items_asc, 3)
-db.insert_intraday_file_records_v2_into_database(conn, cursor, items_to_db)
+
+start_date_time = time_op.convert_date_to_datetime(start_date)
+
+item_count = len(items_asc)
+found = False
+for  ind in range (item_count):
+    if items_asc[ind][3] == start_date_time:
+        found = True
+        break
+
+if not found:
+    cursor.close()
+    conn.close()
+    exit(-1)
+
+items_asc = items_asc[ind:]
+
+records = time_op.group_intraday_file_records_by_dates(items_asc, 3)
+
+db.insert_intraday_file_records_v2_into_database(conn, cursor, records)
 
 
 cursor.close()

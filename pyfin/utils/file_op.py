@@ -86,7 +86,7 @@ def get_hierarchy_list_v1(data_dir):
                 file_count = len(files)
                 for l in range(file_count):
                     item = (data_dir, tickers[i], time_op.convert_date_to_datetime(dates[j]), intervals[k], files[l])
-#                        print item
+                    print item
                     items.append((item))
     return items
 
@@ -116,7 +116,7 @@ def get_hierarchy_list_v2(data_dir):
                     file_count = len(files)
                     for l in range(file_count):
                         item = (data_dir, market, tickers[i], time_op.convert_date_to_datetime(dates[j]), intervals[k], files[l])
-#                        print item
+                        print item
                         items.append((item))
     return items
 
