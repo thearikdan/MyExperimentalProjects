@@ -3,6 +3,8 @@ import sys
 from utils import time_op, string_op, heal
 import os
 from read_write import read
+from datetime import datetime, timedelta
+
 
 def connect_to_database(settings_file_name):
     with open(settings_file_name) as f:
@@ -333,11 +335,11 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
         h = row[4]
         l = row[5]
         date_time.append(dt)
-        volume.append(v)
-        opn.append(o)
-        cls.append(c)
-        high.append(h)
-        low.append(l)
+        volume.append(float(v))
+        opn.append(float(o))
+        cls.append(float(c))
+        high.append(float(h))
+        low.append(float(l))
     return True, date_time, volume, opn, cls, high, low
 
 
@@ -353,5 +355,23 @@ def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, i
         return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
     else:
         return is_data_available, date_time, volume, opn, close, high, low, 0.0, 0.0, 0.0, 0.0, 0.0
+
+
+
+def get_intraday_data_for_N_days(conn, cur, market, symbol, days_count, start_datetime, end_datetime, interval):
+    data_list = []
+    is_data_available, date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval)
+    if not (is_data_available):
+        return data_list
+
+    data_list.append([date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l])
+    for i in range(1, days_count):
+        start_datetime_cur = start_datetime - timedelta(days=i)
+        end_datetime_cur = end_datetime - timedelta(days=i)
+        is_data_available, date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = get_intraday_data(conn, cur, market, symbol, start_datetime_cur, end_datetime_cur, interval)
+        if (is_data_available):
+            data_list.append([date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l])
+    return data_list        
+ 
 
 
