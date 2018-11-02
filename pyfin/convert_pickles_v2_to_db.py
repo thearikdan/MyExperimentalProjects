@@ -18,10 +18,12 @@ def write_items_to_file(name, items):
         items_file.write("%s, %s, %s, %s, %s\n" % (item[0], item[1], item[2], item[3], item[4]))
 
 
+script_start_time = time.time()
+
 
 conn, cursor = db.connect_to_database("database/database_settings.txt")
 
-start_date = "2018-8-22"
+start_date = "2018-10-31"
 
 
 data_dir = "/media/hddx/datasets/pyfin/data"
@@ -57,4 +59,12 @@ db.insert_intraday_file_records_v2_into_database(conn, cursor, records)
 
 cursor.close()
 conn.close()
+
+
+seconds = time.time() - script_start_time
+
+mint, s = divmod(seconds, 60)
+h, m = divmod(mint, 60)
+
+print "Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s)
 
