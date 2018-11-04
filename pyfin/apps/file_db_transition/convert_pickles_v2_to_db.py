@@ -6,7 +6,7 @@ from utils import file_op, db, string_op, constants, time_op
 import os
 import datetime
 import time
-from read_write import read
+from utils.read_write import read
 import sys
 
 
@@ -21,7 +21,7 @@ def write_items_to_file(name, items):
 script_start_time = time.time()
 
 
-conn, cursor = db.connect_to_database("database/database_settings.txt")
+conn, cursor = db.connect_to_database("../database/database_settings.txt")
 
 start_date = "2018-11-1"
 
