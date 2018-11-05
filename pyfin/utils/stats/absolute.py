@@ -1,4 +1,4 @@
-from read_write import read
+from utils.read_write import read
 from utils import constants
 import numpy as np
 from scipy.signal import argrelextrema
@@ -84,7 +84,7 @@ def get_historical_data(data_dir, symbol, start_date, end_date, days_count):
         new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
         new_end_date = time_op.get_date_N_days_ago_from_date(i, end_date)
 
-        is_data_available_before, date_time_before, volume_before , open_before, close_before, high_before, low_before = read.get_intraday_data(data_dir, symbol, new_start_date, new_end_date, 1)
+        is_data_available_before, date_time_before, volume_before , open_before, close_before, high_before, low_before, _, _, _, _, _ = read.get_intraday_data(data_dir, symbol, new_start_date, new_end_date, 1)
         if not (is_data_available_before):
             continue
 

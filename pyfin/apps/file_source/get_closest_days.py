@@ -1,10 +1,13 @@
-from read_write import read
+import sys
+sys.path.append("../..")
+
 from datetime import datetime
 import matplotlib.pyplot as plt
-from stats import percentage, absolute
+from utils.stats import percentage, absolute
 from utils import analytics, time_op, sort_op
+from utils.read_write import read, analysis
 import numpy as np
-from viz import vertical_plots
+from utils.viz import vertical_plots
 
 
 start_date = datetime(2018, 7, 27, 9, 30)
@@ -13,6 +16,8 @@ end_date = datetime(2018, 7, 27, 13, 30)
 days_count = 50
 
 display_count = 5
+
+DATA_DIR = "/media/hddx/datasets/pyfin/data/nasdaq"
 
 #symbol = "WEED.TO"
 #symbol = "EMHTF"
@@ -23,9 +28,9 @@ symbol = "AMZN"
 
 
 
-date_time, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = percentage.get_percentage_change_distance_data("data", symbol, start_date, end_date, days_count)
+date_time, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = analysis.get_percentage_change_distance_data(DATA_DIR, symbol, start_date, end_date, days_count)
 
-date_time_list, volume_list, open_list, close_list, high_list, low_list = absolute.get_historical_data("data", symbol, start_date, end_date, days_count)
+date_time_list, volume_list, open_list, close_list, high_list, low_list = absolute.get_historical_data(DATA_DIR, symbol, start_date, end_date, days_count)
 
 sorted_ind = sort_op.get_sorted_indices(dist_close_per_list)
 
@@ -77,7 +82,7 @@ for i in range(full_count):
     start_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=9, minute=30)
     end_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=15, minute=59)
 
-    is_data_available_before_full, date_time_before_full, volume_before_full , opn_before_full, close_before_full, high_before_full, low_before_full = read.get_intraday_data(symbol, start_date_full, end_date_full, 1)
+    is_data_available_before_full, date_time_before_full, volume_before_full , opn_before_full, close_before_full, high_before_full, low_before_full, _, _, _, _, _ = read.get_intraday_data(DATA_DIR, symbol, start_date_full, end_date_full, 1)
     if not (is_data_available_before_full):
         continue
     close_list_full.append(close_before_full)

@@ -198,7 +198,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
 
     is_data_available, date_time, volume, opn, close, high, low = get_full_day_intraday_data_from_web(ticker, start, end)
     if not (is_data_available):
-        return (False, [], [], [], [], [], [])
+        return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
 
     #Write original data, even if some values are corrupt (0, or None)
     write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
@@ -209,7 +209,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
     end_index = date_time.index(end) if end in date_time else None
 
     if ((start_index == None) or (end_index == None)):
-        return (False, [], [], [], [], [], [])
+        return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
     else:
         dt = date_time[start_index:end_index]
         v = volume[start_index:end_index]
