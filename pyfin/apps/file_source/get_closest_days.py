@@ -5,15 +5,15 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 from utils.stats import percentage, absolute
 from utils import analytics, time_op, sort_op
-from utils.read_write import read, analysis
+from utils.file_system import read, analysis
 import numpy as np
 from utils.viz import vertical_plots
 
 
-start_date = datetime(2018, 7, 27, 9, 30)
-end_date = datetime(2018, 7, 27, 13, 30)
+start_date = datetime(2018, 10, 2, 9, 30)
+end_date = datetime(2018, 10, 2, 13, 30)
 
-days_count = 50
+days_count = 100
 
 display_count = 5
 
