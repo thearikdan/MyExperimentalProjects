@@ -1,8 +1,10 @@
-import psycopg2
 import sys
+sys.path.append("..")
+
+import psycopg2
 from utils import time_op, string_op, heal
 import os
-from read_write import read
+from utils.file_system import read
 from datetime import datetime, timedelta
 
 

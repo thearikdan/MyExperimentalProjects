@@ -1,12 +1,13 @@
 import sys
-sys.path.append("../")
+sys.path.append("../..")
 
 
-from utils import file_op, db, string_op, constants, time_op
+from utils import file_op, string_op, constants, time_op
 import os
 import datetime
 import time
-from utils.read_write import read
+from utils.file_system import read
+from utils.db import db
 import sys
 
 
@@ -21,9 +22,9 @@ def write_items_to_file(name, items):
 script_start_time = time.time()
 
 
-conn, cursor = db.connect_to_database("../database/database_settings.txt")
+conn, cursor = db.connect_to_database("../../database/database_settings.txt")
 
-start_date = "2018-11-1"
+start_date = "2018-11-5"
 
 
 data_dir = "/media/hddx/datasets/pyfin/data"

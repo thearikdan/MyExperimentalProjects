@@ -1,9 +1,10 @@
 import sys
-sys.path.append("..")
+sys.path.append("../..")
 
 import time
-from utils import db, constants
-from utils.read_write import read
+from utils import constants
+from utils.file_system import read
+from utils.db import db
 import os 
 from argparse import ArgumentParser
 
@@ -51,7 +52,7 @@ if not os.path.isdir(data_root):
     exit()
 
 
-conn, cur = db.connect_to_database("../database/database_settings.txt")
+conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
 symbols, markets = db.get_all_symbols_and_markets(conn, cur)
 print symbols, markets
