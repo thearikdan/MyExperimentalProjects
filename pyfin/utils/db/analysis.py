@@ -1,4 +1,9 @@
-def get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_count):
+from utils.db import db
+from utils.stats import percentage
+from utils import time_op, analytics
+
+
+def get_historical_percentage_data(conn, cur, market, symbol, start_date, end_date, days_count):
     date_time_list = []
     volume_per_list = []
     open_per_list = []
@@ -10,7 +15,7 @@ def get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_
         new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
         new_end_date = time_op.get_date_N_days_ago_from_date(i, end_date)
 
-        is_data_available_before, date_time_before, volume_before , opn_before, close_before, high_before, low_before, _, _, _, _, _ = read.get_intraday_data(data_dir, symbol, new_start_date, new_end_date, 1)
+        is_data_available_before, date_time_before, volume_before , opn_before, close_before, high_before, low_before, _, _, _, _, _ = db.get_intraday_data(conn, cur, market, symbol, new_start_date, new_end_date, 1)
         if not (is_data_available_before):
             continue
 
@@ -28,15 +33,15 @@ def get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_
 
 
 
-def get_percentage_change_distance_data(data_dir, symbol, start_date, end_date, days_count):
-    is_data_available, date_time, volume , opn, close, high, low, _, _, _, _, _ = read.get_intraday_data(data_dir, symbol, start_date, end_date, 1)
+def get_percentage_change_distance_data(conn, cur, market, symbol, start_date, end_date, days_count):
+    is_data_available, date_time, volume , opn, close, high, low, _, _, _, _, _ = db.get_intraday_data(conn, cur, market, symbol, start_date, end_date, 1)
 
     if not (is_data_available):
         print "No data available"
         return None
 
     date_time_1, volume_per , open_per, close_per, high_per, low_per = percentage.get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low)
-    date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_count)
+    date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = get_historical_percentage_data(conn, cur, market, symbol, start_date, end_date, days_count)
 
     dist_volume_per_list = analytics.get_distance_list(volume_per, volume_per_list)
     dist_open_per_list = analytics.get_distance_list(open_per, open_per_list)

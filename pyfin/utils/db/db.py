@@ -346,8 +346,6 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 
 
 
-
-
 def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval):
     is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime)
     if (is_data_available):
@@ -360,20 +358,43 @@ def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, i
 
 
 
-def get_intraday_data_for_N_days(conn, cur, market, symbol, days_count, start_datetime, end_datetime, interval):
-    data_list = []
-    is_data_available, date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval)
-    if not (is_data_available):
-        return data_list
+def get_historical_intraday_data_for_N_days(conn, cur, market, symbol, days_count, start_datetime, end_datetime, interval):
+    date_time_list = []
+    volume_per_list = []
+    open_per_list = []
+    close_per_list = []
+    high_per_list = []
+    low_per_list = []
+    c_v_list = []
+    c_o_list = []
+    c_c_list = []
+    c_h_list = []
+    c_l_list = []
 
-    data_list.append([date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l])
+#    is_data_available, date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval)
+#    if not (is_data_available):
+#        return data_list
+
+#    data_list.append([date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l])
     for i in range(1, days_count):
         start_datetime_cur = start_datetime - timedelta(days=i)
         end_datetime_cur = end_datetime - timedelta(days=i)
-        is_data_available, date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = get_intraday_data(conn, cur, market, symbol, start_datetime_cur, end_datetime_cur, interval)
+        is_data_available, date_time, volume, opn, cls, high, low, c_v, c_o, c_c, c_h, c_l = get_intraday_data(conn, cur, market, symbol, start_datetime_cur, end_datetime_cur, interval)
         if (is_data_available):
-            data_list.append([date_time, volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l])
-    return data_list        
+            date_time_list.append(date_time)
+            volume_per_list.append(volume)
+            open_per_list.append(opn)
+            close_per_list.append(cls)
+            high_per_list.append(high)
+            low_per_list.append(volume)
+            c_v_list.append(c_v)
+            c_o_list.append(c_o)
+            c_c_list.append(c_c)
+            c_h_list.append(c_h)
+            c_l_list.append(c_l)
+   
+    return date_time_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list, c_v_list, c_o_list, c_c_list, c_h_list, c_l_list
+
  
 
 

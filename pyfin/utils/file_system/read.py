@@ -387,6 +387,7 @@ def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date):
 
         download_intraday_data(ticker, start_date, end_date)
 
+
 def download_intraday_list_of_tickers(data_dir, list_file_name, day_count):
     now = datetime.now()
     #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
@@ -401,6 +402,35 @@ def download_intraday_list_of_tickers(data_dir, list_file_name, day_count):
         #download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
         #This method is more thorough because it will also download files that don't have full day data
         get_all_intraday_prices_for_N_days_to_date (data_dir, tickers[i], day_count, now)
+
+
+
+def get_historical_intraday_data_for_N_days(data_dir, symbol, start_date, end_date, days_count):
+    date_time_list = []
+    volume_per_list = []
+    open_per_list = []
+    close_per_list = []
+    high_per_list = []
+    low_per_list = []
+
+    for i in range (1, days_count):
+        new_start_date = time_op.get_date_N_days_ago_from_date(i, start_date)
+        new_end_date = time_op.get_date_N_days_ago_from_date(i, end_date)
+
+        is_data_available_before, date_time_before, volume_before , open_before, close_before, high_before, low_before, _, _, _, _, _ = get_intraday_data(data_dir, symbol, new_start_date, new_end_date, 1)
+        if not (is_data_available_before):
+            continue
+
+        date_time_list.append(date_time_before)
+        volume_per_list.append(volume_before)
+        open_per_list.append(open_before)
+        close_per_list.append(close_before)
+        high_per_list.append(high_before)
+        low_per_list.append(low_before)
+
+    return date_time_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list 
+    
+
 
 
 @contextmanager
