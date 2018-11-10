@@ -32,7 +32,7 @@ def get_high_low_percentage_change_from_numeric_data(data):
 
 
 
-def get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_count):
+def get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_count, expected_length):
     date_time_list = []
     volume_per_list = []
     open_per_list = []
@@ -49,6 +49,10 @@ def get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_
             continue
 
         date_time_per_before, volume_per_before , open_per_before, close_per_before, high_per_before, low_per_before = percentage.get_percentage_change_in_intraday_prices(date_time_before, volume_before , opn_before, close_before, high_before, low_before)
+
+        count = len(date_time_per_before)
+        if (count != expected_length):
+            continue
 
         date_time_list.append(date_time_per_before)
         volume_per_list.append(volume_per_before)

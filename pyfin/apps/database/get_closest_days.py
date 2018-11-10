@@ -21,12 +21,14 @@ display_count = 5
 market = "nasdaq"
 symbol = "AMZN"
 
+
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
 
 date_time, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = analysis.get_percentage_change_distance_data(conn, cur, market, symbol, start_date, end_date, days_count)
 
-date_time_list, volume_list, open_list, close_list, high_list, low_list, _, _, _, _, _ = db.get_historical_intraday_data_for_N_days(market, cur, symbol, start_date, end_date, days_count)
+
+date_time_list, volume_list, open_list, close_list, high_list, low_list, _, _, _, _, _ = db.get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_date, end_date, days_count, 1)
 
 cur.close()
 conn.close()
@@ -105,6 +107,5 @@ for i in range(count):
     subtitles.append(subtitle)
 
 vertical_plots.show(count, start_date_full, end_date_full, title, subtitles, date_time_full_list, close_list_full)
-
 
 

@@ -3,7 +3,7 @@ from utils.stats import percentage
 from utils import time_op, analytics
 
 
-def get_historical_percentage_data(conn, cur, market, symbol, start_date, end_date, days_count):
+def get_historical_percentage_data(conn, cur, market, symbol, start_date, end_date, days_count, expected_length):
     date_time_list = []
     volume_per_list = []
     open_per_list = []
@@ -19,7 +19,12 @@ def get_historical_percentage_data(conn, cur, market, symbol, start_date, end_da
         if not (is_data_available_before):
             continue
 
+
         date_time_per_before, volume_per_before , open_per_before, close_per_before, high_per_before, low_per_before = percentage.get_percentage_change_in_intraday_prices(date_time_before, volume_before , opn_before, close_before, high_before, low_before)
+
+        count = len(date_time_per_before)
+        if (count != expected_length):
+            continue
 
         date_time_list.append(date_time_per_before)
         volume_per_list.append(volume_per_before)
@@ -41,7 +46,8 @@ def get_percentage_change_distance_data(conn, cur, market, symbol, start_date, e
         return None
 
     date_time_1, volume_per , open_per, close_per, high_per, low_per = percentage.get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low)
-    date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = get_historical_percentage_data(conn, cur, market, symbol, start_date, end_date, days_count)
+    expected_length = len(date_time_1)
+    date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = get_historical_percentage_data(conn, cur, market, symbol, start_date, end_date, days_count, expected_length)
 
     dist_volume_per_list = analytics.get_distance_list(volume_per, volume_per_list)
     dist_open_per_list = analytics.get_distance_list(open_per, open_per_list)
