@@ -405,7 +405,7 @@ def download_intraday_list_of_tickers(data_dir, list_file_name, day_count):
 
 
 
-def get_historical_intraday_data_for_N_days(data_dir, symbol, start_date, end_date, days_count, interval):
+def get_historical_intraday_data_for_N_days(data_dir, symbol, start_date, end_date, days_count, interval, expected_length):
     date_time_list = []
     volume_per_list = []
     open_per_list = []
@@ -419,6 +419,10 @@ def get_historical_intraday_data_for_N_days(data_dir, symbol, start_date, end_da
 
         is_data_available_before, date_time_before, volume_before , open_before, close_before, high_before, low_before, _, _, _, _, _ = get_intraday_data(data_dir, symbol, new_start_date, new_end_date, interval)
         if not (is_data_available_before):
+            continue
+
+        count = len(date_time_before)
+        if (count != expected_length):
             continue
 
         date_time_list.append(date_time_before)

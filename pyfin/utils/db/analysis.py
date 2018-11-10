@@ -55,7 +55,7 @@ def get_percentage_change_distance_data(conn, cur, market, symbol, start_date, e
     dist_high_per_list = analytics.get_distance_list(high_per, high_per_list)
     dist_low_per_list = analytics.get_distance_list(low_per, low_per_list)
 
-    return date_time, date_time_per_list, \
+    return date_time, expected_length, date_time_per_list, \
            (volume, volume_per, volume_per_list, dist_volume_per_list), \
            (opn, open_per, open_per_list, dist_open_per_list), \
            (close, close_per, close_per_list, dist_close_per_list), \

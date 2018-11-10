@@ -358,7 +358,7 @@ def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, i
 
 
 
-def get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_datetime, end_datetime, days_count, interval):
+def get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_datetime, end_datetime, days_count, interval, expected_length):
     date_time_list = []
     volume_per_list = []
     open_per_list = []
@@ -376,6 +376,10 @@ def get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_dat
         end_datetime_cur = end_datetime - timedelta(days=i)
         is_data_available, date_time, volume, opn, cls, high, low, c_v, c_o, c_c, c_h, c_l = get_intraday_data(conn, cur, market, symbol, start_datetime_cur, end_datetime_cur, interval)
         if not (is_data_available):
+            continue
+
+        count = len(date_time)
+        if (count != expected_length):
             continue
 
         date_time_list.append(date_time)

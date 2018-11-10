@@ -25,13 +25,10 @@ symbol = "AMZN"
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
 
-date_time, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = analysis.get_percentage_change_distance_data(conn, cur, market, symbol, start_date, end_date, days_count)
+date_time, expected_length, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = analysis.get_percentage_change_distance_data(conn, cur, market, symbol, start_date, end_date, days_count)
 
 
-date_time_list, volume_list, open_list, close_list, high_list, low_list, _, _, _, _, _ = db.get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_date, end_date, days_count, 1)
-
-cur.close()
-conn.close()
+date_time_list, volume_list, open_list, close_list, high_list, low_list, _, _, _, _, _ = db.get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_date, end_date, days_count, 1, expected_length + 1)
 
 
 sorted_ind = sort_op.get_sorted_indices(dist_close_per_list)
@@ -84,7 +81,7 @@ for i in range(full_count):
     start_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=9, minute=30)
     end_date_full = date_time_per_list[sorted_ind[i]][0].replace(hour=15, minute=59)
 
-    is_data_available_before_full, date_time_before_full, volume_before_full , opn_before_full, close_before_full, high_before_full, low_before_full, _, _, _, _, _ = read.get_intraday_data(DATA_DIR, symbol, start_date_full, end_date_full, 1)
+    is_data_available_before_full, date_time_before_full, volume_before_full , opn_before_full, close_before_full, high_before_full, low_before_full, _, _, _, _, _ = db.get_intraday_data(conn, cur, market, symbol, start_date_full, end_date_full, 1)
     if not (is_data_available_before_full):
         continue
     close_list_full.append(close_before_full)
@@ -108,4 +105,7 @@ for i in range(count):
 
 vertical_plots.show(count, start_date_full, end_date_full, title, subtitles, date_time_full_list, close_list_full)
 
+
+cur.close()
+conn.close()
 

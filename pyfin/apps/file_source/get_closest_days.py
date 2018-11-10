@@ -28,9 +28,9 @@ symbol = "AMZN"
 
 
 
-date_time, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = analysis.get_percentage_change_distance_data(DATA_DIR, symbol, start_date, end_date, days_count)
+date_time, expected_length, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = analysis.get_percentage_change_distance_data(DATA_DIR, symbol, start_date, end_date, days_count)
 
-date_time_list, volume_list, open_list, close_list, high_list, low_list = absolute.get_historical_data(DATA_DIR, symbol, start_date, end_date, days_count)
+date_time_list, volume_list, open_list, close_list, high_list, low_list = read.get_historical_intraday_data_for_N_days(DATA_DIR, symbol, start_date, end_date, days_count, 1, expected_length + 1)
 
 sorted_ind = sort_op.get_sorted_indices(dist_close_per_list)
 
