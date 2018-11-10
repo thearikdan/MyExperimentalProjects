@@ -182,6 +182,22 @@ def group_intraday_file_records_by_dates(records, date_index):
 
 
 
+def extract_year_month_day(dt):
+    dt_ret = datetime(year=dt.year, month=dt.month, day=dt.day)
+    return dt_ret
+
+
+def is_same_day (dt1, dt2):
+    dt_ext1 = extract_year_month_day(dt1)
+    dt_ext2 = extract_year_month_day(dt2)
+    if dt_ext1 == dt.ext2:
+        return True
+    else:
+        return False
+
+
+
+
 
 
 

@@ -395,6 +395,33 @@ def get_historical_intraday_data_for_N_days(conn, cur, market, symbol, days_coun
    
     return date_time_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list, c_v_list, c_o_list, c_c_list, c_h_list, c_l_list
 
- 
 
+ 
+def get_all_daytimes(conn, cursor, market, symbol):
+    date_time_list = []
+    sql = "SELECT date_time from public.intraday_prices INNER JOIN public.companies ON public.intraday_prices.company_id=public.companies.company_id \
+INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" +  market + "';"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for row in rows:
+        dt = row[0]
+        date_time_list.append(dt)
+    return date_time_list
+
+
+
+def get_all_days_record_counts(conn, cursor, market, symbol):
+    date_time_list = []
+    date_record_count = []
+    all_daytimes = get_all_daytimes(conn, cursor, market, symbol)
+    if len(all_daytimes) == 0:
+        return date_time_list, date_record_count
+    
+    date_time_list.append(time_op.extract_year_month_day(all_daytimes[0]))
+    for dt in all_daytimes:
+        next_dt = time_op.extract_year_month_day(dt)
+        if date_time_list[-1] != next_dt:
+            date_time_list.append(next_dt)
+    return date_time_list
+    
 
