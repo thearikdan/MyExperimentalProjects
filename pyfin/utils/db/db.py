@@ -418,10 +418,15 @@ def get_all_days_record_counts(conn, cursor, market, symbol):
         return date_time_list, date_record_count
     
     date_time_list.append(time_op.extract_year_month_day(all_daytimes[0]))
+    date_record_count.append(0)
     for dt in all_daytimes:
         next_dt = time_op.extract_year_month_day(dt)
         if date_time_list[-1] != next_dt:
             date_time_list.append(next_dt)
-    return date_time_list
+            date_record_count.append(1)
+        else:
+            date_record_count[-1] = date_record_count[-1] + 1
+
+    return date_time_list, date_record_count
     
 

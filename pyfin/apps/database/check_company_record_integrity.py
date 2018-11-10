@@ -15,11 +15,12 @@ symbol = "AMZN"
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
 
-#date_time_list, length_list = db.get_all_days_record_counts(conn, cur, market, symbol)
-date_time_list = db.get_all_days_record_counts(conn, cur, market, symbol)
+date_time_list, count_list = db.get_all_days_record_counts(conn, cur, market, symbol)
 
-print date_time_list
-#print len_list
+
+count = len (date_time_list)
+for i in range(count):
+    print '%s    %d' % (date_time_list[i].strftime("%Y-%m-%d"), count_list[i])
 
 cur.close()
 conn.close()
