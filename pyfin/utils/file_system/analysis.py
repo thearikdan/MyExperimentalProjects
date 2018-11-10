@@ -75,7 +75,7 @@ def get_percentage_change_distance_data(data_dir, symbol, start_date, end_date, 
 
     date_time_1, volume_per , open_per, close_per, high_per, low_per = percentage.get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low)
     expected_length = len(date_time_1)
-    date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_count, 1)
+    date_time_per_list, volume_per_list, open_per_list, close_per_list, high_per_list, low_per_list = get_historical_percentage_data(data_dir, symbol, start_date, end_date, days_count, expected_length)
 
     dist_volume_per_list = analytics.get_distance_list(volume_per, volume_per_list)
     dist_open_per_list = analytics.get_distance_list(open_per, open_per_list)
