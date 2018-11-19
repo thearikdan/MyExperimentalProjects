@@ -1,6 +1,6 @@
 from utils.db import db
 from utils.stats import percentage
-from utils import time_op, analytics
+from utils import time_op, analytics, sort_op
 
 
 def get_historical_percentage_data(conn, cur, market, symbol, start_date, end_date, days_count, expected_length):
@@ -62,6 +62,22 @@ def get_percentage_change_distance_data(conn, cur, market, symbol, start_date, e
            (high, high_per, high_per_list, dist_high_per_list), \
            (low, low_per, low_per_list, dist_low_per_list)
 
+
+
+def get_closest_distance_and_info_list_by_closing_price(conn, cur, market, symbol, start_date, end_date, days_count, interval):
+    date_time, expected_length, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = get_percentage_change_distance_data(conn, cur, market, symbol, start_date, end_date, days_count)
+
+    date_time_list, volume_list, open_list, close_list, high_list, low_list, _, _, _, _, _ = db.get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_date, end_date, days_count, interval, expected_length + 1)
+
+    sorted_ind = sort_op.get_sorted_indices(dist_close_per_list)
+
+    resorted_date_time_per_list = sort_op.get_resorted_list(date_time_per_list, sorted_ind)
+    resorted_dist_close_per_list = sort_op.get_resorted_list(dist_close_per_list, sorted_ind)
+    resorted_close_per_list = sort_op.get_resorted_list(close_per_list, sorted_ind)
+    resorted_close_list = sort_op.get_resorted_list(close_list, sorted_ind)
+    resorted_date_time_list = sort_op.get_resorted_list(date_time_list, sorted_ind)
+
+    return resorted_date_time_per_list, resorted_dist_close_per_list, resorted_close_per_list, close_per, resorted_date_time_list, resorted_close_list, close
 
 
 

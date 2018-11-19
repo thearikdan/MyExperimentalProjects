@@ -14,7 +14,7 @@ start_date = datetime(2018, 10, 2, 9, 30)
 end_date = datetime(2018, 10, 2, 13, 30)
 
 days_count = 100
-interval = 1
+
 display_count = 5
 
 
@@ -24,7 +24,7 @@ symbol = "AMZN"
 
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
-'''
+
 date_time, expected_length, date_time_per_list, _, _, (close, close_per, close_per_list, dist_close_per_list), _, _ = analysis.get_percentage_change_distance_data(conn, cur, market, symbol, start_date, end_date, days_count)
 
 
@@ -33,17 +33,13 @@ date_time_list, volume_list, open_list, close_list, high_list, low_list, _, _, _
 
 sorted_ind = sort_op.get_sorted_indices(dist_close_per_list)
 
-
-resorted_date_time_per_list = sort_op.get_resorted_list(date_time_per_list, sorted_ind)
-resorted_close_per_list = sort_op.get_resorted_list(close_per_list, sorted_ind)
-'''
-
-resorted_date_time_per_list, resorted_dist_close_per_list, resorted_close_per_list, close_per, resorted_date_time_list, resorted_close_list, close = analysis.get_closest_distance_and_info_list_by_closing_price(conn, cur, market, symbol, start_date, end_date, days_count, interval)
-
-count = len(resorted_date_time_per_list)
+count = len(sorted_ind)
 if count > display_count:
     count = display_count
 
+
+resorted_date_time_per_list = sort_op.get_resorted_list(date_time_per_list, sorted_ind)
+resorted_close_per_list = sort_op.get_resorted_list(close_per_list, sorted_ind)
 
 start_date_str = start_date.strftime("%Y-%m-%d %H:%M")
 end_date_str = end_date.strftime("%Y-%m-%d %H:%M")
@@ -52,17 +48,15 @@ title = symbol + ":" + " Percentage changes for " + str(count) + " closest days 
 
 subtitles = []
 for i in range(count):
-#    date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
-#    dist_str = "{:.4f}".format(dist_close_per_list[sorted_ind[i]])
-    date_str = (resorted_date_time_per_list[i][0]).strftime("%Y-%m-%d")
-    dist_str = "{:.4f}".format(resorted_dist_close_per_list[i])
+    date_str = (date_time_per_list[sorted_ind[i]][0]).strftime("%Y-%m-%d")
+    dist_str = "{:.4f}".format(dist_close_per_list[sorted_ind[i]])
     subtitle = "Date: " + date_str + ", distance: " + dist_str
     subtitles.append(subtitle)
 
 vertical_plots.show_with_reference(count, start_date, end_date, title, subtitles, resorted_date_time_per_list, resorted_close_per_list, close_per)
 
 
-'''
+
 resorted_close_list = sort_op.get_resorted_list(close_list, sorted_ind)
 date_time_list = []
 
@@ -74,11 +68,11 @@ for i in range(count):
     subtitle = "Date: " + date_str + ", distance: " + dist_str
     subtitles.append(subtitle)
     date_time_list.append(date_time)
-'''
-vertical_plots.show_with_reference(count, start_date, end_date, title, subtitles, resorted_date_time_list, resorted_close_list, close)
+
+vertical_plots.show_with_reference(count, start_date, end_date, title, subtitles, date_time_list, resorted_close_list, close)
 
 
-'''
+
 full_count = len(sorted_ind)
 close_list_full = []
 date_time_full_list = []
@@ -110,7 +104,7 @@ for i in range(count):
     subtitles.append(subtitle)
 
 vertical_plots.show(count, start_date_full, end_date_full, title, subtitles, date_time_full_list, close_list_full)
-'''
+
 
 cur.close()
 conn.close()
