@@ -24,7 +24,7 @@ script_start_time = time.time()
 
 conn, cursor = db.connect_to_database("../../database/database_settings.txt")
 
-start_date = "2018-11-16"
+start_date = "2018-11-30"
 
 
 data_dir = "/media/hddx/datasets/pyfin/data"
