@@ -35,4 +35,4 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     output_run, state_run = sess.run([outputs, state])
     print (output_run)
-    print(state_run)
+#    print(state_run)

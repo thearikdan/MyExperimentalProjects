@@ -13,11 +13,11 @@ b = tf.constant([[5,6], [7, 8]])
 
 c0 = tf.concat([a, b], 0)
 shape0 = c0.get_shape()
-print shape0
+print (shape0)
 
 c1 = tf.concat([a, b], 1)
 shape1 = c1.get_shape()
-print shape1
+print (shape1)
 
 
 
@@ -25,7 +25,7 @@ tf.initialize_all_variables()
 
 
 with tf.Session() as sess:
-    print sess.run(c0)
-    print sess.run(c1)
+    print (sess.run(c0))
+    print (sess.run(c1))
 
 
