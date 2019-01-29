@@ -8,13 +8,16 @@ from scipy.ndimage.interpolation import shift
 num_epochs = 100
 total_series_length = 50000
 truncated_backprop_length = 15
-state_size = 4
-num_classes = 2
+#state_size = 4
+state_size = 30
+#num_classes = 2
 echo_step = 3
 batch_size = 5
 num_batches = total_series_length//batch_size//truncated_backprop_length
-lower_bound = 100
-upper_bound = 300
+lower_bound = 0
+upper_bound = 9
+num_classes = upper_bound - lower_bound + 1
+
 
 def generateData():
 #    x = np.array(np.random.choice(2, total_series_length, p=[0.5, 0.5]))
