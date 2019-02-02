@@ -398,7 +398,7 @@ def get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_dat
 
 
  
-def get_all_daytimes(conn, cursor, market, symbol):
+def get_all_daytimes_for_symbol(conn, cursor, market, symbol):
     date_time_list = []
     sql = "SELECT date_time from public.intraday_prices INNER JOIN public.companies ON public.intraday_prices.company_id=public.companies.company_id \
 INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" +  market + "';"
@@ -414,7 +414,7 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 def get_all_days_record_counts(conn, cursor, market, symbol):
     date_time_list = []
     date_record_count = []
-    all_daytimes = get_all_daytimes(conn, cursor, market, symbol)
+    all_daytimes = get_all_daytimes_for_symbol(conn, cursor, market, symbol)
     if len(all_daytimes) == 0:
         return date_time_list, date_record_count
     
@@ -430,4 +430,24 @@ def get_all_days_record_counts(conn, cursor, market, symbol):
 
     return date_time_list, date_record_count
     
+
+# This function doesn't work! It takes a very long time and huge amount of memory to call the function! 
+# It is better to retrieve all dates by knowing a company (AMZN) that is covered for all dates
+def get_all_date_time_list(conn, cursor):
+    all_times_list = []
+    sql = "SELECT date_time from public.intraday_prices;"
+    print ("Before executing sql")
+    cursor.execute(sql)
+    print ("After executing sql")
+    rows = cursor.fetchall()
+    print ("Fetching all records")
+    for row in rows:
+        dt_full = row[0]
+        dt = time_op.extract_year_month_day(dt_full)
+        if dt not in all_times_list:
+            all_times_list.append(dt)
+            print (all_times_list)
+            print ("____________")
+
+    return all_times_list
 

@@ -2,6 +2,23 @@ import dateutil.parser as dparser
 import calendar
 import numpy as np
 from datetime import datetime, timedelta
+import time
+
+
+
+def get_int_time(date_time):
+    date_time_tuple = date_time.timetuple()
+    date_time_int = int(time.mktime(date_time_tuple))
+    return date_time_int
+
+
+def get_date_time_from_timestamp(timestamp):
+    date_time = []
+    count = len(timestamp)
+    for i in range(count):
+        dt = datetime.fromtimestamp(timestamp[i])
+        date_time.append(dt)
+    return date_time
 
 
 def get_date_text_from_date_string(date_string):

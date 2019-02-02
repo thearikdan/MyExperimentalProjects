@@ -6,14 +6,12 @@ pd.core.common.is_list_like = pd.api.types.is_list_like
 import pandas_datareader as pdr
 
 from datetime import datetime
-import urllib2
-import json
-import time
 import write
 import pickle
 from datetime import datetime
 from os.path import join, isfile
 from utils import time_op, string_op, constants
+from utils.web import download
 from os.path import join
 from utils import constants, heal
 
@@ -22,70 +20,6 @@ import multiprocessing
 from functools import partial
 from contextlib import contextmanager
 
-
-
-def get_int_time(date_time):
-    date_time_tuple = date_time.timetuple()
-    date_time_int = int(time.mktime(date_time_tuple))
-    return date_time_int
-
-
-def get_date_time_from_timestamp(timestamp):
-    date_time = []
-    count = len(timestamp)
-    for i in range(count):
-        dt = datetime.fromtimestamp(timestamp[i])
-        date_time.append(dt)
-    return date_time
-
-
-def __get_intraday_data_from_web(ticker, start, end):
-    start_date_time = get_int_time(start)
-    end_date_time = get_int_time(end)
-
-    str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, "1m")
-    try:
-        response = urllib2.urlopen(str).read()
-        json_obj = json.loads(response)
-
-        chart = (json_obj['chart'])
-        result = chart['result']
-        indicators = result[0]['indicators']
-        quote = indicators['quote']
-
-    except Exception as e:
-        print "Could not download data for " + ticker + " for " + start.strftime("%Y-%m-%d")
-        return (False, [], [], [], [], [], [])
-
-    is_data_available = len(quote[0]) > 0
-    if not (is_data_available):
-        return (False, [], [], [], [], [], [])
-
-    high = quote[0]['high']
-    is_data_available = len(high) > 1
-    if not (is_data_available):
-        return (False, [], [], [], [], [], [])
-
-    low = quote[0]['low']
-    opn = quote[0]['open']
-    close = quote[0]['close']
-    volume = quote[0]['volume']
-
-    timestamp = result[0]['timestamp']
-    date_time = get_date_time_from_timestamp(timestamp)
-    return (True, date_time, volume, opn, close, high, low)
-
-
-def get_full_day_intraday_data_from_web(ticker, start, end):
-    start_full_day = start.replace(hour=9, minute=30, second=00)
-    end_full_day = start.replace(hour=16, minute=00, second=00)
-    return __get_intraday_data_from_web(ticker, start_full_day, end_full_day)
-
-
-def get_current_intraday_data_from_web(ticker, start, end):
-    start_current_time = start.replace(second=00)
-    end_current_time = start.replace(second=00)
-    return __get_intraday_data_from_web(ticker, start_current_time, end_current_time)
 
 
 def get_all_intraday_data_from_file(full_path):
@@ -196,7 +130,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
             dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, date_time, volume, opn, close, high, low)
             return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
 
-    is_data_available, date_time, volume, opn, close, high, low = get_full_day_intraday_data_from_web(ticker, start, end)
+    is_data_available, date_time, volume, opn, close, high, low = download.get_full_day_intraday_data_from_web(ticker, start, end)
     if not (is_data_available):
         return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
 
@@ -224,7 +158,7 @@ def get_intraday_data(data_dir, ticker, start, end, interval):
         return (True, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
 
 
-def download_intraday_data(data_dir, ticker, start, end):
+def download_intraday_data_to_file(data_dir, ticker, start, end):
     interval_string = "1m"
     dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
     filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
@@ -233,19 +167,12 @@ def download_intraday_data(data_dir, ticker, start, end):
     if isfile(full_path):
         return True
     else:
-        is_data_available, date_time, volume, opn, close, high, low = get_full_day_intraday_data_from_web(data_dir, ticker, start, end)
+        is_data_available, date_time, volume, opn, close, high, low = download.get_full_day_intraday_data_from_web(data_dir, ticker, start, end)
         if not (is_data_available):
             return False
 
         write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
         return True
-
-
-def get_data_from_web(ticker, start_date, end_date):
-    data = pdr.get_data_yahoo(symbols=ticker, start=start_date, end=end_date)
-    dateIndex = data.index
-    date = np.array(dateIndex.to_pydatetime())
-    return date, data.as_matrix()
 
 
 
