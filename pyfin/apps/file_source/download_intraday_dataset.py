@@ -10,20 +10,21 @@ from argparse import ArgumentParser
 
 
 def print_usage():
-    print"Usage: python download_intraday_dataset.py -d target_directory -n number_of_days_from_today"
+    print ("Usage: python download_intraday_dataset.py -d target directory -n number of days from today -st file_system or database")
 
 parser = ArgumentParser()
 
 parser.add_argument("-d", "--data_root", dest="data_root", help="Specify data root directory")
 parser.add_argument("-n", "--day_count", dest="day_count", help="Specify the number of days from today")
+parser.add_argument("-st", "--storage_type", dest="storage_type", help="Storage type: file system or database. If storage type is database, the data root parameter is ignored")
 
 
 args = parser.parse_args()
 
 params = vars(args)
-print len(sys.argv)
+print (len(sys.argv))
 
-if len(sys.argv) != 5:
+if len(sys.argv) != 7:
     print_usage()
     exit()
 
@@ -39,6 +40,16 @@ data_root = params['data_root']
 #N = 1
 N= int(params['day_count'])
 
+storage = params['storage_type']
+if storage == 'file_system':
+    st = constants.Storage_Type.File_System
+elif storage == 'database':
+    st = constants.Storage_Type.Database
+else:
+    print ("-st must be file_system or database")
+    exit()
+
+
 #print (data_root)
 #print (N)
 
@@ -48,7 +59,7 @@ if ((data_root is None) or (N is None)):
     exit()
 
 if not os.path.isdir(data_root):
-    print"Data root must be a valid directory!"
+    print ("Data root must be a valid directory!")
     exit()
 
 
@@ -61,7 +72,7 @@ cur.close()
 conn.close()
 
 
-read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N)
+read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st)
 
 seconds = time.time() - start_time
 

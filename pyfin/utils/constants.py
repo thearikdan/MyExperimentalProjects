@@ -1,3 +1,5 @@
+
+
 PADDED_DAY = -1000000.
 PADDED_DAY_COLOR = [0., 0., 1.]
 
@@ -15,3 +17,7 @@ LOW_PRICE = 5
 FILE_CORRUPT_RATIO = 0.8
 
 DATA_ROOT = '/media/hddx/datasets/pyfin/data'
+
+class Storage_Type:
+    File_System=1
+    Database=2
