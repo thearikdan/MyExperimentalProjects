@@ -4,7 +4,7 @@ sys.path.append("..")
 import psycopg2
 from utils import time_op, string_op, heal
 import os
-from utils.file_system import read
+#from utils.file_system import read
 from datetime import datetime, timedelta
 
 
@@ -206,7 +206,7 @@ def get_filename_v1_from_item(item):
     filename = os.path.join(filename, item[4])
     return filename
 
-
+'''
 def insert_intraday_file_records_v1_into_database(conn, cur, records):
     exchange_dict = {}
     count = len(records)
@@ -225,7 +225,7 @@ def insert_intraday_file_records_v1_into_database(conn, cur, records):
                 add_to_corrupt_intraday_prices(conn, cur, market, symbol, date)
             else:
                 add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
-
+'''
 
 def get_filename_v2_from_item(item):
     filename = os.path.join(item[0], item[1])
@@ -237,7 +237,7 @@ def get_filename_v2_from_item(item):
     return filename
 
 
-
+'''
 def insert_intraday_file_records_v2_into_database(conn, cur, records):
     count = len(records)
     for i in range(count):
@@ -255,6 +255,7 @@ def insert_intraday_file_records_v2_into_database(conn, cur, records):
 #                add_to_corrupt_intraday_prices(conn, cur, market, symbol, date)
 #            else:
             add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low)
+'''
 
 
 def get_exchange_names_from_symbol(conn, cursor, symbol):

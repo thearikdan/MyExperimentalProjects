@@ -14,6 +14,7 @@ from utils import time_op, string_op, constants
 from utils.web import download
 from os.path import join
 from utils import constants, heal
+from utils.db import db
 
 #https://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments
 import multiprocessing
@@ -140,6 +141,24 @@ def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_typ
 
         #Write original data, even if some values are corrupt (0, or None)
         write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+
+    elif storage_type == constants.Storage_Type.Database:
+        conn, cur = db.connect_to_database("../../database/database_settings.txt")
+        is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_intraday_data(conn, cur, market, ticker, start, end, interval)
+        if is_data_available:
+            return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
+
+        is_data_available, date_time, volume, opn, close, high, low = download.get_full_day_intraday_data_from_web(ticker, start, end)
+        if not (is_data_available):
+            return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
+
+        #Write original data, even if some values are corrupt (0, or None)
+        db.add_to_intraday_prices(conn, cur, market, ticker, date_time, volume, opn, close, high, low)
+        cur.close()
+        conn.close()
+    else:
+        print("storage type must be file_system or database")
+        exit()
 
     volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
 

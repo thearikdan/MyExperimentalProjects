@@ -16,7 +16,7 @@ parser = ArgumentParser()
 
 parser.add_argument("-d", "--data_root", dest="data_root", help="Specify data root directory")
 parser.add_argument("-n", "--day_count", dest="day_count", help="Specify the number of days from today")
-parser.add_argument("-st", "--storage_type", dest="storage_type", help="Storage type: file system or database. If storage type is database, the data root parameter is ignored")
+parser.add_argument("-st", "--storage_type", dest="storage_type", help="Storage type: file system or database.")
 
 
 args = parser.parse_args()
@@ -70,7 +70,6 @@ print symbols, markets
 
 cur.close()
 conn.close()
-
 
 read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st)
 
