@@ -7,6 +7,7 @@ from utils.db import db
 
 market = 'nasdaq'
 symbol = 'AMZN'
+company_id=139
 start_date_time = datetime(2017, 12, 18)
 end_date_time = start_date_time + timedelta(days=1)
 interval = 1
@@ -19,7 +20,6 @@ is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_int
 if not is_data_available:
     print ("No data is available")
     exit(0)
-
 
 print (cn)
 print len(cn)
