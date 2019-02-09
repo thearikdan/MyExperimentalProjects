@@ -434,7 +434,7 @@ def get_all_days_record_counts(conn, cursor, market, symbol):
 
 # This function doesn't work! It takes a very long time and huge amount of memory to call the function! 
 # It is better to retrieve all dates by knowing a company (AMZN) that is covered for all dates
-def get_all_date_time_list(conn, cursor):
+def get_all_year_month_day_list(conn, cursor):
     all_times_list = []
     sql = "SELECT date_time from public.intraday_prices;"
     print ("Before executing sql")
@@ -451,4 +451,17 @@ def get_all_date_time_list(conn, cursor):
             print ("____________")
 
     return all_times_list
+
+
+
+def get_all_year_month_day_list_for_symbol(conn, cursor, market, symbol):
+    all_times_list = []
+    date_time_list = get_all_daytimes_for_symbol(conn, cursor, market, symbol)
+    for dt_full in date_time_list:
+        dt = time_op.extract_year_month_day(dt_full)
+        if dt not in all_times_list:
+            all_times_list.append(dt)
+
+    return all_times_list
+
 

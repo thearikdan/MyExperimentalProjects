@@ -10,8 +10,8 @@ import numpy as np
 from utils.viz import vertical_plots
 
 
-start_date = datetime(2018, 10, 2, 9, 30)
-end_date = datetime(2018, 10, 2, 13, 30)
+start_date = datetime(2019, 2, 1, 9, 30)
+end_date = datetime(2019, 2, 1, 13, 30)
 
 days_count = 100
 interval = 1
