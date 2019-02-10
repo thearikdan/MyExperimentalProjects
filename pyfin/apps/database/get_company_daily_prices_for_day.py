@@ -8,7 +8,7 @@ from utils.db import db
 market = 'nasdaq'
 symbol = 'AMZN'
 company_id = 139
-start_date_time = datetime(2017, 12, 18)
+start_date_time = datetime(2019, 2, 8)
 end_date_time = start_date_time + timedelta(days=1)
 interval = 1
 

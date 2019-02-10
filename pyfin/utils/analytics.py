@@ -1,5 +1,6 @@
 from scipy.spatial import distance
 import numpy as np
+import math
 
 
 
@@ -21,95 +22,95 @@ def get_distance_list(reference, my_list):
     return dist_list
 
 
-def get_min_with_none(l):
+def get_min_with_nan(l):
     count = len(l)
-    count_none = 0
-    m = None
+    count_nan = 0
+    m = float('nan')
     for i in range (count):
-        if l[i] is None:
-            count_none = count_none + 1
+        if math.isnan(l[i]):
+            count_nan = count_nan + 1
             continue
-        if (l[i] < m) or (m is None):
+        if (l[i] < m) or (math.isnan(m)):
             m = l[i]
-    return m, float(count_none) / count
+    return m, float(count_nan) / count
   
 
-def get_max_with_none(l):
+def get_max_with_nan(l):
     count = len(l)
-    count_none = 0
-    m = None
+    count_nan = 0
+    m = float('nan')
     for i in range (count):
-        if l[i] is None:
-            count_none = count_none + 1
+        if math.isnan(l[i]):
+            count_nan = count_nan + 1
             continue
-        if (l[i] > m) or (m is None):
+        if (l[i] > m) or (math.isnan(m)):
             m = l[i]
-    return m, float(count_none) / count
+    return m, float(count_nan) / count
 
 
-def get_avg_with_none(l):
+def get_avg_with_nan(l):
     count = len(l)
-    count_none = 0
-    avg = None
+    count_nan = 0
+    avg = float('nan')
     for i in range (count):
-        if l[i] is None:
-            count_none = count_none + 1
+        if math.isnan(l[i]):
+            count_nan = count_nan + 1
             continue
-        elif (avg is None):
+        elif (math.isnan(avg)):
             avg = l[i]
         else:
             avg = avg + l[i]
 
-    if avg is None:
+    if math.isnan(avg):
         return avg, float(count_none) / count
     else:
-        return float(avg) / (count - count_none), float(count_none) / count
+        return float(avg) / (count - count_nan), float(count_nan) / count
 
 
-def get_opening_with_none(l):
+def get_opening_with_nan(l):
     count = len(l)
-    count_none = 0
-    op = None
+    count_nan= 0
+    op = float('nan')
     for i in range (count):
-        if l[i] is not None:
+        if not math.isnan(l[i]):
             op = l[i]
             break
 
     for i in range(count):
-        if l[i] is None:
-            count_none = count_none + 1
+        if math.isnan(l[i]):
+            count_nan = count_nan + 1
 
-    return op, float(count_none) / count
+    return op, float(count_nan) / count
 
 
-def get_closing_with_none(l):
+def get_closing_with_nan(l):
     count = len(l)
-    count_none = 0
+    count_nan = 0
     op = None
     for i in range (count -1 , -1, -1):
-        if l[i] is not None:
+        if not math.isnan(l[i]):
             op = l[i]
             break
 
     for i in range(count):
-        if l[i] is None:
-            count_none = count_none + 1
+        if math.isnan(l[i]):
+            count_nan = count_nan + 1
 
-    return op, float(count_none) / count
+    return op, float(count_nan) / count
 
 
 def get_daily_data_from_intraday_data(vl, ol, cl, hl, ll):
-    min_volume, volume_none_ratio = get_min_with_none(vl)
-    max_volume, _ = get_max_with_none(vl)
-    avg_volume, _ = get_avg_with_none(vl)
+    min_volume, volume_none_ratio = get_min_with_nan(vl)
+    max_volume, _ = get_max_with_nan(vl)
+    avg_volume, _ = get_avg_with_nan(vl)
 
-    opening, opening_none_ratio = get_opening_with_none(ol)
-    closing, closing_none_ratio = get_closing_with_none(cl)
+    opening, opening_nan_ratio = get_opening_with_nan(ol)
+    closing, closing_nan_ratio = get_closing_with_nan(cl)
 
-    high, high_none_ratio = get_max_with_none(hl)
-    low, low_none_ratio = get_min_with_none(ll)
+    high, high_nan_ratio = get_max_with_nan(hl)
+    low, low_nan_ratio = get_min_with_nan(ll)
 
-    return min_volume, max_volume, avg_volume, opening, closing, high, low, volume_none_ratio, opening_none_ratio, closing_none_ratio, high_none_ratio, low_none_ratio
+    return min_volume, max_volume, avg_volume, opening, closing, high, low, volume_none_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio
 
 
 

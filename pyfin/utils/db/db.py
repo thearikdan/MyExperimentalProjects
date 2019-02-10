@@ -6,6 +6,7 @@ from utils import time_op, string_op, heal
 import os
 #from utils.file_system import read
 from datetime import datetime, timedelta
+import math
 
 
 def connect_to_database(settings_file_name):
@@ -41,7 +42,7 @@ def insert_companies(table, cursor, symbols, names, ipo_years, sectors, industri
 
     for i in range (count):
         sql = "INSERT INTO " + table +"(symbol, name, ipo_year, sector_id, industry_id, summary_quote, stock_exchange, symbol_suffix) VALUES('" + symbols[i] + "','" + names[i] + "','" + ipo_years[i] + "', (SELECT sector_id from public.sectors WHERE name='" + sectors[i] + "'), (SELECT industry_id from public.industries WHERE name='" + industries[i] + "'), '" + summary_quotes[i] + "', '" + stock_exchanges[i] + "', '" + symbol_suffix[i] +"');"
-        print sql
+#        print sql
         cursor.execute(sql)
 
 
@@ -145,13 +146,13 @@ def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
         print "SKIPPING " + sql
         conn.rollback()
     else:
-        print sql
+#        print sql
         conn.commit()
 
 
 def process_numeric_value(val):
     processed = '0'
-    if val is None:
+    if val is None or math.isnan(val):
         processed = 'NaN'
     else:
         processed = str(val)
@@ -180,8 +181,40 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
             print "SKIPPING " + sql
             conn.rollback()
         else:
-            print sql
+#            print sql
             conn.commit()
+
+
+
+def add_to_daily_prices(conn, cur, company_id, date_time, min_volume, max_volume, avg_volume, opn, close, high, low, volume_nan_ratio, op_nan_ratio, cl_nan_ratio, high_nan_ratio, low_nan_ratio):
+    date, time = time_op.get_date_time_from_datetime(date_time)
+    timestamp = date + " " + time
+
+    min_vo = process_numeric_value(min_volume)
+    max_vo = process_numeric_value(max_volume)
+    avg_vo = process_numeric_value(avg_volume)
+    op = process_numeric_value(opn)
+    cl = process_numeric_value(close)
+    hi = process_numeric_value(high)
+    lo = process_numeric_value(low)
+    vo_nan_r = process_numeric_value(volume_nan_ratio)
+    op_nan_r = process_numeric_value(op_nan_ratio)
+    cl_nan_r = process_numeric_value(cl_nan_ratio)
+    hi_nan_r = process_numeric_value(high_nan_ratio)
+    lo_nan_r = process_numeric_value(low_nan_ratio)
+
+    sql = "INSERT INTO public.daily_prices (company_id, date_time, min_volume, max_volume, avg_volume, opening_price, closing_price, high_price, low_price, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio)\
+ VALUES('" + str(company_id) + "','" + timestamp + "'::timestamp without time zone" + ",'" + min_vo + "','" + max_vo + "','" +  avg_vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + \
+          "','" + vo_nan_r + "','" + op_nan_r + "','" + cl_nan_r + "','" + hi_nan_r + "','" + lo_nan_r + "');"
+    try:
+        cur.execute(sql)
+    except psycopg2.IntegrityError:
+        print ("SKIPPING " + sql)
+        conn.rollback()
+    else:
+        print (sql)
+        conn.commit()
+
 
 
 def get_suffix_list(conn, cursor):
@@ -336,7 +369,7 @@ def get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetim
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices INNER JOIN public.companies ON public.intraday_prices.company_id=public.companies.company_id \
 INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" + market + \
 "' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
-    print sql
+#    print sql
     cur.execute(sql)
     rows = cur.fetchall()
     count = len(rows)
@@ -372,7 +405,7 @@ def get_raw_intraday_data_from_company_id(conn, cur, company_id, start_datetime,
 
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices WHERE company_id='" + str(company_id) + \
 "' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
-    print sql
+#    print sql
     cur.execute(sql)
     rows = cur.fetchall()
     count = len(rows)
