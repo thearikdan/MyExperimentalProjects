@@ -35,6 +35,19 @@ def get_min_with_nan(l):
     return m, float(count_nan) / count
   
 
+def get_min_with_nan_greater_than_zero(l):
+    count = len(l)
+    count_nan = 0
+    m = float('nan')
+    for i in range (count):
+        if math.isnan(l[i]):
+            count_nan = count_nan + 1
+            continue
+        if (((l[i] < m) or (math.isnan(m))) and (l[i] > 0)):
+            m = l[i]
+    return m, float(count_nan) / count
+
+
 def get_max_with_nan(l):
     count = len(l)
     count_nan = 0
@@ -65,6 +78,29 @@ def get_avg_with_nan(l):
         return avg, float(count_none) / count
     else:
         return float(avg) / (count - count_nan), float(count_nan) / count
+
+
+
+def get_avg_with_nan_greater_than_zero(l):
+    count = len(l)
+    count_nan = 0
+    avg = float('nan')
+    for i in range (count):
+        if math.isnan(l[i]):
+            count_nan = count_nan + 1
+            continue
+        elif (math.isnan(avg)):
+            avg = l[i]
+        elif (l[i] == 0.0):
+            count = count -1
+        else:
+            avg = avg + l[i]
+
+    if math.isnan(avg):
+        return avg, float(count_none) / count
+    else:
+        return float(avg) / (count - count_nan), float(count_nan) / count
+
 
 
 def get_opening_with_nan(l):
@@ -100,9 +136,9 @@ def get_closing_with_nan(l):
 
 
 def get_daily_data_from_intraday_data(vl, ol, cl, hl, ll):
-    min_volume, volume_none_ratio = get_min_with_nan(vl)
+    min_volume, volume_none_ratio = get_min_with_nan_greater_than_zero(vl)
     max_volume, _ = get_max_with_nan(vl)
-    avg_volume, _ = get_avg_with_nan(vl)
+    avg_volume, _ = get_avg_with_nan_greater_than_zero(vl)
 
     opening, opening_nan_ratio = get_opening_with_nan(ol)
     closing, closing_nan_ratio = get_closing_with_nan(cl)
