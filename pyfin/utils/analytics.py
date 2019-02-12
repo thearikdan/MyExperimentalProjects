@@ -1,6 +1,7 @@
 from scipy.spatial import distance
 import numpy as np
 import math
+import time_op
 
 
 
@@ -25,6 +26,7 @@ def get_distance_list(reference, my_list):
 def get_min_with_nan(l):
     count = len(l)
     count_nan = 0
+    index = []
     m = float('nan')
     for i in range (count):
         if math.isnan(l[i]):
@@ -32,12 +34,17 @@ def get_min_with_nan(l):
             continue
         if (l[i] < m) or (math.isnan(m)):
             m = l[i]
-    return m, float(count_nan) / count
+            del index[:]
+            index.append(i)
+        elif (l[i] == m) and (not math.isnan(m)):
+            index.append(i)
+    return m, index, float(count_nan) / count
   
 
 def get_min_with_nan_greater_than_zero(l):
     count = len(l)
     count_nan = 0
+    index = []
     m = float('nan')
     for i in range (count):
         if math.isnan(l[i]):
@@ -45,12 +52,17 @@ def get_min_with_nan_greater_than_zero(l):
             continue
         if (((l[i] < m) or (math.isnan(m))) and (l[i] > 0)):
             m = l[i]
-    return m, float(count_nan) / count
+            del index[:]
+            index.append(i)
+        elif (l[i] == m) and (not math.isnan(m)) and (l[i] > 0):
+            index.append(i)
+    return m, index, float(count_nan) / count
 
 
 def get_max_with_nan(l):
     count = len(l)
     count_nan = 0
+    index = []
     m = float('nan')
     for i in range (count):
         if math.isnan(l[i]):
@@ -58,7 +70,11 @@ def get_max_with_nan(l):
             continue
         if (l[i] > m) or (math.isnan(m)):
             m = l[i]
-    return m, float(count_nan) / count
+            del index[:]
+            index.append(i)
+        elif (l[i] == m) and (not math.isnan(m)):
+            index.append(i)
+    return m, index, float(count_nan) / count
 
 
 def get_avg_with_nan(l):
@@ -135,18 +151,30 @@ def get_closing_with_nan(l):
     return op, float(count_nan) / count
 
 
-def get_daily_data_from_intraday_data(vl, ol, cl, hl, ll):
-    min_volume, volume_none_ratio = get_min_with_nan_greater_than_zero(vl)
-    max_volume, _ = get_max_with_nan(vl)
+def get_times(tl, indices):
+    times = []
+    for ind in indices:
+        times.append(time_op.extract_hour_minute_second(tl[ind]))
+    return times
+
+
+def get_daily_data_from_intraday_data(tl, vl, ol, cl, hl, ll):
+    min_volume, min_volume_indices, volume_none_ratio = get_min_with_nan_greater_than_zero(vl)
+    max_volume, max_volume_indices, _ = get_max_with_nan(vl)
     avg_volume, _ = get_avg_with_nan_greater_than_zero(vl)
 
     opening, opening_nan_ratio = get_opening_with_nan(ol)
     closing, closing_nan_ratio = get_closing_with_nan(cl)
 
-    high, high_nan_ratio = get_max_with_nan(hl)
-    low, low_nan_ratio = get_min_with_nan(ll)
+    high, high_indices, high_nan_ratio = get_max_with_nan(hl)
+    low, low_indices, low_nan_ratio = get_min_with_nan(ll)
 
-    return min_volume, max_volume, avg_volume, opening, closing, high, low, volume_none_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio
+    min_volume_times = get_times(tl, min_volume_indices)
+    max_volume_times = get_times(tl, max_volume_indices)
+    high_times = get_times(tl, high_indices)
+    low_times = get_times(tl, low_indices)
+
+    return min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_none_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio
 
 
 

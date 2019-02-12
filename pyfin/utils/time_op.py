@@ -1,7 +1,8 @@
 import dateutil.parser as dparser
 import calendar
 import numpy as np
-from datetime import datetime, timedelta
+import datetime
+from datetime import timedelta
 import time
 
 
@@ -16,7 +17,7 @@ def get_date_time_from_timestamp(timestamp):
     date_time = []
     count = len(timestamp)
     for i in range(count):
-        dt = datetime.fromtimestamp(timestamp[i])
+        dt = datetime.datetime.fromtimestamp(timestamp[i])
         date_time.append(dt)
     return date_time
 
@@ -49,7 +50,7 @@ def get_date_interval_text(date):
 
 
 def get_date_N_days_ago_from_now(N):
-    date_N_days_ago = datetime.now() - timedelta(days=N)
+    date_N_days_ago = datetime.datetime.now() - timedelta(days=N)
     return date_N_days_ago
 
 
@@ -165,7 +166,7 @@ def get_date_time_from_datetime(date_time):
 
 def convert_date_to_datetime(dat):
     year, month, day = dat.split("-")
-    dt = datetime(year=int(year), month=int(month), day=int(day))
+    dt = datetime.datetime(year=int(year), month=int(month), day=int(day))
     return dt
 
 
@@ -200,7 +201,12 @@ def group_intraday_file_records_by_dates(records, date_index):
 
 
 def extract_year_month_day(dt):
-    dt_ret = datetime(year=dt.year, month=dt.month, day=dt.day)
+    dt_ret = datetime.datetime(year=dt.year, month=dt.month, day=dt.day)
+    return dt_ret
+
+
+def extract_hour_minute_second(dt):
+    dt_ret = datetime.time(dt.hour, dt.minute, dt.second)
     return dt_ret
 
 
