@@ -186,26 +186,33 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
 
 
 
-def add_to_daily_prices(conn, cur, company_id, date_time, min_volume, max_volume, avg_volume, opn, close, high, low, volume_nan_ratio, op_nan_ratio, cl_nan_ratio, high_nan_ratio, low_nan_ratio):
+def add_to_daily_prices(conn, cur, company_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
     date, time = time_op.get_date_time_from_datetime(date_time)
     timestamp = date + " " + time
 
     min_vo = process_numeric_value(min_volume)
     max_vo = process_numeric_value(max_volume)
     avg_vo = process_numeric_value(avg_volume)
-    op = process_numeric_value(opn)
-    cl = process_numeric_value(close)
+    op = process_numeric_value(opening)
+    cl = process_numeric_value(closing)
     hi = process_numeric_value(high)
     lo = process_numeric_value(low)
     vo_nan_r = process_numeric_value(volume_nan_ratio)
-    op_nan_r = process_numeric_value(op_nan_ratio)
-    cl_nan_r = process_numeric_value(cl_nan_ratio)
+    op_nan_r = process_numeric_value(opening_nan_ratio)
+    cl_nan_r = process_numeric_value(closing_nan_ratio)
     hi_nan_r = process_numeric_value(high_nan_ratio)
     lo_nan_r = process_numeric_value(low_nan_ratio)
 
-    sql = "INSERT INTO public.daily_prices (company_id, date_time, min_volume, max_volume, avg_volume, opening_price, closing_price, high_price, low_price, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio)\
- VALUES('" + str(company_id) + "','" + timestamp + "'::timestamp without time zone" + ",'" + min_vo + "','" + max_vo + "','" +  avg_vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + \
-          "','" + vo_nan_r + "','" + op_nan_r + "','" + cl_nan_r + "','" + hi_nan_r + "','" + lo_nan_r + "');"
+    min_vol_times_str = time_op.get_postgresql_time_array_string(min_volume_times)
+    max_vol_times_str = time_op.get_postgresql_time_array_string(max_volume_times)
+    high_times_str = time_op.get_postgresql_time_array_string(high_times)
+    low_times_str = time_op.get_postgresql_time_array_string(low_times)
+
+
+
+    sql = "INSERT INTO public.daily_prices (company_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening_price, closing_price, high_price, high_price_times, low_price, low_price_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio)\
+ VALUES('" + str(company_id) + "','" + timestamp + "'::timestamp without time zone" + ",'" + min_vo + "'," + min_vol_times_str + ",'" + max_vo + "'," + max_vol_times_str + ",'" +  avg_vo + "','" + op + "','" + cl + "','" + hi + "'," + high_times_str + ",'" + lo + \
+          "'," + low_times_str + ",'" + vo_nan_r + "','" + op_nan_r + "','" + cl_nan_r + "','" + hi_nan_r + "','" + lo_nan_r + "');"
     try:
         cur.execute(sql)
     except psycopg2.IntegrityError:

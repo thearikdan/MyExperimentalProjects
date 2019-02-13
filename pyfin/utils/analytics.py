@@ -154,7 +154,8 @@ def get_closing_with_nan(l):
 def get_times(tl, indices):
     times = []
     for ind in indices:
-        times.append(time_op.extract_hour_minute_second(tl[ind]))
+#        times.append(time_op.extract_hour_minute_second(tl[ind]))
+        times.append(time_op.get_date_time_from_datetime_array(tl[ind]))
     return times
 
 

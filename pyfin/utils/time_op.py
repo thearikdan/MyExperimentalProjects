@@ -151,17 +151,19 @@ def get_date_string_without_padded_zeros(date):
 
 def get_time_string(date):
     time_str = date.strftime('%H:%M:%S')
-#    if time_str[0]=='0':
-#        time_str = time_str[1:]
     return time_str
 
 
 def get_date_time_from_datetime(date_time):
-#    date = str(date_time.year) +"-" + str(date_time.month) + "-" + str(date_time.day)
     date = get_date_string_without_padded_zeros(date_time)
-#    time = str(date_time.hour) +":" + str(date_time.minute) + ":" + str(date_time.second)
     time = get_time_string(date_time)
     return date, time
+
+
+def get_date_time_from_datetime_array(date_time):
+    date = get_date_string_without_padded_zeros(date_time)
+    time = get_time_string(date_time)
+    return date + ' ' + time
 
 
 def convert_date_to_datetime(dat):
@@ -219,6 +221,17 @@ def is_same_day (dt1, dt2):
         return False
 
 
+
+def get_postgresql_time_array_string(times):
+    tmp_str = str(times)
+    tmp_str = tmp_str.replace("[", "")
+    tmp_str = tmp_str.replace("]", "")
+    tmp_str = tmp_str.replace("datetime.datetime", "")
+    tmp_str = tmp_str.replace("'", "")
+
+    times_str = "'{" + str(tmp_str) +"}'::timestamp without time zone[]"
+    return times_str
+    
 
 
 
