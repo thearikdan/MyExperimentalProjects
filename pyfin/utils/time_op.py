@@ -101,6 +101,7 @@ def get_N_minute_from_one_minute_interval(N, date_time, volume , opn, close, hig
     return date_time_N, volume_N , open_N, close_N, high_N, low_N
 
 
+
 def get_start_time_for_symbol(symbol):
     suffix = ""
     s = symbol.split(".")
@@ -120,6 +121,7 @@ def get_start_time_for_symbol(symbol):
         time = "9:30"
     hour, minute = time.split(":")
     return int(hour), int(minute)
+
 
 
 def get_end_time_for_symbol(symbol):
@@ -232,6 +234,15 @@ def get_postgresql_time_array_string(times):
     times_str = "'{" + str(tmp_str) +"}'::timestamp without time zone[]"
     return times_str
     
+
+
+def get_last_N_days_list_from_now(N):
+    days = []
+    for i in range(N - 1, -1, -1):
+        day = get_date_N_days_ago_from_now(i)
+        days.append(extract_year_month_day(day))
+    return days
+
 
 
 
