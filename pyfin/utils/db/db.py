@@ -438,7 +438,7 @@ def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, i
     is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime)
     if (is_data_available):
         volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
-        dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, date_time, volume, opn, close,
+        dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume, opn, close,
                                                                                 high, low)
         return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
     else:

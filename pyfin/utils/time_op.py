@@ -77,7 +77,7 @@ def get_date_time_interval_until_end_of_day(my_date_time, reference_end_date_tim
     return (start_time, end_time)
 
 
-def get_N_minute_from_one_minute_interval(N, date_time, volume , opn, close, high, low):
+def get_N_units_from_one_unit_interval(N, date_time, volume , opn, close, high, low):
     date_time_N = []
     volume_N = []
     open_N = []

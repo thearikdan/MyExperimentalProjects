@@ -3,7 +3,7 @@ sys.path.insert(0, "../..")
 
 from datetime import datetime
 
-from utils import db
+from utils.db import db
 
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
