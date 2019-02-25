@@ -1,4 +1,6 @@
 import numpy as np
+import time
+
 
 def nn_distance_cpu(pc1, pc2):
     '''
@@ -23,8 +25,12 @@ def nn_distance_cpu(pc1, pc2):
     idx1 = np.argmin(pc_dist, axis=2) # B,N
     dist2 = np.min(pc_dist, axis=1) # B,M
     idx2 = np.argmin(pc_dist, axis=1) # B,M
-    return pc_dist, dist1, idx1, dist2, idx2, pc1_expand_dims, pc2_expand_dims, pc1_expand_tile, pc2_expand_tile
+    avg_dist = (dist1 + dist2) / 2
+    dist = np.sum(avg_dist, axis=1)
+    
+#    return pc_dist, dist1, idx1, dist2, idx2, pc1_expand_dims, pc2_expand_dims, pc1_expand_tile, pc2_expand_tile
 #    return dist1, idx1, dist2, idx2
+    return dist
 
 
 def verify_nn_distance_cup():
@@ -37,17 +43,24 @@ def verify_nn_distance_cup():
 #    pc2arr.fill(2)
 #    pc2arr[:,0,:] = pc1arr
 
+    N = 2048
+    M = 2048
+
 #Original
-#    pc1arr = np.random.random((1,N,3))
-#    pc2arr = np.random.random((1,M,3))
+    pc1arr = np.random.random((10,N,3))
+    pc2arr = np.random.random((10,M,3))
 
 #    pc1arr = np.array([[[1, 2, 3], [4,5,6]]])
 #    pc2arr = np.array([[[4,5,6], [1, 2, 3]]])
 
 
-    pc1arr = np.array([[[1], [2]]])
-    pc2arr = np.array([[[2], [1]]])
+#   pc1arr = np.array([[[1], [2]]])
+#    pc2arr = np.array([[[2], [1]]])
 
+    dist = nn_distance_cpu(pc1arr, pc2arr)
+    print (dist)
+
+'''
     print ("Point cloud 1")
     print(pc1arr)
     print ("Point cloud 2")
@@ -97,6 +110,15 @@ def verify_nn_distance_cup():
             dist[i,j] = np.sum((pc1arr[0,i,:] - pc2arr[0,j,:]) ** 2)
     print ("dist")
     print(dist)
+'''
+
 
 if __name__ == '__main__':
+    start_time = time.time()
+    
     verify_nn_distance_cup()
+
+    seconds = time.time() - start_time    
+    mint, s = divmod(seconds, 60)
+    h, m = divmod(mint, 60)
+    print ("Elapsed time - hours: " + str(h) + " minutes: " + str(m) + " seconds: " + str(s))
