@@ -552,3 +552,78 @@ def get_all_year_month_day_list_for_symbol(conn, cursor, market, symbol):
     return all_times_list
 
 
+
+def get_raw_daily_data(conn, cur, market, symbol, start_datetime, end_datetime):
+    date_time = []
+    min_volume=[]
+    max_volume=[]
+    avg_volume=[]
+    opn = []
+    cls = []
+    high = []
+    low = []
+    volume_nan_ratio = []
+    opening_nan_ratio = []
+    closing_nan_ratio = []
+    high_nan_ratio = []
+    low_nan_ratio = []
+    min_volume_times = []
+    max_volume_times = []
+    high_price_times = []
+    low_price_times = []
+
+
+    start_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M")
+    end_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M")
+
+    sql = "SELECT date_time, min_volume, max_volume, avg_volume, opening_price, closing_price, high_price, low_price, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio, min_volume_times, max_volume_times, high_price_times, low_price_times from public.daily_prices INNER JOIN public.companies ON public.daily_prices.company_id=public.companies.company_id \
+INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" + market + \
+"' AND public.daily_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
+#    print sql
+    cur.execute(sql)
+    rows = cur.fetchall()
+    count = len(rows)
+    if count==0:
+        return False, [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
+    for row in rows:
+        dt = row[0]
+        min_v = row[1]
+        max_v = row[2]
+        avg_v = row[3]
+        o = row[4]
+        c = row[5]
+        h = row[6]
+        l = row[7]
+        v_nan_r = row[8]
+        o_nan_r = row[9]
+        c_nan_r = row[10]
+        h_nan_r = row[11]
+        l_nan_r = row[12]
+        min_v_times = row[13]
+        max_v_times = row[14]
+        h_times = row[15]
+        l_times = row[16]
+
+
+        date_time.append(dt)
+        min_volume.append(float(min_v))
+        max_volume.append(float(max_v))
+        avg_volume.append(float(avg_v))
+        opn.append(float(o))
+        cls.append(float(c))
+        high.append(float(h))
+        low.append(float(l))
+        volume_nan_ratio.append(float(v_nan_r))
+        opening_nan_ratio.append(float(o_nan_r))
+        closing_nan_ratio.append(float(c_nan_r))
+        high_nan_ratio.append(float(h_nan_r))
+        low_nan_ratio.append(float(l_nan_r))
+        min_volume_times.append(str(min_v_times))
+        max_volume_times.append(str(max_v_times))
+        high_price_times.append(str(h_times))
+        low_price_times.append(str(l_times))
+
+
+    return True, date_time, min_volume, max_volume, avg_volume, opn, cls, high, low, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio, min_volume_times, max_volume_times, high_price_times, low_price_times
+
+

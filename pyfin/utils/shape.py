@@ -6,7 +6,8 @@ def pad_start(lst, days):
     start = int (days[0])
 
     for i in range(start):
-        lst.insert(0, [constants.PADDED_DAY])
+#        lst.insert(0, [constants.PADDED_DAY])
+        lst.insert(0, constants.PADDED_DAY)
         days.insert(0, start - 1 - i)
     
     return lst, days
@@ -24,8 +25,9 @@ def insert_holidays(index, lst, days, diff, mod):
         count = mod - 1 - abs(diff)
         for i in range(count):
             days.insert((index + i), (index + i) % mod)
-            lst.insert ((index + i), [constants.HOLIDAY])
-    return lst, days  
+#            lst.insert ((index + i), [constants.HOLIDAY])
+            lst.insert((index + i), constants.HOLIDAY)
+    return lst, days
             
 
 
@@ -49,8 +51,9 @@ def pad_end(lst, mod):
     rest = l % mod
     if (rest > 0):
         for i in range(mod - rest):
-            lst.append([constants.PADDED_DAY])
-    
+#            lst.append([constants.PADDED_DAY])
+            lst.append(constants.PADDED_DAY)
+
     return lst
 
 
