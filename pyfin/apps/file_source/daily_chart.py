@@ -11,15 +11,17 @@ from utils import time_op, constants
 #end_date = datetime(2018, 1, 5, 15, 39)
 
 interval = 1
-symbol = "AMZN:nasdaq"
+#symbol = "AMZN:nasdaq"
+symbol = "BA:nyse"
+
 
 start_hour, start_min = time_op.get_start_time_for_symbol(symbol)
 end_hour, end_min = time_op.get_end_time_for_symbol(symbol)
 
-start_date = datetime(2019, 01, 30, start_hour, start_min)
-end_date = datetime(2019, 02, 04, end_hour, end_min)
+start_date = datetime(2019, 02, 28, start_hour, start_min)
+end_date = datetime(2019, 02, 28, end_hour, end_min)
 
-is_data_available, date_time, volume , opn, close, high, low = read.get_intraday_data("data", symbol, start_date, end_date, interval, constants.Storage_Type.File_System)
+is_data_available, date_time, volume , opn, close, high, low, _, _, _, _, _ = read.get_intraday_data("/media/hddx/datasets/pyfin/data", symbol, start_date, end_date, interval, constants.Storage_Type.File_System)
 
 if not (is_data_available):
     exit(0)
