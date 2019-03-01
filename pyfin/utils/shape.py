@@ -20,7 +20,8 @@ def insert_holidays(index, lst, days, diff, mod):
     if (diff > 1):
         for i in range(diff - 1):
             days.insert((index + i), (index + i) % mod)
-            lst.insert ((index + i), [constants.HOLIDAY])
+#            lst.insert ((index + i), [constants.HOLIDAY])
+            lst.insert ((index + i), constants.HOLIDAY)
     else: #diff is not positive
         count = mod - 1 - abs(diff)
         for i in range(count):

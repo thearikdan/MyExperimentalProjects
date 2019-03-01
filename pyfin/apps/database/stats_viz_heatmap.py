@@ -17,7 +17,7 @@ conn, cur = db.connect_to_database("../../database/database_settings.txt")
 symbol = "BA"
 market = "nyse"
 end_date = datetime(2019, 2, 28, 13, 30)
-start_date = end_date + dateutil.relativedelta.relativedelta(months=-2) #month ago
+start_date = end_date + dateutil.relativedelta.relativedelta(months=-3) #month ago
 
 #date, num_data = read.get_data_from_web(symbol, start_date, end_date)
 is_data_available, date, min_volume, max_volume, avg_volume, opn, cls, high, low, _, _, _, _, _, _, _, _, _ = db.get_raw_daily_data(conn, cur, market, symbol, start_date, end_date)
