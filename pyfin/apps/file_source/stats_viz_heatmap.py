@@ -1,7 +1,11 @@
-from read_write import read
-from stats import percentage 
-from viz import heatmap
+import sys
+sys.path.append("../..")
+
+from utils.file_system import read, analysis
+from utils.stats import percentage 
+from utils.viz import heatmap
 from utils import time_op, shape, string_op
+from utils.web import download
 import numpy as np
 from datetime import datetime
 import dateutil
@@ -19,11 +23,12 @@ import dateutil
 
 #date = read.get_date_from_all_data(data)
 
-symbol = "AMZN"
+symbol = "BA"
 end_date = datetime.today() #today
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-2) #month ago
 
-date, num_data = read.get_data_from_web(symbol, start_date, end_date)
+#date, num_data = read.get_data_from_web(symbol, start_date, end_date)
+date, num_data = download.get_data_from_web(symbol, start_date, end_date)
 sh = np.shape(date)
 
 
@@ -33,7 +38,7 @@ for i in range (sh[0]):
     days.append(day)
 
 #nd = read.get_numeric_data_from_all_data(data)
-pc = percentage.get_percentage_change_from_numeric_data(num_data)
+pc = analysis.get_percentage_change_from_numeric_data(num_data)
 perc = pc * 100
 
 shaped_perc = shape.reshape_data(perc, days, 5)

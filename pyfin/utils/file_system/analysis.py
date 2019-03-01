@@ -6,7 +6,7 @@ from utils.file_system import read
 def get_percentage_change_from_numeric_data(data):
     op = read.get_opening_price_from_numeric_data(data)
     cp = read.get_closing_price_from_numeric_data(data)
-    per = percentage.get_percentage_change(op, cp)
+    per = percentage.get_percentage_change_in_one_value(op, cp)
     return per
 
 

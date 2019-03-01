@@ -1,7 +1,11 @@
-from read_write import read
-from stats import percentage 
-from viz import colormap
-from utils import time, shape
+import sys
+sys.path.append("../..")
+
+
+from utils.file_system import read
+from utils.stats import percentage 
+from utils.viz import colormap
+from utils import time_op, shape
 import numpy as np
 
 
@@ -21,7 +25,7 @@ sh = np.shape(date)
 
 days = []
 for i in range (sh[0]):
-    day = time.get_day_number_from_date_string(date[i][0])
+    day = time_op.get_day_number_from_date_string(date[i][0])
     days.append(day)
 
 nd = read.get_numeric_data_from_all_data(data)

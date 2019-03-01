@@ -1,6 +1,8 @@
 from utils import time_op
 import urllib2
 import json
+import pandas_datareader as pdr
+import numpy as np
 
 
 def __get_intraday_data_from_web(ticker, start, end):
