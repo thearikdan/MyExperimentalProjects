@@ -14,8 +14,13 @@ import dateutil
 
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
-symbol = "BA"
-market = "nyse"
+#symbol = "BA"
+#market = "nyse"
+
+#symbol = "NVDA"
+symbol = "FB"
+market = "nasdaq"
+
 end_date = datetime(2019, 2, 28, 13, 30)
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-3) #month ago
 
