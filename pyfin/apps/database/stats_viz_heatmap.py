@@ -14,14 +14,15 @@ import dateutil
 
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
-#symbol = "BA"
-#market = "nyse"
+symbol = "BA"
+market = "nyse"
 
 #symbol = "NVDA"
-symbol = "FB"
-market = "nasdaq"
+#symbol = "FB"
+#symbol = "AMZN"
+#market = "nasdaq"
 
-end_date = datetime(2019, 2, 28, 13, 30)
+end_date = datetime(2019, 4, 15, 15, 59)
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-3) #month ago
 
 #date, num_data = read.get_data_from_web(symbol, start_date, end_date)
@@ -44,7 +45,8 @@ for i in range (sh[0]):
 
 
 #pc = analysis.get_percentage_change_from_numeric_data(num_data)
-pc = percentage.get_percentage_change_in_one_value(np.array(opn), np.array(cls))
+#pc = percentage.get_percentage_change_in_one_value(np.array(opn), np.array(cls))
+pc = percentage.get_percentage_change_in_one_value(np.array(opn[:-1]), np.array(opn[1:])) 
 
 perc = pc * 100
 
