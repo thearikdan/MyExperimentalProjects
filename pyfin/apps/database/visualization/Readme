@@ -1,0 +1,2 @@
+daily_pecentage_change is more accurate than intraday because it takes into account price changes after market
+intraday_percentage_change is useful for intraday trading
