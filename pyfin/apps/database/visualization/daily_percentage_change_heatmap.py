@@ -17,12 +17,12 @@ conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 symbol = "BA"
 market = "nyse"
 
-#symbol = "NVDA"
+symbol = "NVDA"
 #symbol = "FB"
-#symbol = "AMZN"
-#market = "nasdaq"
+symbol = "AMZN"
+market = "nasdaq"
 
-end_date = datetime(2019, 4, 15, 15, 59)
+end_date = datetime(2019, 4, 21, 15, 59)
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-5) #month ago
 
 #date, num_data = read.get_data_from_web(symbol, start_date, end_date)
