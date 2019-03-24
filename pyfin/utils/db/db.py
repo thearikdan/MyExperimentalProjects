@@ -143,7 +143,7 @@ def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
     try:
         cur.execute(sql)
     except psycopg2.IntegrityError:
-        print "SKIPPING " + sql
+        print ("SKIPPING " + sql)
         conn.rollback()
     else:
 #        print sql
@@ -178,7 +178,7 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
         try:
             cur.execute(sql)
         except psycopg2.IntegrityError:
-            print "SKIPPING " + sql
+            print ("SKIPPING " + sql)
             conn.rollback()
         else:
 #            print sql

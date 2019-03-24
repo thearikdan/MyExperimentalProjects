@@ -1,10 +1,10 @@
 import sys
-sys.path.append("../..")
+sys.path.append("../../..")
 
 from utils.db import db
 
 
-conn, cur = db.connect_to_database("../../database/database_settings.txt")
+conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 
 
 company_ids = db.get_all_company_ids(conn, cur)

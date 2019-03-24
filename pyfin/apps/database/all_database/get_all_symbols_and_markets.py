@@ -1,10 +1,10 @@
 import sys
-sys.path.append("../..")
+sys.path.append("../../..")
 
 from utils.db import db
 
 
-conn, cur = db.connect_to_database("../../database/database_settings.txt")
+conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 
 
 symbols, markets = db.get_all_symbols_and_markets(conn, cur)
