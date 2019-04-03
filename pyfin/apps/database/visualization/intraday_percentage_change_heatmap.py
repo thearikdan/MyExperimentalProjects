@@ -22,8 +22,8 @@ market = "nyse"
 #symbol = "AMZN"
 #market = "nasdaq"
 
-end_date = datetime(2019, 4, 19, 15, 59)
-start_date = end_date + dateutil.relativedelta.relativedelta(months=-5) #month ago
+end_date = datetime(2019, 3, 29, 15, 59)
+start_date = end_date + dateutil.relativedelta.relativedelta(months=-2) #month ago
 
 #date, num_data = read.get_data_from_web(symbol, start_date, end_date)
 is_data_available, date, min_volume, max_volume, avg_volume, opn, cls, high, low, _, _, _, _, _, _, _, _, _ = db.get_raw_daily_data(conn, cur, market, symbol, start_date, end_date)
