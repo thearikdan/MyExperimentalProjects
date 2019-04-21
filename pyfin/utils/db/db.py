@@ -2,11 +2,12 @@ import sys
 sys.path.append("..")
 
 import psycopg2
-from utils import time_op, string_op, heal
+from utils import time_op, string_op, heal, sort_op
 import os
 #from utils.file_system import read
 from datetime import datetime, timedelta
 import math
+from utils.stats import percentage
 
 
 def connect_to_database(settings_file_name):
@@ -626,4 +627,52 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 
     return True, date_time, min_volume, max_volume, avg_volume, opn, cls, high, low, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio, min_volume_times, max_volume_times, high_price_times, low_price_times
 
+
+
+def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, start_date, end_date, min_price, max_nan_filter):
+
+    symbols, markets = get_all_symbols_and_markets(conn, cur)
+
+    count = len(symbols)
+
+    symbol_list = []
+    market_list = []
+    percentage_opn_list = []
+    opn_nan_ratio_list = []
+    current_price_list = []
+
+    for i in range(count):
+        if markets[i] not in filtered_markets:
+            continue
+        print("Analysing symbol " + symbols[i] + " on market " + markets[i])
+        is_data_available, date, min_volume, max_volume, avg_volume, opn, cls, high, low, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio, _, _, _, _ = get_raw_daily_data(
+            conn, cur, markets[i], symbols[i], start_date, end_date)
+        if not is_data_available:
+            continue
+
+        record_count = len(opn)
+
+        if (opn[record_count - 1] < min_price):
+            continue
+        pc = percentage.get_percentage_change_in_one_value(opn[0], opn[record_count - 1])
+        perc = pc * 100
+        nan_ratio = max(opening_nan_ratio[0], opening_nan_ratio[record_count - 1])
+        if (nan_ratio > max_nan_filter):
+            continue
+
+        symbol_list.append(symbols[i])
+        market_list.append(markets[i])
+        percentage_opn_list.append(perc)
+        opn_nan_ratio_list.append(nan_ratio)
+        current_price_list.append(opn[record_count - 1])
+
+
+    sorted_indices = sort_op.get_sorted_indices(percentage_opn_list)
+    symbol_list_resorted = sort_op.get_resorted_list(symbol_list, sorted_indices)
+    market_list_resorted = sort_op.get_resorted_list(market_list, sorted_indices)
+    percentage_opn_list_resorted = sort_op.get_resorted_list(percentage_opn_list, sorted_indices)
+    opn_nan_ratio_list_resorted = sort_op.get_resorted_list(opn_nan_ratio_list, sorted_indices)
+    current_price_list_resorted = sort_op.get_resorted_list(current_price_list, sorted_indices)
+
+    return symbol_list_resorted, market_list_resorted, percentage_opn_list_resorted, opn_nan_ratio_list_resorted, current_price_list_resorted
 

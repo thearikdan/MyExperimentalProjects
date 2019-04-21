@@ -22,7 +22,7 @@ market = "nyse"
 #symbol = "AMZN"
 #market = "nasdaq"
 
-end_date = datetime(2019, 3, 29, 15, 59)
+end_date = datetime(2019, 4, 4, 15, 59)
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-2) #month ago
 
 #date, num_data = read.get_data_from_web(symbol, start_date, end_date)
