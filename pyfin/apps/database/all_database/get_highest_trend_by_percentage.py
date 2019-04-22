@@ -12,15 +12,19 @@ start_time = time.time()
 
 N = 15
 filtered_markets = ['nasdaq', 'nyse']
+#filtered_markets = ['tsx']
 max_nan_filter = 0.3
 min_price = 8.
+window_count = 5
+window_width = 7
+stride = 3
 
 
 end_date = datetime(2019, 4, 19, 9, 30)
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 
-symbol_list_resorted, market_list_resorted, percentage_opn_list_resorted, opn_nan_ratio_list_resorted, current_price_list_resorted = db.get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, N, min_price, max_nan_filter)
+symbol_list_resorted, market_list_resorted, percentage_opn_list_resorted, opn_nan_ratio_list_resorted, current_price_list_resorted = db.get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, window_count, window_width, stride, min_price, max_nan_filter)
 
 cur.close()
 conn.close()

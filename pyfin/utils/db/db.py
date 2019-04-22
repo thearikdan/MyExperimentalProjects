@@ -629,11 +629,17 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 
 
 
-def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, day_count, min_price, max_nan_filter):
+def get_day_count(window_count, window_width, stride):
+    day_count = window_width + stride * (window_count - 1)
+    return day_count
+
+def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, window_count, window_width, stride, min_price, max_nan_filter):
 
     symbols, markets = get_all_symbols_and_markets(conn, cur)
 
     count = len(symbols)
+
+    day_count = get_day_count(window_count, window_width, stride)
 
     #we'll get data for 2*day_count, and then slice out last day_count to take care of weekends, holidays
     start_date = end_date - timedelta(days=2*day_count)
