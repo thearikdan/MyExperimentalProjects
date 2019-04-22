@@ -1,6 +1,6 @@
 import sys
 sys.path.append("../../..")
-from datetime import datetime, timedelta
+from datetime import datetime
 from utils.db import db
 import time
 
@@ -16,14 +16,11 @@ max_nan_filter = 0.3
 min_price = 8.
 
 
-end_date = datetime(2019, 4, 12, 9, 30)
-start_date = end_date - timedelta(days = N)
-
-print (start_date)
+end_date = datetime(2019, 4, 19, 9, 30)
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 
-symbol_list_resorted, market_list_resorted, percentage_opn_list_resorted, opn_nan_ratio_list_resorted, current_price_list_resorted = db.get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, start_date, end_date, min_price, max_nan_filter)
+symbol_list_resorted, market_list_resorted, percentage_opn_list_resorted, opn_nan_ratio_list_resorted, current_price_list_resorted = db.get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, N, min_price, max_nan_filter)
 
 cur.close()
 conn.close()

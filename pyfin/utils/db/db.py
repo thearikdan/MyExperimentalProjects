@@ -629,11 +629,14 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 
 
 
-def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, start_date, end_date, min_price, max_nan_filter):
+def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, day_count, min_price, max_nan_filter):
 
     symbols, markets = get_all_symbols_and_markets(conn, cur)
 
     count = len(symbols)
+
+    #we'll get data for 2*day_count, and then slice out last day_count to take care of weekends, holidays
+    start_date = end_date - timedelta(days=2*day_count)
 
     symbol_list = []
     market_list = []
@@ -645,10 +648,26 @@ def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets
         if markets[i] not in filtered_markets:
             continue
         print("Analysing symbol " + symbols[i] + " on market " + markets[i])
-        is_data_available, date, min_volume, max_volume, avg_volume, opn, cls, high, low, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio, _, _, _, _ = get_raw_daily_data(
+        is_data_available, date_all, min_volume_all, max_volume_all, avg_volume_all, opn_all, cls_all, high_all, low_all, volume_nan_ratio_all, opening_nan_ratio_all, closing_nan_ratio_all, high_nan_ratio_all, low_nan_ratio_all, _, _, _, _ = get_raw_daily_data(
             conn, cur, markets[i], symbols[i], start_date, end_date)
         if not is_data_available:
             continue
+
+        all_count = len(opn_all)
+
+        date = date_all[day_count-1:]
+        min_volume = min_volume_all[all_count-day_count:]
+        max_volume = max_volume_all[all_count-day_count:]
+        avg_volume = avg_volume_all[all_count-day_count:]
+        opn = opn_all[all_count-day_count:]
+        cls = cls_all[all_count-day_count:]
+        high = high_all[all_count-day_count:]
+        low = low_all[all_count-day_count:]
+        volume_nan_ratio = volume_nan_ratio_all[all_count-day_count:]
+        opening_nan_ratio = opening_nan_ratio_all[all_count-day_count:]
+        closing_nan_ratio = closing_nan_ratio_all[all_count-day_count:]
+        high_nan_ratio = high_nan_ratio_all[all_count-day_count:]
+        low_nan_ratio = low_nan_ratio_all[all_count-day_count:]
 
         record_count = len(opn)
 
