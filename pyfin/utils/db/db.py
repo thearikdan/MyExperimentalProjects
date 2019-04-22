@@ -633,13 +633,12 @@ def get_day_count(window_count, window_width, stride):
     day_count = window_width + stride * (window_count - 1)
     return day_count
 
-def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, window_count, window_width, stride, min_price, max_nan_filter):
 
-    symbols, markets = get_all_symbols_and_markets(conn, cur)
+
+
+def get_list_by_opening_precentage(conn, cur, symbols, markets, filtered_markets, end_date, day_count, min_price, max_nan_filter):
 
     count = len(symbols)
-
-    day_count = get_day_count(window_count, window_width, stride)
 
     #we'll get data for 2*day_count, and then slice out last day_count to take care of weekends, holidays
     start_date = end_date - timedelta(days=2*day_count)
@@ -690,6 +689,19 @@ def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets
         percentage_opn_list.append(perc)
         opn_nan_ratio_list.append(nan_ratio)
         current_price_list.append(opn[record_count - 1])
+
+    return symbol_list, market_list, percentage_opn_list, opn_nan_ratio_list, current_price_list
+
+
+
+
+def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, window_count, window_width, stride, min_price, max_nan_filter):
+
+    symbols, markets = get_all_symbols_and_markets(conn, cur)
+    day_count = get_day_count(window_count, window_width, stride)
+
+    symbol_list, market_list, percentage_opn_list, opn_nan_ratio_list, current_price_list = get_list_by_opening_precentage(conn, cur, symbols, markets, filtered_markets, end_date, day_count, min_price,
+                                   max_nan_filter)
 
 
     sorted_indices = sort_op.get_sorted_indices(percentage_opn_list)
