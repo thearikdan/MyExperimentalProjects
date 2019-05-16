@@ -643,6 +643,7 @@ def get_list_by_opening_precentage(conn, cur, symbols, markets, filtered_markets
     #we'll get data for 2*day_count, and then slice out last day_count to take care of weekends, holidays
     start_date = end_date - timedelta(days=2*day_count)
 
+    date_list = []
     symbol_list = []
     market_list = []
     percentage_opn_list = []
@@ -660,7 +661,7 @@ def get_list_by_opening_precentage(conn, cur, symbols, markets, filtered_markets
 
         all_count = len(opn_all)
 
-        date = date_all[day_count-1:]
+        date = date_all[all_count-day_count:]
         min_volume = min_volume_all[all_count-day_count:]
         max_volume = max_volume_all[all_count-day_count:]
         avg_volume = avg_volume_all[all_count-day_count:]
@@ -684,13 +685,14 @@ def get_list_by_opening_precentage(conn, cur, symbols, markets, filtered_markets
         if (nan_ratio > max_nan_filter):
             continue
 
+        date_list.append(date)
         symbol_list.append(symbols[i])
         market_list.append(markets[i])
         percentage_opn_list.append(perc)
         opn_nan_ratio_list.append(nan_ratio)
         current_price_list.append(opn[record_count - 1])
 
-    return symbol_list, market_list, percentage_opn_list, opn_nan_ratio_list, current_price_list
+    return date_list, symbol_list, market_list, percentage_opn_list, opn_nan_ratio_list, current_price_list
 
 
 
@@ -700,16 +702,39 @@ def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets
     symbols, markets = get_all_symbols_and_markets(conn, cur)
     day_count = get_day_count(window_count, window_width, stride)
 
-    symbol_list, market_list, percentage_opn_list, opn_nan_ratio_list, current_price_list = get_list_by_opening_precentage(conn, cur, symbols, markets, filtered_markets, end_date, day_count, min_price,
-                                   max_nan_filter)
+
+    date_list_resorted_list = []
+    symbol_list_resorted_list = []
+    market_list_resorted_list = []
+    percentage_opn_list_resorted_list = []
+    opn_nan_ratio_list_resorted_list = []
+    current_price_list_resorted_list = []
+
+    #get dates that we will need to iterate through from amazon
+    date_list, _, _, _, _, _ = get_list_by_opening_precentage(
+        conn, cur, symbols, markets, filtered_markets, end_date, day_count, min_price,
+        max_nan_filter)
+
+    for i in range (window_count):
+        date_list, symbol_list, market_list, percentage_opn_list, opn_nan_ratio_list, current_price_list = get_list_by_opening_precentage(
+            conn, cur, symbols, markets, filtered_markets, end_date, day_count, min_price,
+            max_nan_filter)
+
+        sorted_indices = sort_op.get_sorted_indices(percentage_opn_list[stride * i : stride * i + window_width])
+        date_list_resorted = sort_op.get_resorted_list(date_list[stride * i : stride * i + window_width], sorted_indices)
+        symbol_list_resorted = sort_op.get_resorted_list(symbol_list[stride * i : stride * i + window_width], sorted_indices)
+        market_list_resorted = sort_op.get_resorted_list(market_list[stride * i : stride * i + window_width], sorted_indices)
+        percentage_opn_list_resorted = sort_op.get_resorted_list(percentage_opn_list[stride * i : stride * i + window_width], sorted_indices)
+        opn_nan_ratio_list_resorted = sort_op.get_resorted_list(opn_nan_ratio_list[stride * i : stride * i + window_width], sorted_indices)
+        current_price_list_resorted = sort_op.get_resorted_list(current_price_list[stride * i : stride * i + window_width], sorted_indices)
+
+        date_list_resorted_list.append(date_list_resorted)
+        symbol_list_resorted_list.append(symbol_list_resorted)
+        market_list_resorted_list.append(market_list_resorted)
+        percentage_opn_list_resorted_list.append(percentage_opn_list_resorted)
+        opn_nan_ratio_list_resorted_list.append(opn_nan_ratio_list_resorted)
+        current_price_list_resorted_list.append(current_price_list_resorted)
 
 
-    sorted_indices = sort_op.get_sorted_indices(percentage_opn_list)
-    symbol_list_resorted = sort_op.get_resorted_list(symbol_list, sorted_indices)
-    market_list_resorted = sort_op.get_resorted_list(market_list, sorted_indices)
-    percentage_opn_list_resorted = sort_op.get_resorted_list(percentage_opn_list, sorted_indices)
-    opn_nan_ratio_list_resorted = sort_op.get_resorted_list(opn_nan_ratio_list, sorted_indices)
-    current_price_list_resorted = sort_op.get_resorted_list(current_price_list, sorted_indices)
-
-    return symbol_list_resorted, market_list_resorted, percentage_opn_list_resorted, opn_nan_ratio_list_resorted, current_price_list_resorted
+    return date_list_resorted_list, symbol_list_resorted_list, market_list_resorted_list, percentage_opn_list_resorted_list, opn_nan_ratio_list_resorted_list, current_price_list_resorted_list
 

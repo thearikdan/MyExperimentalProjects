@@ -91,7 +91,7 @@ def get_avg_with_nan(l):
             avg = avg + l[i]
 
     if math.isnan(avg):
-        return avg, float(count_none) / count
+        return avg, float(count_nan) / count
     else:
         return float(avg) / (count - count_nan), float(count_nan) / count
 
@@ -113,7 +113,7 @@ def get_avg_with_nan_greater_than_zero(l):
             avg = avg + l[i]
 
     if math.isnan(avg):
-        return avg, float(count_none) / count
+        return avg, float(count_nan) / count
     else:
         return float(avg) / (count - count_nan), float(count_nan) / count
 

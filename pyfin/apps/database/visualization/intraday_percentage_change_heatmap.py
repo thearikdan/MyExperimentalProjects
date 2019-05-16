@@ -14,7 +14,7 @@ import dateutil
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 
-symbol = "BA"
+symbol = "DIS"
 market = "nyse"
 
 #symbol = "NVDA"
@@ -22,8 +22,8 @@ market = "nyse"
 #symbol = "AMZN"
 #market = "nasdaq"
 
-end_date = datetime(2019, 4, 4, 15, 59)
-start_date = end_date + dateutil.relativedelta.relativedelta(months=-2) #month ago
+end_date = datetime(2019, 4, 30, 15, 59)
+start_date = end_date + dateutil.relativedelta.relativedelta(months=-1) #month ago
 
 #date, num_data = read.get_data_from_web(symbol, start_date, end_date)
 is_data_available, date, min_volume, max_volume, avg_volume, opn, cls, high, low, _, _, _, _, _, _, _, _, _ = db.get_raw_daily_data(conn, cur, market, symbol, start_date, end_date)
