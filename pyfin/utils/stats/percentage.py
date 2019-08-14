@@ -30,11 +30,11 @@ def get_percentage_change_in_list(lst):
 
 def get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low):
     count = len(date_time)
-    volume_per = get_intraday_percentage_change_in_list(volume)
-    open_per = get_intraday_percentage_change_in_list(opn)
-    close_per = get_intraday_percentage_change_in_list(close)
-    high_per = get_intraday_percentage_change_in_list(high)
-    low_per = get_intraday_percentage_change_in_list(low)
+    volume_per = get_percentage_change_in_list(volume)
+    open_per = get_percentage_change_in_list(opn)
+    close_per = get_percentage_change_in_list(close)
+    high_per = get_percentage_change_in_list(high)
+    low_per = get_percentage_change_in_list(low)
     return date_time[1:count], volume_per, open_per, close_per, high_per, low_per
 
 

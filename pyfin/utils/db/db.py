@@ -696,6 +696,28 @@ def get_list_by_opening_precentage(conn, cur, symbols, markets, filtered_markets
 
 
 
+def get_interday_percentage_change_by_closing_price(conn, cur, symbol, market, start_date, end_date, min_price, max_nan_filter):
+    is_data_available, date_all, min_volume_all, max_volume_all, avg_volume_all, opn_all, cls_all, high_all, low_all, volume_nan_ratio_all, opening_nan_ratio_all, closing_nan_ratio_all, high_nan_ratio_all, low_nan_ratio_all, _, _, _, _ = get_raw_daily_data(
+        conn, cur, market, symbol, start_date, end_date)
+    if not is_data_available:
+        return None, None, None, None
+
+    count = len(date_all)
+    nan_start = closing_nan_ratio_all[0]
+    nan_end = closing_nan_ratio_all[count - 1]
+    if ((max_nan_filter < nan_start) or (max_nan_filter < nan_end)):
+        return None, None, None, None
+
+    cls_start = cls_all[0]
+    cls_end = cls_all[count - 1]
+    if (cls_end < min_price):
+        return None, None, None, None
+
+    pc = percentage.get_percentage_change_in_one_value(cls_start, cls_end)
+    perc = pc * 100
+    nan_ratio = max(nan_start, nan_end)
+    return perc, cls_start, cls_end, nan_ratio
+
 
 def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, window_count, window_width, stride, min_price, max_nan_filter):
 
