@@ -10,14 +10,14 @@ import time
 start_time = time.time()
 
 
-day_count = 6
+day_count = 3
 filtered_markets = ['nasdaq', 'nyse']
 #filtered_markets = ['tsx']
 max_nan_filter = 0.3
 min_price = 80.
 min_percentage = 6
 
-end_date = datetime(2019, 8, 12, 00, 00, 00)
+end_date = datetime(2019, 8, 14, 00, 00, 00)
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 
