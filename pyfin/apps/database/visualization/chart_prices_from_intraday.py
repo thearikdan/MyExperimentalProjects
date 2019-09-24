@@ -25,10 +25,11 @@ def get_sparse_date_list(date_list, tick_count):
 
 interval = 1
 market = "nyse"
-symbol = "BA"
+symbol = "NEE"
+symbol = "LMT"
 
-market = "nasdaq"
-symbol = "NVDA"
+#market = "nasdaq"
+#symbol = "NVDA"
 
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")

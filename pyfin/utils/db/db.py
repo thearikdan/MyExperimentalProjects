@@ -8,7 +8,7 @@ import os
 from datetime import datetime, timedelta
 import math
 from utils.stats import percentage
-
+import csv
 
 def connect_to_database(settings_file_name):
     with open(settings_file_name) as f:
@@ -759,4 +759,39 @@ def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets
 
 
     return date_list_resorted_list, symbol_list_resorted_list, market_list_resorted_list, percentage_opn_list_resorted_list, opn_nan_ratio_list_resorted_list, current_price_list_resorted_list
+
+
+def get_tickers_from_yahoo_csv(csv_file):
+    tickers = []
+    with open(csv_file) as csvfile:
+        readCSV = csv.reader(csvfile, delimiter=',')
+        for row in readCSV:
+             tickers.append(row[0])
+    tickers.pop(0) # remove top
+    return tickers
+
+
+
+def get_from_target_exchanges(exch, target_exchanges):
+    for e in exch:
+        if e in target_exchanges:
+            return e
+    return ''
+
+
+def get_symbols_and_exchanges_from_yahoo_csv(conn, cursor, csv_file, target_exchanges):
+    symbols = []
+    exchanges = []
+
+    all_symbols = get_tickers_from_yahoo_csv(csv_file)
+    for symbol in all_symbols:
+        exch = get_exchange_names_from_symbol(conn, cursor, symbol)
+        target_ex = get_from_target_exchanges(exch, target_exchanges)
+        if len(target_ex) == 0:
+            continue
+        symbols.append(symbol)
+        exchanges.append(target_ex)
+
+    return symbols, exchanges
+
 
