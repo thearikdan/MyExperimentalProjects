@@ -719,6 +719,30 @@ def get_interday_percentage_change_by_closing_price(conn, cur, symbol, market, s
     return perc, cls_start, cls_end, nan_ratio
 
 
+
+def get_interday_percentage_change_by_opening_price(conn, cur, symbol, market, start_date, end_date, min_price, max_nan_filter):
+    is_data_available, date_all, min_volume_all, max_volume_all, avg_volume_all, opn_all, cls_all, high_all, low_all, volume_nan_ratio_all, opening_nan_ratio_all, closing_nan_ratio_all, high_nan_ratio_all, low_nan_ratio_all, _, _, _, _ = get_raw_daily_data(
+        conn, cur, market, symbol, start_date, end_date)
+    if not is_data_available:
+        return None, None, None, None
+
+    count = len(date_all)
+    nan_start = opening_nan_ratio_all[0]
+    nan_end = opening_nan_ratio_all[count - 1]
+    if ((max_nan_filter < nan_start) or (max_nan_filter < nan_end)):
+        return None, None, None, None
+
+    opn_start = opn_all[0]
+    opn_end = opn_all[count - 1]
+    if (opn_end < min_price):
+        return None, None, None, None
+
+    pc = percentage.get_percentage_change_in_one_value(opn_start, opn_end)
+    perc = pc * 100
+    nan_ratio = max(nan_start, nan_end)
+    return perc, opn_start, opn_end, nan_ratio
+
+
 def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, window_count, window_width, stride, min_price, max_nan_filter):
 
     symbols, markets = get_all_symbols_and_markets(conn, cur)
@@ -778,6 +802,18 @@ def get_from_target_exchanges(exch, target_exchanges):
             return e
     return ''
 
+
+def filter_by_target_exchanges(all_symbols, all_exchanges, target_exchanges):
+    symbols = []
+    exchanges = []
+    count = len(all_exchanges)
+    for i in range (count):
+        if not (all_exchanges[i] in target_exchanges):
+            continue
+        symbols.append(all_symbols[i])
+        exchanges.append(all_exchanges[i])
+    return symbols, exchanges
+        
 
 def get_symbols_and_exchanges_from_yahoo_csv(conn, cursor, csv_file, target_exchanges):
     symbols = []

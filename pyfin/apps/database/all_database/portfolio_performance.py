@@ -27,8 +27,8 @@ for i in range(count):
     start_hour, start_min = time_op.get_start_time_for_symbol(symbols[i])
     end_hour, end_min = time_op.get_end_time_for_symbol(symbols[i])
 
-    start_date = datetime(2019, 9, 16, start_hour, start_min)
-    end_date = datetime(2019, 9, 23, end_hour, end_min)
+    start_date = datetime(2019, 9, 20, start_hour, start_min)
+    end_date = datetime(2019, 9, 25, end_hour, end_min)
 
     symbol = symbols[i]
     perc, cls_start, cls_end, nan_ratio = db.get_interday_percentage_change_by_closing_price(conn, cursor, symbols[i], exchanges[i], start_date, end_date, min_price, max_nan_filter)
