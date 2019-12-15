@@ -4,6 +4,7 @@ import os
 import shutil
 import csv
 import time_op
+import re
 
 def recreate_new_dir(directory):
     if os.path.exists(directory):
@@ -58,6 +59,50 @@ def get_nasdaq_downloaded_csv_data(filename):
         summary_quotes.append(rec[7])
 
     return symbols, names, last_sales, market_caps, ipo_years, sectors, industries, summary_quotes
+
+
+def get_nasdaq_downloaded_csv_data_2(filename):
+    symbols = []
+    names = []
+    last_sales = []
+    market_caps = []
+    ipo_years = []
+    sectors = []
+    industries = []
+    summary_quotes = []
+
+    with open(filename, 'rb') as f:
+        reader = csv.reader(f)
+        records = list(reader)
+
+    for rec in records:
+        symbols.append(rec[0])
+        names.append(rec[1])
+        last_sales.append("")
+        market_caps.append("")
+        ipo_years.append("")
+        sectors.append("")
+        industries.append("")
+
+    return symbols, names, last_sales, market_caps, ipo_years, sectors, industries
+
+
+
+def get_amex_downloaded_txt_data_2(filename):
+    symbols = []
+    names = []
+
+    with open(filename, 'rb') as f:
+        reader = csv.reader(f)
+        records = list(reader)
+
+    for rec in records:
+        info = re.split(r'\t+', rec[0].rstrip('\t'))
+        symbols.append(info[0])
+        names.append(info[1])
+
+    return symbols, names
+
 
 
 def get_all_symbols(data_dir):

@@ -1,5 +1,5 @@
 from utils import time_op
-import urllib2
+import urllib
 import json
 import pandas_datareader as pdr
 import numpy as np
@@ -20,7 +20,7 @@ def __get_intraday_data_from_web(ticker, start, end):
         quote = indicators['quote']
 
     except Exception as e:
-        print "Could not download data for " + ticker + " for " + start.strftime("%Y-%m-%d")
+        print ("Could not download data for " + ticker + " for " + start.strftime("%Y-%m-%d"))
         return (False, [], [], [], [], [], [])
 
     is_data_available = len(quote[0]) > 0

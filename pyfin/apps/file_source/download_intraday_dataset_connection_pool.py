@@ -9,6 +9,7 @@ import os
 from argparse import ArgumentParser
 
 
+
 def print_usage():
     print ("Usage: python download_intraday_dataset.py -d target directory -n number of days from today -st file_system or database")
 
@@ -71,14 +72,23 @@ symbols, markets = db.get_all_symbols_and_markets(conn, cur)
 cur.close()
 conn.close()
 
-read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st)
+connection_pool = None
+if (st == constants.Storage_Type.Database):
+    threaded_postgreSQL_pool = db.get_connection_pool("../../database/database_settings.txt")
 
+downloader = read.ParallelDownloader(data_root, threaded_postgreSQL_pool, symbols, markets, N, st)
+downloader.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st)
+
+if (st == constants.Storage_Type.Database):
+    if (threaded_postgreSQL_pool):
+        threaded_postgreSQL_pool.closeall
+    print("Threaded PostgreSQL connection pool is closed")
 
 seconds = time.time() - start_time
 
 mint, s = divmod(seconds, 60)
 h, m = divmod(mint, 60)
 
-print ("Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s))
+print "Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s)
 
 

@@ -1,7 +1,8 @@
 import sys
-sys.path.append("..")
+sys.path.append("../..")
 
 import psycopg2
+from psycopg2.pool import ThreadedConnectionPool
 from utils import time_op, string_op, heal, sort_op
 import os
 #from utils.file_system import read
@@ -9,6 +10,26 @@ from datetime import datetime, timedelta
 import math
 from utils.stats import percentage
 import csv
+from threading import Semaphore
+
+
+class ReallyThreadedConnectionPool(ThreadedConnectionPool):
+    def __init__(self, minconn, maxconn, *args, **kwargs):
+        self._semaphore = Semaphore(maxconn)
+        super().__init__(minconn, maxconn, *args, **kwargs)
+#        super(ReallyThreadedConnectionPool, self).__init__(minconn, maxconn, *args, **kwargs)
+
+    def getconn(self, *args, **kwargs):
+        self._semaphore.acquire()
+        return super().getconn(*args, **kwargs)
+#        return super(ReallyThreadedConnectionPool, self).getconn(*args, **kwargs)
+
+    def putconn(self, *args, **kwargs):
+        super().putconn(*args, **kwargs)
+#        super(ReallyThreadedConnectionPool, self).putconn(*args, **kwargs)
+        self._semaphore.release()
+
+
 
 def connect_to_database(settings_file_name):
     with open(settings_file_name) as f:
@@ -28,23 +49,88 @@ def connect_to_database(settings_file_name):
 
 
 
+def get_connection_pool(settings_file_name):
+    threaded_postgreSQL_pool = None
+
+    with open(settings_file_name) as f:
+        lines = f.readlines()
+    host = lines[0]
+    host = "127.0.0.1"
+    dbname = lines[1].rstrip()
+    user = lines[2].rstrip()
+    passwd = lines[3].rstrip()
+    
+    try:
+        threaded_postgreSQL_pool = ReallyThreadedConnectionPool(5, 20, user = user,
+                                              password = passwd,
+                                              host = host,
+                                              database = dbname)
+        if(threaded_postgreSQL_pool):
+            print("Connection pool created successfully")
+        return threaded_postgreSQL_pool
+
+    except (Exception, psycopg2.DatabaseError) as error :
+        print ("Error while connecting to PostgreSQL", error)
+        exit(0)
+
+
+
+#singleton connection pool, gets reset if a connection is bad or drops
+_pgpool = None
+def pgpool():
+    global _pgpool
+    if not _pgpool:
+        try:
+
+            with open(settings_file_name) as f:
+                lines = f.readlines()
+            host = lines[0]
+            host = "127.0.0.1"
+            dbname = lines[1].rstrip()
+            user = lines[2].rstrip()
+            passwd = lines[3].rstrip()
+
+            _pgpool = ThreadedConnectionPool(5, 20, user = user,
+                                              password = passwd,
+                                              host = host,
+                                              database = dbname)
+        except psycopg2.OperationalError as exc:
+            _pgpool = None
+    return _pgpool
+
+
 def insert_names(table, cursor, names):
     count = len(names)
 
     for i in range (count):
         sql = "INSERT INTO " + table +"(name) SELECT('"+names[i]+"') WHERE NOT EXISTS (SELECT * FROM " + table + " WHERE name='"+names[i]+"');"
         #print sql
-        cursor.execute(sql)
+        try:
+            cur.execute(sql)
+        except psycopg2.IntegrityError:
+            print ("SKIPPING " + sql)
+            conn.rollback()
+        else:
+#            print sql
+            conn.commit()
 
 
 
-def insert_companies(table, cursor, symbols, names, ipo_years, sectors, industries, summary_quotes, stock_exchanges, symbol_suffix):
+def insert_companies(table, conn, cur, symbols, names, ipo_years, sectors, industries, summary_quotes, stock_exchange_ids):
     count = len(names)
 
     for i in range (count):
-        sql = "INSERT INTO " + table +"(symbol, name, ipo_year, sector_id, industry_id, summary_quote, stock_exchange, symbol_suffix) VALUES('" + symbols[i] + "','" + names[i] + "','" + ipo_years[i] + "', (SELECT sector_id from public.sectors WHERE name='" + sectors[i] + "'), (SELECT industry_id from public.industries WHERE name='" + industries[i] + "'), '" + summary_quotes[i] + "', '" + stock_exchanges[i] + "', '" + symbol_suffix[i] +"');"
+        name = names[i].replace("'", "")
+        sql = "INSERT INTO " + table +"(symbol, name, ipo_year, sector_id, industry_id, summary_quote, stock_exchange_id) VALUES('" + symbols[i] + "','" + name + "','" + ipo_years[i] + "', (SELECT sector_id from public.sectors WHERE name='" + sectors[i] + "'), (SELECT industry_id from public.industries WHERE name='" + industries[i] + "'), '" + summary_quotes[i] + "', '" + str(stock_exchange_ids[i]) + "');"
 #        print sql
-        cursor.execute(sql)
+        try:
+            cur.execute(sql)
+        except psycopg2.IntegrityError:
+            print ("SKIPPING " + sql)
+            conn.rollback()
+        else:
+            print ("INSERTNG " + sql)
+            conn.commit()
 
 
 def get_yahoo_suffix_and_trading_hours_from_symbol(connection, cursor, symbol):
@@ -182,7 +268,7 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
             print ("SKIPPING " + sql)
             conn.rollback()
         else:
-#            print sql
+            print (sql)
             conn.commit()
 
 
@@ -377,9 +463,15 @@ def get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetim
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices INNER JOIN public.companies ON public.intraday_prices.company_id=public.companies.company_id \
 INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" + market + \
 "' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
-#    print sql
+#    try:
     cur.execute(sql)
+#    print ("Step11")
+    sys.stdout.flush()
     rows = cur.fetchall()
+#    except psycopg2.IntegrityError:
+
+#    print ("Step12")
+    sys.stdout.flush()
     count = len(rows)
     if count==0:
         return False, [], [], [], [], [], []
@@ -436,11 +528,14 @@ def get_raw_intraday_data_from_company_id(conn, cur, company_id, start_datetime,
 
 
 def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval):
+    print ("Step1")
     is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime)
+    print ("Step2")
     if (is_data_available):
         volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
         dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume, opn, close,
                                                                                 high, low)
+        print ("Data are already in database for " + symbol)
         return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
     else:
         return False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0

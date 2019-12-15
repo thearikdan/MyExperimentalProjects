@@ -42,8 +42,8 @@ for i in range(count):
     end_hour, end_min = time_op.get_end_time_for_symbol(symbols[i])
 
     #Must be 1 day difference, we compare prices in the beginning and end of the day!
-    start_date = datetime(2019, 9, 26, start_hour, start_min)
-    end_date = datetime(2019, 9, 27, end_hour, end_min)
+    start_date = datetime(2019, 11, 19, start_hour, start_min)
+    end_date = datetime(2019, 11, 20, end_hour, end_min)
 
     symbol = symbols[i]
     perc, opn_start, opn_end, nan_ratio = db.get_interday_percentage_change_by_opening_price(conn, cursor, symbols[i], exchanges[i], start_date, end_date, min_price, max_nan_filter)

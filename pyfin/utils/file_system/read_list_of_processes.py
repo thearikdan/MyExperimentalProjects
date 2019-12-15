@@ -17,9 +17,9 @@ from utils import constants, heal
 from utils.db import db
 
 #https://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments
-import multiprocessing
-from functools import partial
-from contextlib import contextmanager
+import multiprocessing as mp
+#from functools import partial
+#from contextlib import contextmanager
 
 
 
@@ -116,69 +116,6 @@ def heal_intraday_data(date_time, volume, opn, close, high, low):
     else:
         return date_time, volume, opn, close, high, low
 '''
-
-def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_type):
-    interval_string = "1m"
-    ticker, market = symbol_market.split(":")
-
-    if storage_type == constants.Storage_Type.File_System:
-        data_dir = join(root_dir, market)
-        dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
-        dir_name = join(data_dir, dir_name)
-        filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
-#    dir_name = join(constants.DATA_ROOT, dir_name)
-        full_path = join(dir_name, filename)
-        if isfile(full_path):
-            is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_file(full_path, start, end)
-            if (is_data_available):
-                volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
-                dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume, opn, close, high, low)
-                return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
-
-        is_data_available, date_time, volume, opn, close, high, low = download.get_full_day_intraday_data_from_web(ticker, start, end)
-        if not (is_data_available):
-            return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
-
-        #Write original data, even if some values are corrupt (0, or None)
-        write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
-
-    elif storage_type == constants.Storage_Type.Database:
-        conn, cur = db.connect_to_database("../../database/database_settings.txt")
-        is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_intraday_data(conn, cur, market, ticker, start, end, interval)
-        if is_data_available:
-            return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
-
-        is_data_available, date_time, volume, opn, close, high, low = download.get_full_day_intraday_data_from_web(ticker, start, end)
-        if not (is_data_available):
-            return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
-
-        #Write original data, even if some values are corrupt (0, or None)
-        db.add_to_intraday_prices(conn, cur, market, ticker, date_time, volume, opn, close, high, low)
-        cur.close()
-        conn.close()
-    else:
-        print("storage type must be file_system or database")
-        exit()
-
-    volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
-
-    start_index = date_time.index(start) if start in date_time else None
-    end_index = date_time.index(end) if end in date_time else None
-
-    if ((start_index == None) or (end_index == None)):
-        return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
-    else:
-        dt = date_time[start_index:end_index]
-        v = volume[start_index:end_index]
-        o = opn[start_index:end_index]
-        c = close[start_index:end_index]
-        h = high[start_index:end_index]
-        l = low[start_index:end_index]
-
-        dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, dt, v, o,
-                                                                                c, h, l)
-
-        return (True, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
 
 
 def download_intraday_data_to_file(data_dir, ticker, start, end):
@@ -289,42 +226,6 @@ def get_volume_from_file(filename):
     return get_volume_from_numeric_data(data)
 
 
-def get_all_intraday_prices_for_N_days_to_date (data_dir, market_symbol, N, last_date, storage_type):
-    #in from_time and to_time only hour, minutes and seconds are important;                                                   years and months are ignored
-    date_time_list = []
-    volume_list = []
-    open_list = []
-    close_list = []
-    high_list = []
-    low_list = []
-
-    ticker, market = market_symbol.split(":")
-
-    start_hour, start_minute = time_op.get_start_time_for_symbol(ticker)
-    end_hour, end_minute = time_op.get_end_time_for_symbol(ticker)
-
-    print ("Downloading intraday prices for symbol " + ticker)
-
-    for i in range (N):
-        try:
-            date = time_op.get_date_N_days_ago_from_date(i, last_date)
-
-            start_date = date.replace(hour=start_hour, minute=start_minute, second=00, microsecond=00)
-            end_date = date.replace(hour=end_hour, minute=end_minute, second=00, microsecond=00)
-
-            is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(data_dir, market_symbol, start_date, end_date, 1, storage_type)
-            if (is_data_available):
-                date_time_list.append(date_time)
-                volume_list.append(volume)
-                open_list.append(opn)
-                close_list.append(close)
-                high_list.append(high)
-                low_list.append(low)
-        except:
-            print ("Caught exception in reading data for " + ticker)
-            continue
-
-    return date_time_list, volume_list, open_list, close_list, high_list, low_list
 
 
 def download_all_intraday_prices_for_N_days_to_date (ticker, N, last_date):
@@ -350,7 +251,7 @@ def download_intraday_list_of_tickers(data_dir, list_file_name, day_count):
     count = len(tickers)
 
     for i in range (count):
-        print ("Downloading intraday prices from list " + list_file_name + " for symbol " + tickers[i])
+        print "Downloading intraday prices from list " + list_file_name + " for symbol " + tickers[i]
         #download_all_intraday_prices_for_N_days_to_date (tickers[i], day_count, now, from_time, to_time)
         #This method is more thorough because it will also download files that don't have full day data
         get_all_intraday_prices_for_N_days_to_date (data_dir, tickers[i], day_count, now)
@@ -388,7 +289,7 @@ def get_historical_intraday_data_for_N_days(data_dir, symbol, start_date, end_da
     
 
 
-
+'''
 @contextmanager
 def poolcontext(*args, **kwargs):
     pool = multiprocessing.Pool(*args, **kwargs)
@@ -404,22 +305,161 @@ def merge_params(ticker, args):
 #    symbol, market = ticker.split(":")
     market_symbol = ticker
     get_all_intraday_prices_for_N_days_to_date (data_dir, market_symbol, day_count, last_date, storage_type)
+'''
 
 
-def parallel_download_intraday_list_of_tickers(data_dir, tickers, markets, day_count, storage_type):
-    #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
-    now = datetime.now()
-    # combine tickers with markets to pass param for parallel processing
-    count = len(tickers)
-    for i in range(count):
-        m = markets[i]
-        if m =="n/a":
-            m = "n_a"
-        tickers[i] = tickers[i] + ":" + m
-
-    with poolcontext(processes=multiprocessing.cpu_count()) as pool:
-
-        pool.map(partial(merge_params, args = (data_dir, day_count, now, storage_type)), tickers)
 
 
+
+class ParallelDownloader():
+    def __init__(self, data_root, connection_pool):
+        self.data_root = data_root
+        self.connection_pool = connection_pool
+
+    def get_intraday_data(self, root_dir, symbol_market, start, end, interval, storage_type):
+        interval_string = "1m"
+        ticker, market = symbol_market.split(":")
+
+        if storage_type == constants.Storage_Type.File_System:
+            data_dir = join(root_dir, market)
+            dir_name = string_op.get_directory_from_ticker_day_interval(ticker, start, interval_string)
+            dir_name = join(data_dir, dir_name)
+            filename = string_op.get_filename_from_ticker_day_interval(ticker, start, interval_string)
+            #    dir_name = join(constants.DATA_ROOT, dir_name)
+            full_path = join(dir_name, filename)
+            if isfile(full_path):
+                is_data_available, date_time, volume, opn, close, high, low = get_intraday_data_from_file(full_path,
+                                                                                                          start, end)
+                if (is_data_available):
+                    volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close,
+                                                                                                     high, low)
+                    dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume,
+                                                                                         opn, close, high, low)
+                    return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
+
+            is_data_available, date_time, volume, opn, close, high, low = download.get_full_day_intraday_data_from_web(
+                ticker, start, end)
+            if not (is_data_available):
+                return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
+
+            # Write original data, even if some values are corrupt (0, or None)
+            write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+
+        elif storage_type == constants.Storage_Type.Database:
+#            conn, cur = db.connect_to_database("../../database/database_settings.txt")
+#            print("Getting a connection from connection pool")
+            connection_pool = self.connection_pool
+            conn = connection_pool.getconn()
+            cur = conn.cursor()
+            is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_intraday_data(conn, cur,
+                                                                                                       market, ticker,
+                                                                                                       start, end,
+                                                                                                       interval)
+            if is_data_available:
+                print ("Data for symbol " + ticker + "are available from database")
+                return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
+
+            is_data_available, date_time, volume, opn, close, high, low = download.get_full_day_intraday_data_from_web(
+                ticker, start, end)
+            if not (is_data_available):
+                return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
+
+            # Write original data, even if some values are corrupt (0, or None)
+            db.add_to_intraday_prices(conn, cur, market, ticker, date_time, volume, opn, close, high, low)
+#            cur.close()
+#            conn.close()
+            cur.close()
+            connection_pool.putconn(conn)
+
+        else:
+            print("storage type must be file_system or database")
+            exit()
+
+        volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
+
+        start_index = date_time.index(start) if start in date_time else None
+        end_index = date_time.index(end) if end in date_time else None
+
+        if ((start_index == None) or (end_index == None)):
+            return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
+        else:
+            dt = date_time[start_index:end_index]
+            v = volume[start_index:end_index]
+            o = opn[start_index:end_index]
+            c = close[start_index:end_index]
+            h = high[start_index:end_index]
+            l = low[start_index:end_index]
+
+            dtn, vn, on, cn, hn, ln = time_op.get_N_minute_from_one_minute_interval(interval, dt, v, o,
+                                                                                    c, h, l)
+
+            return (True, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
+
+
+    def get_all_intraday_prices_for_N_days_to_date(self, data_dir, market_symbol, N, last_date, storage_type):
+        # in from_time and to_time only hour, minutes and seconds are important;                                                   years and months are ignored
+        date_time_list = []
+        volume_list = []
+        open_list = []
+        close_list = []
+        high_list = []
+        low_list = []
+
+        ticker, market = market_symbol.split(":")
+
+        start_hour, start_minute = time_op.get_start_time_for_symbol(ticker)
+        end_hour, end_minute = time_op.get_end_time_for_symbol(ticker)
+
+        print ("Getting intraday prices for symbol " + ticker)
+
+        for i in range(N):
+            try:
+                date = time_op.get_date_N_days_ago_from_date(i, last_date)
+
+                start_date = date.replace(hour=start_hour, minute=start_minute, second=00, microsecond=00)
+                end_date = date.replace(hour=end_hour, minute=end_minute, second=00, microsecond=00)
+
+                is_data_available, date_time, volume, opn, close, high, low = self.get_intraday_data(data_dir, market_symbol,
+                                                                                                start_date, end_date, 1,
+                                                                                                storage_type)
+                if (is_data_available):
+                    date_time_list.append(date_time)
+                    volume_list.append(volume)
+                    open_list.append(opn)
+                    close_list.append(close)
+                    high_list.append(high)
+                    low_list.append(low)
+            except Exception as e:
+                print(e)
+                print ("Caught exception in reading data for " + ticker)
+                continue
+
+        return date_time_list, volume_list, open_list, close_list, high_list, low_list
+
+    def parallel_download_intraday_list_of_tickers(self, data_dir, tickers, markets, day_count, storage_type):
+        #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
+        now = datetime.now()
+        # combine tickers with markets to pass param for parallel processing
+        count = len(tickers)
+        for i in range(count):
+            m = markets[i]
+            if m =="n/a":
+                m = "n_a"
+            tickers[i] = tickers[i] + ":" + m
+
+#        tickers = ["FLWS:nasdaq"]
+
+        processes = []
+
+        for ticker in tickers:
+            p = mp.Process(target=self.get_all_intraday_prices_for_N_days_to_date, args=(data_dir, ticker, day_count, now, storage_type))
+            processes.append(p)
+
+        [x.start() for x in processes]
+
+'''
+        with poolcontext(processes=multiprocessing.cpu_count()) as pool:
+
+            pool.map(partial(merge_params, args = (data_dir, day_count, now, storage_type)), tickers)
+'''
 

@@ -1,7 +1,9 @@
+import sys
+sys.path.append("../..")
 from scipy.spatial import distance
 import numpy as np
 import math
-import time_op
+from utils import time_op
 
 
 

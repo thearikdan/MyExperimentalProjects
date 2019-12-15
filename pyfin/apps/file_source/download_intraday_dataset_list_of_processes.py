@@ -71,7 +71,19 @@ symbols, markets = db.get_all_symbols_and_markets(conn, cur)
 cur.close()
 conn.close()
 
-read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st)
+connection_pool = None
+if (st == constants.Storage_Type.Database):
+    connection_pool = db.get_connection_pool("../../database/database_settings.txt")
+
+
+#read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st)
+downloader = read.ParallelDownloader(data_root, connection_pool)
+downloader.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st)
+
+if (st == constants.Storage_Type.Database):
+    if (connection_pool):
+        connection_pool.closeall
+    print("Threaded PostgreSQL connection pool is closed")
 
 
 seconds = time.time() - start_time
@@ -79,6 +91,6 @@ seconds = time.time() - start_time
 mint, s = divmod(seconds, 60)
 h, m = divmod(mint, 60)
 
-print ("Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s))
+print "Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s)
 
 
