@@ -4,7 +4,7 @@ sys.path.append("../..")
 import time
 from utils import constants
 from utils.file_system import read
-from utils.db import db
+from utils.db import db, connection_pool
 import os 
 from argparse import ArgumentParser
 

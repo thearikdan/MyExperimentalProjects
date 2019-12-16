@@ -143,8 +143,8 @@ def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_typ
         write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
 
     elif storage_type == constants.Storage_Type.Database:
-        conn, cur = db.connect_to_database("../../database/database_settings.txt")
-        is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_intraday_data(conn, cur, market, ticker, start, end, interval)
+#        conn, cur = db.connect_to_database("../../database/database_settings.txt")
+        is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_intraday_data(market, ticker, start, end, interval)
         if is_data_available:
             return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
 
@@ -153,7 +153,7 @@ def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_typ
             return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
 
         #Write original data, even if some values are corrupt (0, or None)
-        db.add_to_intraday_prices(conn, cur, market, ticker, date_time, volume, opn, close, high, low)
+        db.add_to_intraday_prices(market, ticker, date_time, volume, opn, close, high, low)
         cur.close()
         conn.close()
     else:
@@ -416,6 +416,8 @@ def parallel_download_intraday_list_of_tickers(data_dir, tickers, markets, day_c
         if m =="n/a":
             m = "n_a"
         tickers[i] = tickers[i] + ":" + m
+
+#    tickers = ["AMZN:nasdaq"]
 
     with poolcontext(processes=multiprocessing.cpu_count()) as pool:
 

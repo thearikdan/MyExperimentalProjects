@@ -1,5 +1,5 @@
 from utils import time_op
-import urllib
+from urllib.request import urlopen
 import json
 import pandas_datareader as pdr
 import numpy as np
@@ -11,9 +11,8 @@ def __get_intraday_data_from_web(ticker, start, end):
 
     str = "https://query1.finance.yahoo.com/v8/finance/chart/%s?period1=%s&period2=%s&interval=%s" % (ticker, start_date_time, end_date_time, "1m")
     try:
-        response = urllib2.urlopen(str).read()
-        json_obj = json.loads(response)
-
+        response = urlopen(str)
+        json_obj = json.loads(response.read().decode(response.info().get_param('charset') or 'utf-8'))
         chart = (json_obj['chart'])
         result = chart['result']
         indicators = result[0]['indicators']

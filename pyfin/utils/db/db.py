@@ -11,8 +11,9 @@ import math
 from utils.stats import percentage
 import csv
 from threading import Semaphore
+from utils.db.connection_pool import Pcursor
 
-
+'''
 class ReallyThreadedConnectionPool(ThreadedConnectionPool):
     def __init__(self, minconn, maxconn, *args, **kwargs):
         self._semaphore = Semaphore(maxconn)
@@ -28,7 +29,12 @@ class ReallyThreadedConnectionPool(ThreadedConnectionPool):
         super().putconn(*args, **kwargs)
 #        super(ReallyThreadedConnectionPool, self).putconn(*args, **kwargs)
         self._semaphore.release()
+'''
 
+g_connection_setting_file_name = None
+
+def set_connection_settings_file_name(name):
+    g_connection_setting_file_name = name
 
 
 def connect_to_database(settings_file_name):
@@ -48,7 +54,7 @@ def connect_to_database(settings_file_name):
     return conn, cursor
 
 
-
+'''
 def get_connection_pool(settings_file_name):
     threaded_postgreSQL_pool = None
 
@@ -72,9 +78,9 @@ def get_connection_pool(settings_file_name):
     except (Exception, psycopg2.DatabaseError) as error :
         print ("Error while connecting to PostgreSQL", error)
         exit(0)
+'''
 
-
-
+'''
 #singleton connection pool, gets reset if a connection is bad or drops
 _pgpool = None
 def pgpool():
@@ -97,7 +103,7 @@ def pgpool():
         except psycopg2.OperationalError as exc:
             _pgpool = None
     return _pgpool
-
+'''
 
 def insert_names(table, cursor, names):
     count = len(names)
@@ -175,16 +181,17 @@ def get_all_company_ids(conn, cursor):
 
 
 
-def get_company_ids_from_market_and_symbol(conn, cur, market, symbol):
+def get_company_ids_from_market_and_symbol(market, symbol):
     ids=[]
-    exchange_id = get_exchange_id_from_market(conn, cur, market)
+    exchange_id = get_exchange_id_from_market(market)
     sql = ""
     if exchange_id == None:
         sql ="SELECT company_id FROM public.companies WHERE symbol='" + symbol + "';"
     else:
          sql = "SELECT company_id FROM public.companies WHERE symbol='" + symbol + "' AND stock_exchange_id='"+str(exchange_id)+"';"
-    cur.execute(sql)
-    rows = cur.fetchall()
+    rows = Pcursor().fetchall(sql)
+#    cur.execute(sql)
+#    rows = cur.fetchall()
     for row in rows:
         ids.append(row[0])
     return ids
@@ -246,8 +253,8 @@ def process_numeric_value(val):
     return processed
 
 
-def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, close, high, low):
-    company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
+def add_to_intraday_prices(market, symbol, date_time, volume, opn, close, high, low):
+    company_ids = get_company_ids_from_market_and_symbol(market, symbol)
     if len(company_ids) != 1:
         return
 
@@ -263,13 +270,14 @@ def add_to_intraday_prices(conn, cur, market, symbol, date_time, volume, opn, cl
         sql = "INSERT INTO public.intraday_prices (company_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
 #        sql = "INSERT INTO public.intraday_prices_no_pkey (company_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(company_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
         try:
-            cur.execute(sql)
+            Pcursor().execute(sql)
+#            cur.execute(sql)
         except psycopg2.IntegrityError:
             print ("SKIPPING " + sql)
-            conn.rollback()
+#            conn.rollback()
         else:
             print (sql)
-            conn.commit()
+#            conn.commit()
 
 
 
@@ -324,12 +332,14 @@ def get_suffix_list(conn, cursor):
     return suffix_list
 
 
-def get_exchange_id_from_market(conn, cursor, market):
+def get_exchange_id_from_market(market):
     if market == "n_a":
         market = "n/a"
     sql = "SELECT exchange_id FROM public.stock_exchanges WHERE name='" + market + "';"
-    cursor.execute(sql)
-    rows = cursor.fetchall()
+    rows = Pcursor().fetchall(sql)
+
+#    cursor.execute(sql)
+#    rows = cursor.fetchall()
     for row in rows:
         s = row[0]
         if (s != ""):
@@ -449,7 +459,8 @@ def get_data_v1_exchange_name_from_symbol(conn, cursor, symbol, exchange_dict):
 
 
 
-def get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime):
+#def get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime):
+def get_raw_intraday_data(market, symbol, start_datetime, end_datetime):
     date_time = []
     volume=[]
     opn = []
@@ -463,17 +474,13 @@ def get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetim
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices INNER JOIN public.companies ON public.intraday_prices.company_id=public.companies.company_id \
 INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.companies.stock_exchange_id WHERE public.companies.symbol='" + symbol + "' AND public.stock_exchanges.name='" + market + \
 "' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
-#    try:
-    cur.execute(sql)
-#    print ("Step11")
-    sys.stdout.flush()
-    rows = cur.fetchall()
-#    except psycopg2.IntegrityError:
-
-#    print ("Step12")
-    sys.stdout.flush()
+ #   cur1 = Pcursor()
+ #   cir1.execute(sql)
+    rows = Pcursor().fetchall(sql)
+#    cur.execute(sql)
+#    rows = cur.fetchall()
     count = len(rows)
-    if count==0:
+    if count==0: #The danger with this comparison is that if we have incomplete data for the day, it will still return True
         return False, [], [], [], [], [], []
     for row in rows:
         dt = row[0]
@@ -527,10 +534,8 @@ def get_raw_intraday_data_from_company_id(conn, cur, company_id, start_datetime,
     return True, date_time, volume, opn, cls, high, low
 
 
-def get_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime, interval):
-    print ("Step1")
-    is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(conn, cur, market, symbol, start_datetime, end_datetime)
-    print ("Step2")
+def get_intraday_data(market, symbol, start_datetime, end_datetime, interval):
+    is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(market, symbol, start_datetime, end_datetime)
     if (is_data_available):
         volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
         dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume, opn, close,
