@@ -281,7 +281,7 @@ def add_to_intraday_prices(market, symbol, date_time, volume, opn, close, high, 
 
 
 
-def add_to_daily_prices(conn, cur, company_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
+def add_to_daily_prices(company_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
     date, time = time_op.get_date_time_from_datetime(date_time)
     timestamp = date + " " + time
 
@@ -308,14 +308,14 @@ def add_to_daily_prices(conn, cur, company_id, date_time, min_volume, min_volume
     sql = "INSERT INTO public.daily_prices (company_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening_price, closing_price, high_price, high_price_times, low_price, low_price_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio)\
  VALUES('" + str(company_id) + "','" + timestamp + "'::timestamp without time zone" + ",'" + min_vo + "'," + min_vol_times_str + ",'" + max_vo + "'," + max_vol_times_str + ",'" +  avg_vo + "','" + op + "','" + cl + "','" + hi + "'," + high_times_str + ",'" + lo + \
           "'," + low_times_str + ",'" + vo_nan_r + "','" + op_nan_r + "','" + cl_nan_r + "','" + hi_nan_r + "','" + lo_nan_r + "');"
-    try:
-        cur.execute(sql)
-    except psycopg2.IntegrityError:
-        print ("SKIPPING " + sql)
-        conn.rollback()
-    else:
-        print (sql)
-        conn.commit()
+#    try:
+    Pcursor().execute(sql)
+#    except psycopg2.IntegrityError:
+#        print ("SKIPPING " + sql)
+ #       conn.rollback()
+#    else:
+    print (sql)
+#        conn.commit()
 
 
 
@@ -499,7 +499,7 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 
 
 
-def get_raw_intraday_data_from_company_id(conn, cur, company_id, start_datetime, end_datetime):
+def get_raw_intraday_data_from_company_id(company_id, start_datetime, end_datetime):
     date_time = []
     volume=[]
     opn = []
@@ -513,8 +513,9 @@ def get_raw_intraday_data_from_company_id(conn, cur, company_id, start_datetime,
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices WHERE company_id='" + str(company_id) + \
 "' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
 #    print sql
-    cur.execute(sql)
-    rows = cur.fetchall()
+#    cur.execute(sql)
+#    rows = cur.fetchall()
+    rows = Pcursor().fetchall(sql)
     count = len(rows)
     if count==0:
         return False, [], [], [], [], [], []
