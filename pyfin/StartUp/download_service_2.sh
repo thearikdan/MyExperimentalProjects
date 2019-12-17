@@ -1,4 +1,4 @@
 #!/bin/bash
 sudo service postgresql start
-cd /media/ara/HDD/MyProjects/pyfin/apps/file_source && gnome-terminal -e 'bash -ic "source /media/ara/HDD/virtualenvs/pyfin/bin/activate; python download_intraday_dataset.py -d /media/hddx/datasets/pyfin/data -n 2 -st file_system; exec bash"'
+cd /media/ara/HDD/MyProjects/pyfin/apps/file_source && gnome-terminal -e 'bash -ic "source /media/ara/HDD/virtualenvs/pyfin3/bin/activate; python download_intraday_dataset.py -d /media/hddx/datasets/pyfin/data -n 2 -st file_system; exec bash"'
 

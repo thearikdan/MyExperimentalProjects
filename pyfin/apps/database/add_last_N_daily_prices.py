@@ -46,8 +46,6 @@ conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
 all_company_ids = db.get_all_company_ids(conn, cur)
 
-all_company_ids = [139]
-
 for date_time in date_time_list:
     for company_id in all_company_ids:
         start_date_time = date_time
