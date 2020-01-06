@@ -14,15 +14,16 @@ import dateutil
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 
-symbol = "BA"
-market = "nyse"
+#symbol = "BA"
+#symbol = "VOO"
+#market = "nyse"
 
 symbol = "NVDA"
 #symbol = "FB"
-symbol = "AMZN"
+#symbol = "AMZN"
 market = "nasdaq"
 
-end_date = datetime(2019, 4, 9, 15, 59)
+end_date = datetime(2019, 12, 27, 15, 59)
 start_date = end_date + dateutil.relativedelta.relativedelta(months=-2) #month ago
 
 #date, num_data = read.get_data_from_web(symbol, start_date, end_date)

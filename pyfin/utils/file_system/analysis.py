@@ -70,7 +70,7 @@ def get_percentage_change_distance_data(data_dir, symbol, start_date, end_date, 
     is_data_available, date_time, volume , opn, close, high, low, _, _, _, _, _ = read.get_intraday_data(data_dir, symbol, start_date, end_date, 1)
 
     if not (is_data_available):
-        print "No data available"
+        print ("No data available")
         return None
 
     date_time_1, volume_per , open_per, close_per, high_per, low_per = percentage.get_percentage_change_in_intraday_prices(date_time, volume , opn, close, high, low)

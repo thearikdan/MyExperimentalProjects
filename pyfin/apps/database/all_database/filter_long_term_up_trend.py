@@ -17,7 +17,8 @@ YAHOO_PORTFOLIO_EXPORTED_FILE = "quotes.csv"
 target_exchanges = ['nyse', 'nasdaq']
 
 max_nan_filter = 0.3
-min_price = 70.
+#min_price = 70.
+min_price = 20.
 min_percentage_up = 2.0
 
 start_time = time.time()
@@ -44,8 +45,8 @@ for i in range(count):
     start_hour, start_min = time_op.get_start_time_for_symbol(symbols[i])
     end_hour, end_min = time_op.get_end_time_for_symbol(symbols[i])
 
-    start_date = datetime(2019, 11, 25, start_hour, start_min)
-    end_date = datetime(2019, 11, 27, end_hour, end_min)
+    start_date = datetime(2019, 12, 10, start_hour, start_min)
+    end_date = datetime(2019, 12, 24, end_hour, end_min)
 
     symbol = symbols[i]
     perc, cls_start, cls_end, nan_ratio = db.get_interday_percentage_change_by_closing_price(conn, cursor, symbols[i], exchanges[i], start_date, end_date, min_price, max_nan_filter)

@@ -20,7 +20,7 @@ window_width = 7
 stride = 3
 
 
-end_date = datetime(2019, 8, 12, 9, 30)
+end_date = datetime(2019, 12, 16, 9, 30)
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 
@@ -42,4 +42,4 @@ seconds = time.time() - start_time
 mint, s = divmod(seconds, 60)
 h, m = divmod(mint, 60)
 
-print "Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s)
+print ("Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s))

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import numpy as np
-import color_schema
+from . import color_schema
 from matplotlib import colors
 
 def show(data, title, mod):

@@ -114,7 +114,7 @@ def insert_names(table, cursor, names):
         try:
             cur.execute(sql)
         except psycopg2.IntegrityError:
-            print ("SKIPPING " + sql)
+#            print ("SKIPPING " + sql)
             conn.rollback()
         else:
 #            print sql
@@ -132,10 +132,10 @@ def insert_companies(table, conn, cur, symbols, names, ipo_years, sectors, indus
         try:
             cur.execute(sql)
         except psycopg2.IntegrityError:
-            print ("SKIPPING " + sql)
+            print ("SKIPPING " + symbols[i])
             conn.rollback()
         else:
-            print ("INSERTNG " + sql)
+            print ("INSERTNG " + symbols[i])
             conn.commit()
 
 
@@ -237,7 +237,7 @@ def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
     try:
         cur.execute(sql)
     except psycopg2.IntegrityError:
-        print ("SKIPPING " + sql)
+#        print ("SKIPPING " + sql)
         conn.rollback()
     else:
 #        print sql
@@ -273,10 +273,10 @@ def add_to_intraday_prices(market, symbol, date_time, volume, opn, close, high, 
             Pcursor().execute(sql)
 #            cur.execute(sql)
         except psycopg2.IntegrityError:
-            print ("SKIPPING " + sql)
+            print ("SKIPPING " + symbol)
 #            conn.rollback()
         else:
-            print (sql)
+            print ("Inserting " + symbol)
 #            conn.commit()
 
 
@@ -314,7 +314,7 @@ def add_to_daily_prices(company_id, date_time, min_volume, min_volume_times, max
 #        print ("SKIPPING " + sql)
  #       conn.rollback()
 #    else:
-    print (sql)
+    print ("Inserting company " + str(company_id))
 #        conn.commit()
 
 

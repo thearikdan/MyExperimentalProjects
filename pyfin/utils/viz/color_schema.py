@@ -11,31 +11,31 @@ def get_bounds_and_colormap():
     bounds.append(constants.HOLIDAY - constants.BORDER)
 
 
-    for i in xrange (-1000, -300, 100):
+    for i in range (-1000, -300, 100):
         bounds.append(i / 10.)
 
-    for i in xrange (-300, -100, 10):
+    for i in range (-300, -100, 10):
         bounds.append(i / 10.)
 
-    for i in xrange (-100, -50, 5):
+    for i in range (-100, -50, 5):
         bounds.append(i / 10.)
 
-    for i in xrange (-50, -20, 2):
+    for i in range (-50, -20, 2):
         bounds.append(i / 10.)
 
-    for i in xrange (-20, 20, 1):
+    for i in range (-20, 20, 1):
         bounds.append(i / 10.)
 
-    for i in xrange (20, 50, 2):
+    for i in range (20, 50, 2):
         bounds.append(i / 10.)
 
-    for i in xrange (50, 100, 5):
+    for i in range (50, 100, 5):
         bounds.append(i / 10.)
 
-    for i in xrange (100, 300, 10):
+    for i in range (100, 300, 10):
         bounds.append(i / 10.)
 
-    for i in xrange (300, 1000, 100):
+    for i in range (300, 1000, 100):
         bounds.append(i / 10.)
 
     count = len(bounds) - 2
@@ -50,11 +50,11 @@ def get_bounds_and_colormap():
 
     step = 1. / (count / 2)
 
-    for i in range (0, count / 2):
+    for i in range (0, int(count / 2)):
         c = [1.0, i * step, i * step]
         colormap.append(c)
 
-    for i in range (count / 2 + 1, count):
+    for i in range (int(count / 2) + 1, count):
         c = [2 - (i + 1) * step, 1, 2 - (i + 1) * step]
         colormap.append(c)
 
