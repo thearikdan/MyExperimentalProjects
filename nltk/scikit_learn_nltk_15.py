@@ -53,7 +53,7 @@ testing_set = featuresets[1900:]
 
 
 classifier = nltk.NaiveBayesClassifier.train(training_set)
-print("Naive Bayes acuracy :", (nltk.classify.accuracy(classifier, testing_set)) * 100)
+print("Naive Bayes accuracy :", (nltk.classify.accuracy(classifier, testing_set)) * 100)
 classifier.show_most_informative_features(15)
 
 save_classifier = open("naivebayes.pickle", "wb")
@@ -63,7 +63,7 @@ save_classifier.close()
 
 
 mnb_classifier = SklearnClassifier(MultinomialNB()).train(training_set)
-print("Multinomial binary acuracy :", (nltk.classify.accuracy(mnb_classifier, testing_set)) * 100)
+print("Multinomial binary accuracy :", (nltk.classify.accuracy(mnb_classifier, testing_set)) * 100)
 #mnb_classifier.show_most_informative_features(15)
 
 save_classifier = open("multinomial_binary.pickle", "wb")
@@ -73,9 +73,66 @@ save_classifier.close()
 
 
 bernoulli_classifier = SklearnClassifier(BernoulliNB()).train(training_set)
-print("Bernoulli acuracy :", (nltk.classify.accuracy(bernoulli_classifier, testing_set)) * 100)
+print("Bernoulli accuracy :", (nltk.classify.accuracy(bernoulli_classifier, testing_set)) * 100)
 #bernoulli_classifier.show_most_informative_features(15)
 
 save_classifier = open("bernoulli.pickle", "wb")
 pickle.dump(bernoulli_classifier, save_classifier)
+save_classifier.close()
+
+
+
+
+
+
+logistic_regression = SklearnClassifier(LogisticRegression()).train(training_set)
+print("Logistic regression accuracy:", (nltk.classify.accuracy(logistic_regression, testing_set)) * 100)
+#bernoulli_classifier.show_most_informative_features(15)
+
+save_classifier = open("logistic_regression.pickle", "wb")
+pickle.dump(logistic_regression, save_classifier)
+save_classifier.close()
+
+
+
+
+sgd_classifier = SklearnClassifier(SGDClassifier()).train(training_set)
+print("SGD accuracy :", (nltk.classify.accuracy(sgd_classifier, testing_set)) * 100)
+#bernoulli_classifier.show_most_informative_features(15)
+
+save_classifier = open("sgd.pickle", "wb")
+pickle.dump(sgd_classifier, save_classifier)
+save_classifier.close()
+
+
+
+
+svc_classifier = SklearnClassifier(SVC()).train(training_set)
+print("SVC accuracy :", (nltk.classify.accuracy(svc_classifier, testing_set)) * 100)
+#bernoulli_classifier.show_most_informative_features(15)
+
+save_classifier = open("svc.pickle", "wb")
+pickle.dump(svc_classifier, save_classifier)
+save_classifier.close()
+
+
+
+
+linear_svc_classifier = SklearnClassifier(LinearSVC()).train(training_set)
+print("Linear SVC accuracy :", (nltk.classify.accuracy(linear_svc_classifier, testing_set)) * 100)
+#bernoulli_classifier.show_most_informative_features(15)
+
+save_classifier = open("linear_svc.pickle", "wb")
+pickle.dump(linear_svc_classifier, save_classifier)
+save_classifier.close()
+
+
+
+
+nusvc_classifier = SklearnClassifier(NuSVC()).train(training_set)
+print("NUSVC accuracy :", (nltk.classify.accuracy(nusvc_classifier, testing_set)) * 100)
+#bernoulli_classifier.show_most_informative_features(15)
+
+save_classifier = open("nusvc.pickle", "wb")
+pickle.dump(nusvc_classifier, save_classifier)
 save_classifier.close()

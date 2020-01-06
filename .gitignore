@@ -4,6 +4,7 @@
 *.*~
 *.txt
 *.csv
+*.pickle
 .ipynb_checkpoints/
 .DS_Store
 data_v1/

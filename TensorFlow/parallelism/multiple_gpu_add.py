@@ -22,7 +22,7 @@ sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 init = tf.global_variables_initializer()
 sess.run(init)
 
-print a
-print sess.run(sum_)
-print sess.run(c)
+print (a)
+print (sess.run(sum_))
+print (sess.run(c))
 
