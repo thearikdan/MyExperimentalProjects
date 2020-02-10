@@ -5,6 +5,7 @@ from nltk.corpus import stopwords
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
 ICCV_2019='http://openaccess.thecvf.com/ICCV2019.py'
 #GLOVE_FILE = "data/glove.6B/glove.6B.300d.txt"
@@ -161,23 +162,63 @@ def heat_map_matrix_between_titles(model, titles):
     return distances
 
 
-groups , titles, authors = get_iccv_groups_titles_authors(ICCV_2019_MAIN_CONFERENCE)
+def get_group_indices_from_groups(groups):
+    indices = []
+    indices.append(0)
+    current_index = 0
+    count = len(groups)
+    for i in range(1, count):
+        if (groups[i] == groups[i-1]):
+            indices.append(current_index)
+        else:
+            current_index = current_index + 1
+            indices.append(current_index)
+    return indices
+
+
+def get_index_from_interval(embedding, min, max, count):
+    interval = (max - min) / count
+    for i in range(count):
+        if (embedding >= min + i * interval) and (embedding <= min + (i + 1) * interval):
+            return i
+    return -1
+
+
+def get_glov_accuracy(group_indices, interval_indices):
+    count = len(group_indices)
+    correct = 0
+    for i in range(count):
+        if (group_indices[i] == interval_indices[i]):
+            correct = correct + 1
+    return float(correct) / count
+
+
+
+groups, titles, authors = get_iccv_groups_titles_authors(ICCV_2019_MAIN_CONFERENCE)
+group_indices = get_group_indices_from_groups(groups)
+
+print(group_indices)
 
 model = loadGloveModel(GLOVE_FILE)
 title_embeddings = get_titles_glov_embeddings(model, titles)
+#np_embeddings = np.array(title_embeddings).reshape(-1, 1)
 
 group_count = len(set(groups))
 print (group_count)
 
 count = len(groups)
 
+interval_indices = []
+min_ = min(title_embeddings)
+max_ = max(title_embeddings)
 for i in range(count):
+    interval = get_index_from_interval(title_embeddings[i], min_, max_, group_count)
+    interval_indices.append(interval)
     print (groups[i] + " " + titles[i] + " " + authors[i] + " " + str(title_embeddings[i]))
-#titles = get_iccv_titles(ICCV_2019)
 
-#model = loadGloveModel(GLOVE_FILE)
+print(interval_indices)
+
+accuracy = get_glov_accuracy(group_indices, interval_indices)
+print (accuracy)
 
 
-#dist = heat_map_matrix_between_titles(model, titles)
-
-#print (dist)
