@@ -10,8 +10,11 @@ from sklearn.cluster import KMeans
 ICCV_2019='http://openaccess.thecvf.com/ICCV2019.py'
 #GLOVE_FILE = "data/glove.6B/glove.6B.300d.txt"
 GLOVE_FILE = "data/glove.6B/glove.6B.50d.txt"
+#GLOVE_FILE = "data/glove.840B/glove.840B.300d.txt"
+
 
 ICCV_2019_MAIN_CONFERENCE="http://iccv2019.thecvf.com/program/main_conference"
+ICCV_2019_OPEN_ABSTRACT = "http://openaccess.thecvf.com/"
 
 
 def remove_before_colon(title):
@@ -100,14 +103,22 @@ def get_iccv_groups_titles_authors(iccv_url):
 
     return groups, titles, authors
 
-'''
+
+
+def get_iccv_titles_abstracts(iccv_url):
+    page = urllib2.urlopen(iccv_url)
+    soup = BeautifulSoup(page,'html.parser')
     dt_ptitle = soup.find_all('dt', {"class":"ptitle"})
     titles = []
+    abstracts = []
     for dt in dt_ptitle:
         t = dt.get_text()
-        tt = preprocess(t)
-        titles.append(tt)
-'''
+        titles.append(t)
+        cont = dt.find_next('a', href=True)
+        url = cont.attrs['href']
+        abstract_url = ICCV_2019_OPEN_ABSTRACT + url
+        print (abstract_url)
+    return titles, pdfs
 
 
 def get_iccv_titles(iccv_url):
@@ -193,7 +204,7 @@ def get_glov_accuracy(group_indices, interval_indices):
     return float(correct) / count
 
 
-
+titles, pdfs = get_iccv_titles_abstracts(ICCV_2019)
 groups, titles, authors = get_iccv_groups_titles_authors(ICCV_2019_MAIN_CONFERENCE)
 group_indices = get_group_indices_from_groups(groups)
 
