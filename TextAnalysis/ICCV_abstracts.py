@@ -104,6 +104,13 @@ def get_iccv_groups_titles_authors(iccv_url):
     return groups, titles, authors
 
 
+def get_abstract_from_url(abstract_url):
+    page = urllib2.urlopen(abstract_url)
+    soup = BeautifulSoup(page,'html.parser')
+    div_abstract = soup.find('div', {"id":"abstract"})
+    abstract = div_abstract.text
+    return abstract
+
 
 def get_iccv_titles_abstracts(iccv_url):
     page = urllib2.urlopen(iccv_url)
@@ -117,8 +124,9 @@ def get_iccv_titles_abstracts(iccv_url):
         cont = dt.find_next('a', href=True)
         url = cont.attrs['href']
         abstract_url = ICCV_2019_OPEN_ABSTRACT + url
-        print (abstract_url)
-    return titles, pdfs
+        abstract = get_abstract_from_url(abstract_url)
+        abstracts.append(abstract)
+    return titles, abstracts
 
 
 def get_iccv_titles(iccv_url):
