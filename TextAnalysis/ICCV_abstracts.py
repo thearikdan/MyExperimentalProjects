@@ -109,6 +109,7 @@ def get_abstract_from_url(abstract_url):
     soup = BeautifulSoup(page,'html.parser')
     div_abstract = soup.find('div', {"id":"abstract"})
     abstract = div_abstract.text
+    abstract = abstract.replace('\n', '')
     return abstract
 
 
