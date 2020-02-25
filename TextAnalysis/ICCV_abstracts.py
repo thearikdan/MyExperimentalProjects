@@ -7,14 +7,14 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-ICCV_2019='http://openaccess.thecvf.com/ICCV2019.py'
+ICCV_2019_OPEN_ABSTRACT='http://openaccess.thecvf.com/ICCV2019.py'
 #GLOVE_FILE = "data/glove.6B/glove.6B.300d.txt"
 GLOVE_FILE = "data/glove.6B/glove.6B.50d.txt"
 #GLOVE_FILE = "data/glove.840B/glove.840B.300d.txt"
 
 
 ICCV_2019_MAIN_CONFERENCE="http://iccv2019.thecvf.com/program/main_conference"
-ICCV_2019_OPEN_ABSTRACT = "http://openaccess.thecvf.com/"
+ICCV_OPEN = "http://openaccess.thecvf.com/"
 
 
 def remove_before_colon(title):
@@ -105,29 +105,53 @@ def get_iccv_groups_titles_authors(iccv_url):
 
 
 def get_abstract_from_url(abstract_url):
-    page = urllib2.urlopen(abstract_url)
-    soup = BeautifulSoup(page,'html.parser')
-    div_abstract = soup.find('div', {"id":"abstract"})
-    abstract = div_abstract.text
-    abstract = abstract.replace('\n', '')
-    return abstract
+    try:
+        page = urllib2.urlopen(abstract_url)
+        soup = BeautifulSoup(page,'html.parser')
+        div_abstract = soup.find('div', {"id":"abstract"})
+        abstract = div_abstract.text
+        abstract = abstract.replace('\n', '')
+        return abstract
+    except:
+        print(abstract_url + " not found")
+        return ""
 
 
-def get_iccv_titles_abstracts(iccv_url):
+
+def get_titles_abstracts(iccv_url, titles):
     page = urllib2.urlopen(iccv_url)
     soup = BeautifulSoup(page,'html.parser')
     dt_ptitle = soup.find_all('dt', {"class":"ptitle"})
-    titles = []
     abstracts = []
+    titles_with_abstracts = []
     for dt in dt_ptitle:
         t = dt.get_text()
-        titles.append(t)
-        cont = dt.find_next('a', href=True)
-        url = cont.attrs['href']
-        abstract_url = ICCV_2019_OPEN_ABSTRACT + url
-        abstract = get_abstract_from_url(abstract_url)
-        abstracts.append(abstract)
-    return titles, abstracts
+        if t in titles:
+            cont = dt.find_next('a', href=True)
+            url = cont.attrs['href']
+            abstract_url = ICCV_OPEN + url
+            abstract = get_abstract_from_url(abstract_url)
+            if len(abstract) > 0:
+                abstracts.append(abstract)
+                titles_with_abstracts.append(t)
+    return titles_with_abstracts, abstracts
+
+
+def get_iccv_groups_titles_authors_abstracts(url_2019, url_abstract):
+    groups, titles, authors = get_iccv_groups_titles_authors(url_2019)
+    titles_with_abstracts, abstracts = get_titles_abstracts(url_abstract, titles)
+    count = len (abstracts)
+    gr = []
+    tt = []
+    au = []
+    abst = []
+    for i in range(count):
+        ind = titles.index(titles_with_abstracts[i])
+        gr.append(groups[ind])
+        tt.append(titles_with_abstracts[i])
+        au.append(authors[ind])
+        abst.append(abstracts[i])
+    return gr, tt, au, abst
 
 
 def get_iccv_titles(iccv_url):
@@ -212,9 +236,8 @@ def get_glov_accuracy(group_indices, interval_indices):
             correct = correct + 1
     return float(correct) / count
 
+groups, titles, authors , abstracts = get_iccv_groups_titles_authors_abstracts(ICCV_2019_MAIN_CONFERENCE, ICCV_2019_OPEN_ABSTRACT)
 
-titles, pdfs = get_iccv_titles_abstracts(ICCV_2019)
-groups, titles, authors = get_iccv_groups_titles_authors(ICCV_2019_MAIN_CONFERENCE)
 group_indices = get_group_indices_from_groups(groups)
 
 print(group_indices)
