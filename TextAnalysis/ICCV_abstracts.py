@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../")
 import urllib.request as urllib2
 from bs4 import BeautifulSoup
 import re
@@ -6,7 +8,11 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
+import json
+from utils import file_op
+from os.path import join
 
+ICCV_2019_DATA_ROOT = "data/ICCV2019"
 ICCV_2019_OPEN_ABSTRACT='http://openaccess.thecvf.com/ICCV2019.py'
 #GLOVE_FILE = "data/glove.6B/glove.6B.300d.txt"
 GLOVE_FILE = "data/glove.6B/glove.6B.50d.txt"
@@ -137,7 +143,7 @@ def get_titles_abstracts(iccv_url, titles):
     return titles_with_abstracts, abstracts
 
 
-def get_iccv_groups_titles_authors_abstracts(url_2019, url_abstract):
+def get_iccv_groups_titles_authors_abstracts_from_web(url_2019, url_abstract):
     groups, titles, authors = get_iccv_groups_titles_authors(url_2019)
     titles_with_abstracts, abstracts = get_titles_abstracts(url_abstract, titles)
     count = len (abstracts)
@@ -236,7 +242,60 @@ def get_glov_accuracy(group_indices, interval_indices):
             correct = correct + 1
     return float(correct) / count
 
-groups, titles, authors , abstracts = get_iccv_groups_titles_authors_abstracts(ICCV_2019_MAIN_CONFERENCE, ICCV_2019_OPEN_ABSTRACT)
+
+
+def write_json_data_file(dir, name, groups, titles, authors , abstracts):
+    file_op.ensure_dir_exists(dir)
+    file_name = join(dir, name)
+    count = len(groups)
+    data = {}
+    data["papers"] = []
+    for i in range (count):
+        data['papers'].append({
+            'group': groups[i],
+            'title': titles[i],
+            'authors': authors[i],
+            'abstract': abstracts[i]
+        })
+    with open(file_name, 'w') as outfile:
+        json.dump(data, outfile)
+
+
+
+def get_iccv_groups_titles_authors_abstracts_from_file(file_name):
+    groups = []
+    titles = []
+    authors = []
+    abstracts = []
+
+    with open(file_name) as json_file:
+        data = json.load(json_file)
+        papers = data["papers"]
+        count = len (papers)
+
+        for i in range(count):
+            groups.append(papers[i]["group"])
+            titles.append(papers[i]["title"])
+            authors.append(papers[i]["authors"])
+            abstracts.append(papers[i]["abstract"])
+
+    return groups, titles, authors, abstracts
+
+
+
+def get_iccv_groups_titles_authors_abstracts(dir, name, conference_url, abstracts_url):
+    file_name = join(dir, name)
+    if file_op.if_file_exists(file_name):
+        groups, titles, authors, abstracts = get_iccv_groups_titles_authors_abstracts_from_file(file_name)
+    else:
+        groups, titles, authors, abstracts = get_iccv_groups_titles_authors_abstracts_from_web(conference_url, abstracts_url)
+        write_json_data_file(dir, name, groups, titles, authors , abstracts)
+    return groups, titles, authors, abstracts
+
+
+groups, titles, authors , abstracts = get_iccv_groups_titles_authors_abstracts(ICCV_2019_DATA_ROOT, "data.json", ICCV_2019_MAIN_CONFERENCE, ICCV_2019_OPEN_ABSTRACT)
+
+
 
 group_indices = get_group_indices_from_groups(groups)
 
