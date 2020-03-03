@@ -2,7 +2,9 @@ import urllib.request as urllib2
 from bs4 import BeautifulSoup
 
 
-ROOT = "https://en.wikipedia.org/w/index.php?title=Category:Companies_listed_on_NASDAQ&from="
+
+WIKI_URL_ROOT = "https://en.wikipedia.org"
+WIKI_NASDAQ_ROOT = WIKI_URL_ROOT+"/w/index.php?title=Category:Companies_listed_on_NASDAQ&from="
 
 suffix_list = ['0']
 letter_list = [chr(x) for x in range(ord('A'), ord('Z') + 1)]
@@ -25,22 +27,40 @@ def is_category_company_li(cat, li):
             return True
     return False
 
-def get_companies_data(s, wiki_url):
+
+def get_url_from_li(wiki_url_root, li):
+    try:
+        a = li.find(href=True)
+        href = a['href']
+        url = wiki_url_root + href
+        return url
+    except:
+        return ""
+
+
+def get_companies_data(s, wiki_url_root, wiki_nasdaq_url):
     companies = []
-    page = urllib2.urlopen(wiki_url)
+    company_wiki_urls = []
+    page = urllib2.urlopen(wiki_nasdaq_url)
     soup = BeautifulSoup(page,'html.parser')
-    li = soup.find_all("li")
-    for l in li:
-        if is_category_company_li(s, l):
-            companies.append(l.get_text())
-    return companies
+    lis = soup.find_all("li")
+    for li in lis:
+        if is_category_company_li(s, li):
+            url = get_url_from_li(wiki_url_root, li)
+            if len(url) > 0:
+                companies.append(li.get_text())
+                company_wiki_urls.append(url)
+    return companies, company_wiki_urls
 
 
 companies = []
+wiki_company_uls = []
 
 for s in suffix_list:
-    wiki_url = ROOT + s
-    companies_s  = get_companies_data(s, wiki_url)
+    wiki_nasdaq_url = WIKI_NASDAQ_ROOT + s
+    companies_s, url_s  = get_companies_data(s, WIKI_URL_ROOT, wiki_nasdaq_url)
     companies.extend(companies_s)
+    wiki_company_uls.extend(url_s)
 print(companies)
+print(wiki_company_uls)
 print (len(companies))
