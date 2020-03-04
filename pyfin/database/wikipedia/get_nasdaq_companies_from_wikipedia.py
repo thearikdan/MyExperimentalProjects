@@ -1,6 +1,8 @@
 import urllib.request as urllib2
 from bs4 import BeautifulSoup
 import json
+from datetime import date
+
 
 
 WIKI_URL_ROOT = "https://en.wikipedia.org"
@@ -39,7 +41,7 @@ def get_url_from_li(wiki_url_root, li):
 
 
 
-def get_company_data_from_wiki_page(url):
+def get_company_data_from_wiki_page(name, url):
     #https: // stackoverflow.com / questions / 54120864 / scraping - wikipedia - infobox - when - table - cells - are - in -mixed - formats
     info = {}
     try:
@@ -58,6 +60,8 @@ def get_company_data_from_wiki_page(url):
                     elif elem.name == 'br':
                         innerText += '\n'
                 info[th.text] = innerText
+        info["Company name"] = name
+        info["Wiki URL"] = url
         print(json.dumps(info, indent=1))
         return info
     except:
@@ -76,9 +80,10 @@ def get_companies_data(s, wiki_url_root, wiki_nasdaq_url):
         if is_category_company_li(s, li):
             url = get_url_from_li(wiki_url_root, li)
             if len(url) > 0:
-                companies.append(li.get_text())
+                name = li.get_text()
+                companies.append(name)
                 company_wiki_urls.append(url)
-                data = get_company_data_from_wiki_page(url)
+                data = get_company_data_from_wiki_page(name, url)
                 companies_data.append(data)
     return companies, company_wiki_urls, companies_data
 
@@ -87,13 +92,21 @@ companies = []
 wiki_company_uls = []
 companies_data = []
 
+today = date.today()
+today_str = today.strftime("%b-%d-%Y")
+json_file_name = "NasdaqCompanies-%s.json" % today_str
+
 for s in suffix_list:
     wiki_nasdaq_url = WIKI_NASDAQ_ROOT + s
     companies_s, url_s, data_s  = get_companies_data(s, WIKI_URL_ROOT, wiki_nasdaq_url)
     companies.extend(companies_s)
     wiki_company_uls.extend(url_s)
     companies_data.extend(data_s)
-print(companies)
-print(wiki_company_uls)
-print(companies_data)
-print (len(companies))
+    print(data_s)
+
+with open(json_file_name, 'w') as outfile:
+    json.dump(companies_data, outfile)
+
+print ("Number of companies: " + str(len(companies)))
+
+
