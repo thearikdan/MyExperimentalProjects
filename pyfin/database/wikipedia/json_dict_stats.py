@@ -2,9 +2,9 @@ import json
 
 
 #create dict_list.json by running json_save_load.py
-with open('NasdaqCompanies-Mar-03-2020.json', 'r') as infile:
+with open('NasdaqCompanies-Mar-04-2020.json', 'r') as infile:
     data = json.load(infile)
-    print data
+    print (data)
 
 keys = []
 counts = []
@@ -13,9 +13,9 @@ dict_keys = []
 
 count = len(data)
 for i in range (count):
-    dict_keys.append(data[i].keys())
+    dict_keys.append(list(data[i].keys()))
 
-print dict_keys
+print (dict_keys)
 
 for i in range (count):
     length = len(dict_keys[i])
