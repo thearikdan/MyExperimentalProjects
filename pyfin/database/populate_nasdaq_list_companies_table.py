@@ -12,6 +12,8 @@ import psycopg2
 #amex http://eoddata.com/stocklist/AMEX.htm
 #eodata login aradan t-3
 
+#The problem with the data is that these lists are not changing in years. Tried to run the same script one year later, and all companies are already in database!
+
 def get_company_data_from_table_list(symbols, names, ipo_years, sectors, industries, summary_quotes):
     syms = symbols[1:len(symbols)]
     nams = names[1:len(names)]
@@ -23,9 +25,9 @@ def get_company_data_from_table_list(symbols, names, ipo_years, sectors, industr
 
 
 
-file_name1 = '/media/ara/HDD/MyProjects/pyfin/downloads/nasdaq-listed_csv_sep_23_2019.csv'
-file_name2 = '/media/ara/HDD/MyProjects/pyfin/downloads/nyse-listed_csv_sep_23_2019.csv'
-file_name3 = '/media/ara/HDD/MyProjects/pyfin/downloads/AMEX_sep_23_2019.txt'
+file_name1 = '/media/ara/HDD/MyProjects/pyfin/downloads/nasdaq-listed_csv_mar_7_2020.csv'
+file_name2 = '/media/ara/HDD/MyProjects/pyfin/downloads/nyse-listed_csv_mar_7_2020.csv'
+file_name3 = '/media/ara/HDD/MyProjects/pyfin/downloads/AMEX_mar_7_2020.txt'
 
 symbols1, names1, _, _, _, _, _ = file_op.get_nasdaq_downloaded_csv_data_2(file_name1)
 symbols2, names2,  _, _, _, _, _ = file_op.get_nasdaq_downloaded_csv_data_2(file_name2)
