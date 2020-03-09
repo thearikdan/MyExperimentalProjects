@@ -226,6 +226,34 @@ def is_record_in_intraday_prices_on_that_day_and_time(conn, cur, market, symbol,
 
 
 
+def get_record_count_in_intraday_prices_for_company_id(conn, cur, company_id):
+    sql = "SELECT * FROM public.intraday_prices WHERE (company_id='" + str(company_id) + "');"
+    cur.execute(sql)
+    rows = cur.fetchall()
+    return len(rows)
+
+
+
+def if_record_exists_in_intraday_prices_for_company_id(conn, cur, company_id):
+    sql = "SELECT EXISTS (SELECT 1 FROM public.intraday_prices WHERE (company_id='" + str(company_id) + "'));"
+    cur.execute(sql)
+    out = cur.fetchall()
+    res = out[0][0]
+    return res
+
+
+
+def delete_company_id_from_companies(conn, cur, company_id):
+    sql = "DELETE FROM public.companies WHERE (company_id='" + str(company_id) + "');"
+    try:
+        cur.execute(sql)
+    except psycopg2.IntegrityError:
+        print ("Failed to delete company id " + str(company_id))
+        conn.rollback()
+    else:
+        print ("Deleted company id " + str(company_id))
+        conn.commit()
+
 
 def add_to_corrupt_intraday_prices(conn, cur, market, symbol, date):
     company_ids = get_company_ids_from_market_and_symbol(conn, cur, market, symbol)
