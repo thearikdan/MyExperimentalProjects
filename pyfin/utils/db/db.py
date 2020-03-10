@@ -105,14 +105,14 @@ def pgpool():
     return _pgpool
 '''
 
-def insert_names(table, cursor, names):
+def insert_names(table, conn, cursor, names):
     count = len(names)
 
     for i in range (count):
         sql = "INSERT INTO " + table +"(name) SELECT('"+names[i]+"') WHERE NOT EXISTS (SELECT * FROM " + table + " WHERE name='"+names[i]+"');"
         #print sql
         try:
-            cur.execute(sql)
+            cursor.execute(sql)
         except psycopg2.IntegrityError:
 #            print ("SKIPPING " + sql)
             conn.rollback()
@@ -128,7 +128,7 @@ def insert_companies(table, conn, cur, symbols, names, ipo_years, sectors, indus
     for i in range (count):
         name = names[i].replace("'", "")
         sql = "INSERT INTO " + table +"(symbol, name, ipo_year, sector_id, industry_id, summary_quote, stock_exchange_id) VALUES('" + symbols[i] + "','" + name + "','" + ipo_years[i] + "', (SELECT sector_id from public.sectors WHERE name='" + sectors[i] + "'), (SELECT industry_id from public.industries WHERE name='" + industries[i] + "'), '" + summary_quotes[i] + "', '" + str(stock_exchange_ids[i]) + "');"
-#        print sql
+        print (sql)
         try:
             cur.execute(sql)
         except psycopg2.IntegrityError:
