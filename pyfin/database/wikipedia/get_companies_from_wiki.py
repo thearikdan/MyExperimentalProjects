@@ -2,16 +2,13 @@ import urllib.request as urllib2
 from bs4 import BeautifulSoup
 import json
 from datetime import date
+from argparse import ArgumentParser
+import sys
 
 
+def print_usage():
+    print ("Usage: python download_intraday_dataset.py -e stock exchange extension url -o output json file name")
 
-WIKI_URL_ROOT = "https://en.wikipedia.org"
-#WIKI_NASDAQ_ROOT = WIKI_URL_ROOT+"/w/index.php?title=Category:Companies_listed_on_NASDAQ&from="
-WIKI_NYSE_ROOT =  WIKI_URL_ROOT+"/w/index.php?title=Category:Companies_listed_on_the_New_York_Stock_Exchange&from="
-
-suffix_list = ['0']
-letter_list = [chr(x) for x in range(ord('A'), ord('Z') + 1)]
-suffix_list.extend(letter_list)
 
 def is_category_company_li(cat, li):
     letters_range = range (ord('A'), ord('Z') + 1)
@@ -89,6 +86,39 @@ def get_companies_data(s, wiki_url_root, wiki_nasdaq_url):
     return companies, company_wiki_urls, companies_data
 
 
+parser = ArgumentParser()
+
+parser.add_argument("-e", "--exchange_extension", required=True, help="Specify exchange specific url extension")
+parser.add_argument("-o", "--output_file", required=True, help="Specify output file name")
+
+
+args = parser.parse_args()
+
+params = vars(args)
+print (len(sys.argv))
+
+if len(sys.argv) != 5:
+    print_usage()
+    exit()
+
+
+
+
+WIKI_URL_ROOT = "https://en.wikipedia.org"
+WIKI_EXCHANGE_EXTENSION = params['exchange_extension']
+
+#WIKI_NASDAQ_ROOT = WIKI_URL_ROOT+"/w/index.php?title=Category:Companies_listed_on_NASDAQ&from="
+#WIKI_NYSE_ROOT = "/w/index.php?title=Category:Companies_listed_on_the_New_York_Stock_Exchange&from="
+#WIKI_NYSE_ROOT =  WIKI_URL_ROOT+WIKI_EXCHANGE_EXTENSION
+
+
+WIKI_URL = WIKI_URL_ROOT + WIKI_EXCHANGE_EXTENSION
+print(WIKI_URL)
+
+suffix_list = ['0']
+letter_list = [chr(x) for x in range(ord('A'), ord('Z') + 1)]
+suffix_list.extend(letter_list)
+
 companies = []
 wiki_company_uls = []
 companies_data = []
@@ -96,11 +126,15 @@ companies_data = []
 today = date.today()
 today_str = today.strftime("%b-%d-%Y")
 #json_file_name = "NasdaqCompanies-%s.json" % today_str
-json_file_name = "NYSECompanies-%s.json" % today_str
+output_file = params['output_file']
+print(output_file)
+json_file_name = (output_file + "-%s.json") % today_str
+
 
 for s in suffix_list:
 #    wiki_nasdaq_url = WIKI_NASDAQ_ROOT + s
-    wiki_nasdaq_url = WIKI_NYSE_ROOT + s
+    wiki_nasdaq_url = WIKI_URL + s
+    print(wiki_nasdaq_url)
     companies_s, url_s, data_s  = get_companies_data(s, WIKI_URL_ROOT, wiki_nasdaq_url)
     companies.extend(companies_s)
     wiki_company_uls.extend(url_s)
@@ -111,5 +145,4 @@ with open(json_file_name, 'w') as outfile:
     json.dump(companies_data, outfile)
 
 print ("Number of companies: " + str(len(companies)))
-
 

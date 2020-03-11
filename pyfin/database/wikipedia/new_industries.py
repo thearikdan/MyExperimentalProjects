@@ -1,6 +1,7 @@
 import json
 
-new_dict_file_name = "new_nasdaq_companies.json"
+#new_dict_file_name = "new_nasdaq_companies.json"
+new_dict_file_name = "new_nyse_companies.json"
 
 with open(new_dict_file_name, 'r') as infile:
     new_companies_data = json.load(infile)

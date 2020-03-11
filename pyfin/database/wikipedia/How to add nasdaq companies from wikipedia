@@ -3,4 +3,4 @@
 3. Export existing industries from database
 4. Run "new_industries.py" to identify new industries
 5. Run "populate_nasdaq_list_industries_table from_file.py" to insert new industries
-6. Run "populate_nasdaq_list_industries_table from_file.py" to insert new companies.
+6. Run "populate_file_list_companies_table.py" to insert new companies.
