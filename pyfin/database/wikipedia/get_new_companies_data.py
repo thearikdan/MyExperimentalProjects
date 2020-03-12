@@ -1,8 +1,12 @@
 import json
+from argparse import ArgumentParser
+import sys
 
-#The script assumes json file was created by get_nasdaq_companies_from_wikipedia.py script
+
+#The script assumes json file was created by get_companies_from_wiki.py script
 #json_file_name = "NasdaqCompanies-Mar-03-2020.json"
-json_file_name = "NYSECompanies-Mar-10-2020.json"
+#It also assumes the list of existing companies from the stock exchange is exported into csv file
+#existing_companies_csv = 'nyse_existing_db.csv'
 
 def get_industry(dict):
     try:
@@ -12,12 +16,12 @@ def get_industry(dict):
         return ""
 
 
-def get_symbol_from_traded(traded):
+def get_symbol_from_traded(traded, stock_exchange):
     splt = traded.split()[0]
     splt = splt.split(":")[1]
     splt = splt.split("(")[0]
     splt = splt.split("S&P")[0]
-#    splt = splt.split("NASDAQ")[0]
+    splt = splt.split("NASDAQ")[0]
     splt = splt.split("NYSE")[0]
     splt = splt.split(")")[0]
     splt = splt.split("[")[0]
@@ -35,10 +39,43 @@ def get_symbol_from_traded(traded):
     splt = splt.split("Euronext")[0]
     splt = splt.split("Class")[0]
     splt = splt.split(".VCommon")[0]
+    if stock_exchange == "LSE":
+        splt = splt.split("LSE")[0]
+        splt = splt.split("FWB")[0]
+        splt = splt.split("FTSE")[0]
+        splt = splt.split("SGX")[0]
+        splt = splt.split("MCX")[0]
+        splt = splt.rstrip('.')
     return splt
 
 
-with open(json_file_name, 'r') as infile:
+parser = ArgumentParser()
+
+parser.add_argument("-i", "--input_json_file", required=True, help="Specify the name of the input json file")
+parser.add_argument("-x", "--stock_exchange_name", required=True, help="Specify the name of the stock exchange")
+parser.add_argument("-e", "--existing_companies_csv", required=True, help="List of existing companies of the stock exchange exported from database")
+parser.add_argument("-o", "--output_json_file", required=True, help="Specify the name of the output json file with names of new companies")
+
+
+args = parser.parse_args()
+params = vars(args)
+
+#input_json_file_name = "NYSECompanies-Mar-10-2020.json"
+input_json_file_name  = params['input_json_file']
+
+#stock_exchange = "NASDAQ"
+#stock_exchange = "NYSE"
+#stock_exchange = "LSE"
+stock_exchange = params['stock_exchange_name']
+
+#new_companies_file_name = "new_nyse_companies.json"
+new_companies_file_name = params['output_json_file']
+
+#existing_companies_csv = 'nyse_existing_db.csv'
+existing_companies_csv = params['existing_companies_csv']
+
+
+with open(input_json_file_name, 'r') as infile:
     companies_data = json.load(infile)
 
 #print (companies_data)
@@ -50,26 +87,22 @@ for dict in companies_data:
     try:
         name = dict["Company name"]
         traded = dict["Traded\xa0as"]
-        symbol = get_symbol_from_traded(traded)
+        symbol = get_symbol_from_traded(traded, stock_exchange)
         if symbol == "":
             continue
         industry = get_industry(dict)
 #        if "NASDAQ:" in traded:
-        if "NYSE:" in traded:
+        if stock_exchange in traded:
             nasdaq_data.append(symbol)
             industries.append(industry)
             names.append(name)
     except:
         continue
 
-#print (nasdaq_data)
-#print(names)
-#print(industries)
-
 
 existing_companies = []
 #with open('nasdaq_existing_db.csv', 'r') as f:
-with open('nyse_existing_db.csv', 'r') as f:
+with open(existing_companies_csv, 'r') as f:
     existing_companies = f.read().splitlines()
 
 #print(existing_companies)
@@ -86,8 +119,6 @@ for i in range (wiki_count):
         print (new_dict)
 
 
-#new_companies_file_name = "new_nasdaq_companies.json"
-new_companies_file_name = "new_nyse_companies.json"
 with open(new_companies_file_name, 'w') as outfile:
     json.dump(new_dict_list, outfile)
 
