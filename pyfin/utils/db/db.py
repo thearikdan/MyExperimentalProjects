@@ -121,6 +121,21 @@ def insert_names(table, conn, cursor, names):
             conn.commit()
 
 
+def insert_etf_asset_classes(conn, cursor, classes):
+    count = len(classes)
+
+    for i in range (count):
+        sql = "INSERT INTO public.ETF_asset_classes (asset_class) VALUES('" + classes[i]+"');"
+        print (sql)
+        try:
+            cursor.execute(sql)
+        except psycopg2.IntegrityError:
+            conn.rollback()
+        else:
+            conn.commit()
+
+
+
 
 def insert_companies(table, conn, cur, symbols, names, ipo_years, sectors, industries, summary_quotes, stock_exchange_ids):
     count = len(names)
