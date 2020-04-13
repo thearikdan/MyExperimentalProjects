@@ -125,7 +125,7 @@ def insert_etf_asset_classes(conn, cursor, classes):
     count = len(classes)
 
     for i in range (count):
-        sql = "INSERT INTO public.ETF_asset_classes (asset_class) VALUES('" + classes[i]+"');"
+        sql = "INSERT INTO etf_asset_classes (asset_class) SELECT('"+classes[i]+"') WHERE NOT EXISTS (SELECT * FROM etf_asset_classes WHERE asset_class='"+classes[i]+"');"
         print (sql)
         try:
             cursor.execute(sql)
@@ -134,6 +134,19 @@ def insert_etf_asset_classes(conn, cursor, classes):
         else:
             conn.commit()
 
+
+def insert_etf_categories(conn, cursor, categories):
+    count = len(categories)
+
+    for i in range (count):
+        sql = "INSERT INTO etf_categories (category) SELECT('"+categories[i]+"') WHERE NOT EXISTS (SELECT * FROM etf_categories WHERE category='"+categories[i]+"');"
+        print (sql)
+        try:
+            cursor.execute(sql)
+        except psycopg2.IntegrityError:
+            conn.rollback()
+        else:
+            conn.commit()
 
 
 
