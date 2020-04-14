@@ -246,6 +246,19 @@ def get_all_symbols_and_markets(conn, cursor):
     return symbols, markets
 
 
+def get_all_etf_symbols(conn, cursor):
+    symbols = []
+    markets = []
+    sql = "SELECT symbol FROM public.etfs;"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for row in rows:
+        s = row[0]
+        symbols.append(s)
+    return symbols
+
+
+
 def get_all_company_ids(conn, cursor):
     company_ids = []
     sql = "SELECT company_id FROM public.companies;"
@@ -272,6 +285,19 @@ def get_company_ids_from_market_and_symbol(market, symbol):
     for row in rows:
         ids.append(row[0])
     return ids
+
+
+def get_etf_ids_from_symbol(symbol):
+    ids=[]
+    sql = ""
+    sql ="SELECT etf_id FROM public.etfs WHERE symbol='" + symbol + "';"
+    rows = Pcursor().fetchall(sql)
+#    cur.execute(sql)
+#    rows = cur.fetchall()
+    for row in rows:
+        ids.append(row[0])
+    return ids
+
 
 
 def is_record_in_corrupt_intraday_prices_on_that_day(conn, cur, market, symbol, date):
@@ -384,6 +410,30 @@ def add_to_intraday_prices(market, symbol, date_time, volume, opn, close, high, 
             print ("Inserting " + symbol)
 #            conn.commit()
 
+def add_to_etf_intraday_prices(symbol, date_time, volume, opn, close, high, low):
+    etf_ids = get_etf_ids_from_symbol(symbol)
+    if len(etf_ids) != 1:
+        return
+
+    count = len(date_time)
+    for i in range(count):
+        date, time = time_op.get_date_time_from_datetime(date_time[i])
+        timestamp = date + " " + time
+        vo = process_numeric_value(volume[i])
+        op = process_numeric_value(opn[i])
+        cl = process_numeric_value(close[i])
+        hi = process_numeric_value(high[i])
+        lo = process_numeric_value(low[i])
+        sql = "INSERT INTO public.etf_intraday_prices (etf_id, date_time, volume, opening_price, closing_price, high_price, low_price) VALUES('" + str(etf_ids[0]) + "','" + timestamp + "'::timestamp without time zone" + ",'" + vo + "','" + op + "','" + cl + "','" + hi + "','" + lo + "');"
+        try:
+            Pcursor().execute(sql)
+#            cur.execute(sql)
+        except psycopg2.IntegrityError:
+            print ("SKIPPING " + symbol)
+#            conn.rollback()
+        else:
+            print ("Inserting " + symbol)
+#            conn.commit()
 
 
 def add_to_daily_prices(company_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):

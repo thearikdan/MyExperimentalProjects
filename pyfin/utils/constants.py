@@ -21,3 +21,7 @@ DATA_ROOT = '/media/hddx/datasets/pyfin/data'
 class Storage_Type:
     File_System=1
     Database=2
+
+class Security_Type:
+    Equity=1
+    ETF=2

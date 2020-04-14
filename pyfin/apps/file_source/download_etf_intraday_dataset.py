@@ -32,9 +32,6 @@ if len(sys.argv) != 7:
 start_time = time.time()
 
 
-#data_root = "/media/hddx/datasets/pyfin/data"
-#data_root = "/media/ara/Passport2_4TB/datasets/pyfin/data_v2" 
-#data_root = "/media/ara/Passport1_2TB/datasets/pyfin/data_v2"
 data_root = params['data_root']
 
 #N = 1
@@ -50,9 +47,6 @@ else:
     exit()
 
 
-#print (data_root)
-#print (N)
-
 
 if ((data_root is None) or (N is None)):
     print_usage()
@@ -65,13 +59,16 @@ if not os.path.isdir(data_root):
 
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
-symbols, markets = db.get_all_symbols_and_markets(conn, cur)
-#print symbols, markets
+#symbols = db.get_all_etf_symbols(conn, cur)
+symbols = ['VXX']
+count = len(symbols)
+#markets = ['n/a' for i in range(count)]
+markets = ['' for i in range(count)]
 
 cur.close()
 conn.close()
 
-read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.Equity)
+read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.ETF)
 
 
 seconds = time.time() - start_time
