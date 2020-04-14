@@ -63,6 +63,7 @@ def get_all_dataframes(root_dir):
         df = get_full_dataframe_for_directory(path)
         frames.append(df)
 
+#    all_frames = pd.concat(frames, sort='False')
     all_frames = pd.concat(frames)
     return all_frames
 
@@ -84,3 +85,9 @@ def get_all_categories(root_dir):
     replace_nan_in_list(lst, "n/a")
     return lst
     return list(set(cats))
+
+
+def get_all_dataframes_for_db(root_dir):
+    all_frames = get_all_dataframes(root_dir)
+    db_frames = all_frames[['Symbol', 'ETF Name', 'Asset Class', 'Inverse', 'Leveraged', 'ETFdb.com Category']]
+    return db_frames

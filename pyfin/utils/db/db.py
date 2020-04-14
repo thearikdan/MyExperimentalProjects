@@ -167,6 +167,55 @@ def insert_companies(table, conn, cur, symbols, names, ipo_years, sectors, indus
             conn.commit()
 
 
+def convert_nan_to_string(s, rep):
+    if not isinstance(s, str):
+        return rep
+    else:
+        return s
+
+
+def process_string(s, rep):
+    p = convert_nan_to_string(s, rep)
+    p = p.replace("'", "")
+    return p
+
+
+def insert_etf_dataframe(conn, cur, db_etfs):
+    rows = db_etfs.shape[0]
+
+    for ind in range (rows):
+        symbol = db_etfs['Symbol'].values[ind]
+        symbol = process_string(symbol, "n/a")
+
+        name = db_etfs['ETF Name'].values[ind]
+        name = process_string(name, "n/a")
+
+        asset_class = db_etfs['Asset Class'].values[ind]
+        asset_class = process_string(asset_class, "n/a")
+
+        inverse = db_etfs['Inverse'].values[ind]
+        inverse = process_string(inverse, "n/a")
+
+        leveraged = db_etfs['Leveraged'].values[ind]
+        leveraged = process_string(leveraged, "n/a")
+
+        category = db_etfs['ETFdb.com Category'].values[ind]
+        category = process_string(category, "n/a")
+
+        sql = "INSERT INTO etfs (symbol, name, inverse, leveraged, category_id, asset_class_id) SELECT '" + symbol + "','" + name + "','" + inverse + "','" + leveraged + "', (SELECT category_id from public.etf_categories WHERE category='" + category + "'), (SELECT asset_class_id from public.etf_asset_classes WHERE asset_class='" + asset_class + "') WHERE NOT EXISTS (SELECT * FROM etfs WHERE symbol='"+symbol+"');"
+        print (sql)
+        try:
+            cur.execute(sql)
+        except psycopg2.IntegrityError:
+            print ("SKIPPING " + symbol)
+            conn.rollback()
+        else:
+            print ("INSERTNG " + symbol)
+            conn.commit()
+
+
+
+
 def get_yahoo_suffix_and_trading_hours_from_symbol(connection, cursor, symbol):
     sql = "SELECT yahoo_suffix, start_time, end_time FROM public.companies INNER JOIN stock_exchanges ON (exchange_id=public.companies.stock_exchange_id) AND (public.companies.symbol='" + symbol + "');"
     cursor.execute(sql)
