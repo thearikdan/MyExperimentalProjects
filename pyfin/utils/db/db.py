@@ -653,6 +653,42 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
     return True, date_time, volume, opn, cls, high, low
 
 
+def get_raw_etf_intraday_data(symbol, start_datetime, end_datetime):
+    date_time = []
+    volume=[]
+    opn = []
+    cls = []
+    high = []
+    low = []
+
+    start_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M")
+    end_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M")
+
+    sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.etf_intraday_prices INNER JOIN public.etfs ON public.etf_intraday_prices.etf_id=public.etfs.etf_id \
+WHERE public.etfs.symbol='" + symbol + "' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
+ #   cur1 = Pcursor()
+ #   cir1.execute(sql)
+    rows = Pcursor().fetchall(sql)
+#    cur.execute(sql)
+#    rows = cur.fetchall()
+    count = len(rows)
+    if count==0: #The danger with this comparison is that if we have incomplete data for the day, it will still return True
+        return False, [], [], [], [], [], []
+    for row in rows:
+        dt = row[0]
+        v = row[1]
+        o = row[2]
+        c = row[3]
+        h = row[4]
+        l = row[5]
+        date_time.append(dt)
+        volume.append(float(v))
+        opn.append(float(o))
+        cls.append(float(c))
+        high.append(float(h))
+        low.append(float(l))
+    return True, date_time, volume, opn, cls, high, low
+
 
 def get_raw_intraday_data_from_company_id(company_id, start_datetime, end_datetime):
     date_time = []
@@ -692,6 +728,18 @@ def get_raw_intraday_data_from_company_id(company_id, start_datetime, end_dateti
 
 def get_intraday_data(market, symbol, start_datetime, end_datetime, interval):
     is_data_available, date_time, volume, opn, close, high, low = get_raw_intraday_data(market, symbol, start_datetime, end_datetime)
+    if (is_data_available):
+        volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
+        dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume, opn, close,
+                                                                                high, low)
+        print ("Data are already in database for " + symbol)
+        return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
+    else:
+        return False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0
+
+
+def get_etf_intraday_data(symbol, start_datetime, end_datetime, interval):
+    is_data_available, date_time, volume, opn, close, high, low = get_raw_etf_intraday_data(symbol, start_datetime, end_datetime)
     if (is_data_available):
         volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
         dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume, opn, close,

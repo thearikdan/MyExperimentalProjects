@@ -117,9 +117,15 @@ def heal_intraday_data(date_time, volume, opn, close, high, low):
         return date_time, volume, opn, close, high, low
 '''
 
+
 def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_type, security_type):
     interval_string = "1m"
-    ticker, market = symbol_market.split(":")
+
+    if security_type == constants.Security_Type.Equity:
+        ticker, market = market_symbol.split(":")
+    elif security_type == constants.Security_Type.ETF:
+        ticker = market_symbol
+        market = ""
 
     if storage_type == constants.Storage_Type.File_System:
         data_dir = join(root_dir, market)
@@ -144,7 +150,11 @@ def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_typ
 
     elif storage_type == constants.Storage_Type.Database:
 #        conn, cur = db.connect_to_database("../../database/database_settings.txt")
-        is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_intraday_data(market, ticker, start, end, interval)
+        if security_type == constants.Security_Type.Equity:
+            is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_intraday_data(market, ticker, start, end, interval)
+        elif security_type == constants.Security_Type.ETF:
+            is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_etf_intraday_data(ticker, start, end, interval)
+
         if is_data_available:
             return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
 
@@ -304,7 +314,13 @@ def get_all_intraday_prices_for_N_days_to_date (data_dir, market_symbol, N, last
     high_list = []
     low_list = []
 
-    ticker, market = market_symbol.split(":")
+    if security_type == constants.Security_Type.Equity:
+        ticker, market = market_symbol.split(":")
+    elif security_type == constants.Security_Type.ETF:
+        ticker = market_symbol
+        market = ""
+
+    print (ticker, market)
 
     start_hour, start_minute = time_op.get_start_time_for_symbol(ticker)
     end_hour, end_minute = time_op.get_end_time_for_symbol(ticker)
@@ -419,10 +435,11 @@ def parallel_download_intraday_list_of_tickers(data_dir, tickers, markets, day_c
     # combine tickers with markets to pass param for parallel processing
     count = len(tickers)
     for i in range(count):
-        m = markets[i]
-        if m =="n/a":
-            m = "n_a"
-        tickers[i] = tickers[i] + ":" + m
+        if security_type == constants.Security_Type.Equity:
+            m = markets[i]
+            if m =="n/a":
+                m = "n_a"
+            tickers[i] = tickers[i] + ":" + m
 
 #    tickers = ["AMZN:nasdaq"]
 
