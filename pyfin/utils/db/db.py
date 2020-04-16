@@ -270,6 +270,16 @@ def get_all_company_ids(conn, cursor):
     return company_ids
 
 
+def get_all_etf_ids(conn, cursor):
+    etf_ids = []
+    sql = "SELECT etf_id FROM public.etfs;"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    for row in rows:
+        id = row[0]
+        etf_ids.append(id)
+    return etf_ids
+
 
 def get_company_ids_from_market_and_symbol(market, symbol):
     ids=[]
@@ -470,6 +480,44 @@ def add_to_daily_prices(company_id, date_time, min_volume, min_volume_times, max
  #       conn.rollback()
 #    else:
     print ("Inserting company " + str(company_id))
+#        conn.commit()
+
+
+
+def add_to_etf_daily_prices(etf_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
+    date, time = time_op.get_date_time_from_datetime(date_time)
+    timestamp = date + " " + time
+
+    min_vo = process_numeric_value(min_volume)
+    max_vo = process_numeric_value(max_volume)
+    avg_vo = process_numeric_value(avg_volume)
+    op = process_numeric_value(opening)
+    cl = process_numeric_value(closing)
+    hi = process_numeric_value(high)
+    lo = process_numeric_value(low)
+    vo_nan_r = process_numeric_value(volume_nan_ratio)
+    op_nan_r = process_numeric_value(opening_nan_ratio)
+    cl_nan_r = process_numeric_value(closing_nan_ratio)
+    hi_nan_r = process_numeric_value(high_nan_ratio)
+    lo_nan_r = process_numeric_value(low_nan_ratio)
+
+    min_vol_times_str = time_op.get_postgresql_time_array_string(min_volume_times)
+    max_vol_times_str = time_op.get_postgresql_time_array_string(max_volume_times)
+    high_times_str = time_op.get_postgresql_time_array_string(high_times)
+    low_times_str = time_op.get_postgresql_time_array_string(low_times)
+
+
+
+    sql = "INSERT INTO public.etf_daily_prices (etf_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening_price, closing_price, high_price, high_price_times, low_price, low_price_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio)\
+ VALUES('" + str(etf_id) + "','" + timestamp + "'::timestamp without time zone" + ",'" + min_vo + "'," + min_vol_times_str + ",'" + max_vo + "'," + max_vol_times_str + ",'" +  avg_vo + "','" + op + "','" + cl + "','" + hi + "'," + high_times_str + ",'" + lo + \
+          "'," + low_times_str + ",'" + vo_nan_r + "','" + op_nan_r + "','" + cl_nan_r + "','" + hi_nan_r + "','" + lo_nan_r + "');"
+#    try:
+    Pcursor().execute(sql)
+#    except psycopg2.IntegrityError:
+#        print ("SKIPPING " + sql)
+ #       conn.rollback()
+#    else:
+    print ("Inserting etf " + str(etf_id))
 #        conn.commit()
 
 
@@ -704,6 +752,42 @@ def get_raw_intraday_data_from_company_id(company_id, start_datetime, end_dateti
 
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices WHERE company_id='" + str(company_id) + \
 "' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
+#    print sql
+#    cur.execute(sql)
+#    rows = cur.fetchall()
+    rows = Pcursor().fetchall(sql)
+    count = len(rows)
+    if count==0:
+        return False, [], [], [], [], [], []
+    for row in rows:
+        dt = row[0]
+        v = row[1]
+        o = row[2]
+        c = row[3]
+        h = row[4]
+        l = row[5]
+        date_time.append(dt)
+        volume.append(float(v))
+        opn.append(float(o))
+        cls.append(float(c))
+        high.append(float(h))
+        low.append(float(l))
+    return True, date_time, volume, opn, cls, high, low
+
+
+def get_raw_intraday_data_from_etf_id(etf_id, start_datetime, end_datetime):
+    date_time = []
+    volume=[]
+    opn = []
+    cls = []
+    high = []
+    low = []
+
+    start_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M")
+    end_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M")
+
+    sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.etf_intraday_prices WHERE etf_id='" + str(etf_id) + \
+"' AND public.etf_intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
 #    print sql
 #    cur.execute(sql)
 #    rows = cur.fetchall()
