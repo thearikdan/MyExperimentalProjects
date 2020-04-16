@@ -59,8 +59,8 @@ if not os.path.isdir(data_root):
 
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
-#symbols = db.get_all_etf_symbols(conn, cur)
-symbols = ['VXX']
+symbols = db.get_all_etf_symbols(conn, cur)
+#symbols = ['VXX']
 count = len(symbols)
 #markets = ['n/a' for i in range(count)]
 markets = ['' for i in range(count)]
@@ -68,7 +68,8 @@ markets = ['' for i in range(count)]
 cur.close()
 conn.close()
 
-read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.ETF)
+#read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.ETF)
+read.sequential_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.ETF)
 
 
 seconds = time.time() - start_time

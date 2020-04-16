@@ -665,7 +665,8 @@ def get_raw_etf_intraday_data(symbol, start_datetime, end_datetime):
     end_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M")
 
     sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.etf_intraday_prices INNER JOIN public.etfs ON public.etf_intraday_prices.etf_id=public.etfs.etf_id \
-WHERE public.etfs.symbol='" + symbol + "' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
+WHERE public.etfs.symbol='" + symbol + "' AND public.etf_intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
+ #   print (sql)
  #   cur1 = Pcursor()
  #   cir1.execute(sql)
     rows = Pcursor().fetchall(sql)

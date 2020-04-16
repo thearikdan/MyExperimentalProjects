@@ -168,7 +168,7 @@ def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_typ
             db.add_to_intraday_prices(market, ticker, date_time, volume, opn, close, high, low)
         elif security_type == constants.Security_Type.ETF:
             print("Adding ETF")
-            db.add_to_etf_intraday_prices(market, ticker, date_time, volume, opn, close, high, low)
+            db.add_to_etf_intraday_prices(ticker, date_time, volume, opn, close, high, low)
 
         cur.close()
         conn.close()
