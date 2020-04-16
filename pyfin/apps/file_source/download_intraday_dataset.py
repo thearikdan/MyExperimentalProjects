@@ -72,6 +72,7 @@ cur.close()
 conn.close()
 
 read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.Equity)
+#read.sequential_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.Equity)
 
 
 seconds = time.time() - start_time

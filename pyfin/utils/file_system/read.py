@@ -122,9 +122,9 @@ def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_typ
     interval_string = "1m"
 
     if security_type == constants.Security_Type.Equity:
-        ticker, market = market_symbol.split(":")
+        ticker, market = symbol_market.split(":")
     elif security_type == constants.Security_Type.ETF:
-        ticker = market_symbol
+        ticker = symbol_market
         market = ""
 
     if storage_type == constants.Storage_Type.File_System:
@@ -447,4 +447,25 @@ def parallel_download_intraday_list_of_tickers(data_dir, tickers, markets, day_c
 
         pool.map(partial(merge_params, args = (data_dir, day_count, now, storage_type, security_type)), tickers)
 
+
+
+
+def sequential_download_intraday_list_of_tickers(data_dir, tickers, markets, day_count, storage_type, security_type):
+    #The sequential version is for debugging purposes
+    now = datetime.now()
+    # combine tickers with markets to pass param for parallel processing
+    count = len(tickers)
+    for i in range(count):
+        if security_type == constants.Security_Type.Equity:
+            m = markets[i]
+            if m == "n/a":
+                m = "n_a"
+            tickers[i] = tickers[i] + ":" + m
+
+#    tickers = ["AMZN:nasdaq"]
+
+    for i in range (count):
+        market_symbol = tickers[i]
+        get_all_intraday_prices_for_N_days_to_date(data_dir, market_symbol, day_count, now, storage_type,
+                                                   security_type)
 
