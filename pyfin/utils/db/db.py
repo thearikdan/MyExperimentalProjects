@@ -13,23 +13,6 @@ import csv
 from threading import Semaphore
 from utils.db.connection_pool import Pcursor
 
-'''
-class ReallyThreadedConnectionPool(ThreadedConnectionPool):
-    def __init__(self, minconn, maxconn, *args, **kwargs):
-        self._semaphore = Semaphore(maxconn)
-        super().__init__(minconn, maxconn, *args, **kwargs)
-#        super(ReallyThreadedConnectionPool, self).__init__(minconn, maxconn, *args, **kwargs)
-
-    def getconn(self, *args, **kwargs):
-        self._semaphore.acquire()
-        return super().getconn(*args, **kwargs)
-#        return super(ReallyThreadedConnectionPool, self).getconn(*args, **kwargs)
-
-    def putconn(self, *args, **kwargs):
-        super().putconn(*args, **kwargs)
-#        super(ReallyThreadedConnectionPool, self).putconn(*args, **kwargs)
-        self._semaphore.release()
-'''
 
 g_connection_setting_file_name = None
 
@@ -54,56 +37,6 @@ def connect_to_database(settings_file_name):
     return conn, cursor
 
 
-'''
-def get_connection_pool(settings_file_name):
-    threaded_postgreSQL_pool = None
-
-    with open(settings_file_name) as f:
-        lines = f.readlines()
-    host = lines[0]
-    host = "127.0.0.1"
-    dbname = lines[1].rstrip()
-    user = lines[2].rstrip()
-    passwd = lines[3].rstrip()
-    
-    try:
-        threaded_postgreSQL_pool = ReallyThreadedConnectionPool(5, 20, user = user,
-                                              password = passwd,
-                                              host = host,
-                                              database = dbname)
-        if(threaded_postgreSQL_pool):
-            print("Connection pool created successfully")
-        return threaded_postgreSQL_pool
-
-    except (Exception, psycopg2.DatabaseError) as error :
-        print ("Error while connecting to PostgreSQL", error)
-        exit(0)
-'''
-
-'''
-#singleton connection pool, gets reset if a connection is bad or drops
-_pgpool = None
-def pgpool():
-    global _pgpool
-    if not _pgpool:
-        try:
-
-            with open(settings_file_name) as f:
-                lines = f.readlines()
-            host = lines[0]
-            host = "127.0.0.1"
-            dbname = lines[1].rstrip()
-            user = lines[2].rstrip()
-            passwd = lines[3].rstrip()
-
-            _pgpool = ThreadedConnectionPool(5, 20, user = user,
-                                              password = passwd,
-                                              host = host,
-                                              database = dbname)
-        except psycopg2.OperationalError as exc:
-            _pgpool = None
-    return _pgpool
-'''
 
 def insert_names(table, conn, cursor, names):
     count = len(names)
@@ -447,7 +380,8 @@ def add_to_etf_intraday_prices(symbol, date_time, volume, opn, close, high, low)
 #            conn.commit()
 
 
-def add_to_daily_prices(company_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
+
+def add_to_daily_prices(daily_prices_table, company_etf_id, id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
     date, time = time_op.get_date_time_from_datetime(date_time)
     timestamp = date + " " + time
 
@@ -471,21 +405,32 @@ def add_to_daily_prices(company_id, date_time, min_volume, min_volume_times, max
 
 
 
-    sql = "INSERT INTO public.daily_prices (company_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening_price, closing_price, high_price, high_price_times, low_price, low_price_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio)\
- VALUES('" + str(company_id) + "','" + timestamp + "'::timestamp without time zone" + ",'" + min_vo + "'," + min_vol_times_str + ",'" + max_vo + "'," + max_vol_times_str + ",'" +  avg_vo + "','" + op + "','" + cl + "','" + hi + "'," + high_times_str + ",'" + lo + \
+    sql = "INSERT INTO " + daily_prices_table + " (" + company_etf_id + " , date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening_price, closing_price, high_price, high_price_times, low_price, low_price_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio)\
+ VALUES('" + str(id) + "','" + timestamp + "'::timestamp without time zone" + ",'" + min_vo + "'," + min_vol_times_str + ",'" + max_vo + "'," + max_vol_times_str + ",'" +  avg_vo + "','" + op + "','" + cl + "','" + hi + "'," + high_times_str + ",'" + lo + \
           "'," + low_times_str + ",'" + vo_nan_r + "','" + op_nan_r + "','" + cl_nan_r + "','" + hi_nan_r + "','" + lo_nan_r + "');"
+    print(sql)
 #    try:
     Pcursor().execute(sql)
 #    except psycopg2.IntegrityError:
 #        print ("SKIPPING " + sql)
  #       conn.rollback()
 #    else:
-    print ("Inserting company " + str(company_id))
+    print ("Inserting id " + str(id))
 #        conn.commit()
 
 
+def add_to_company_daily_prices(id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
+    add_to_daily_prices("public.daily_prices", "company_id", id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening,
+                        closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio,
+                        closing_nan_ratio, high_nan_ratio, low_nan_ratio)
 
-def add_to_etf_daily_prices(etf_id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
+
+def add_to_etf_daily_prices(id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening, closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio):
+    add_to_daily_prices("public.etf_daily_prices", "etf_id", id, date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening,
+                        closing, high, high_times, low, low_times, volume_nan_ratio, opening_nan_ratio,
+                        closing_nan_ratio, high_nan_ratio, low_nan_ratio)
+
+'''
     date, time = time_op.get_date_time_from_datetime(date_time)
     timestamp = date + " " + time
 
@@ -520,7 +465,7 @@ def add_to_etf_daily_prices(etf_id, date_time, min_volume, min_volume_times, max
 #    else:
     print ("Inserting etf " + str(etf_id))
 #        conn.commit()
-
+'''
 
 
 def get_suffix_list(conn, cursor):
