@@ -258,10 +258,9 @@ def get_all_etf_symbols(conn, cursor):
     return symbols
 
 
-
-def get_all_company_ids(conn, cursor):
+def get_all_ids(conn, cursor, comp_or_etf, table):
     company_ids = []
-    sql = "SELECT company_id FROM public.companies;"
+    sql = "SELECT " + comp_or_etf + " FROM " + table + ";"
     cursor.execute(sql)
     rows = cursor.fetchall()
     for row in rows:
@@ -270,15 +269,17 @@ def get_all_company_ids(conn, cursor):
     return company_ids
 
 
+
+def get_all_company_ids(conn, cursor):
+    company_ids = get_all_ids(conn, cursor, "company_id", "public.companies")
+    return company_ids
+
+
+
 def get_all_etf_ids(conn, cursor):
-    etf_ids = []
-    sql = "SELECT etf_id FROM public.etfs;"
-    cursor.execute(sql)
-    rows = cursor.fetchall()
-    for row in rows:
-        id = row[0]
-        etf_ids.append(id)
+    etf_ids = get_all_ids(conn, cursor, "etf_id", "public.etfs")
     return etf_ids
+
 
 
 def get_company_ids_from_market_and_symbol(market, symbol):
@@ -739,7 +740,8 @@ WHERE public.etfs.symbol='" + symbol + "' AND public.etf_intraday_prices.date_ti
     return True, date_time, volume, opn, cls, high, low
 
 
-def get_raw_intraday_data_from_company_id(company_id, start_datetime, end_datetime):
+
+def get_raw_intraday_data_from_id(prices_table, company_etf_id, id, start_datetime, end_datetime):
     date_time = []
     volume=[]
     opn = []
@@ -750,11 +752,9 @@ def get_raw_intraday_data_from_company_id(company_id, start_datetime, end_dateti
     start_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M")
     end_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M")
 
-    sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.intraday_prices WHERE company_id='" + str(company_id) + \
-"' AND public.intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
-#    print sql
-#    cur.execute(sql)
-#    rows = cur.fetchall()
+    sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from " + prices_table +  " WHERE " + company_etf_id + "='" + str(id) + \
+"' AND " + prices_table + ".date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
+#    print (sql)
     rows = Pcursor().fetchall(sql)
     count = len(rows)
     if count==0:
@@ -775,40 +775,15 @@ def get_raw_intraday_data_from_company_id(company_id, start_datetime, end_dateti
     return True, date_time, volume, opn, cls, high, low
 
 
-def get_raw_intraday_data_from_etf_id(etf_id, start_datetime, end_datetime):
-    date_time = []
-    volume=[]
-    opn = []
-    cls = []
-    high = []
-    low = []
 
-    start_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M")
-    end_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M")
+def get_raw_intraday_data_from_company_id(id, start_datetime, end_datetime):
+    is_available, date_time, volume, opn, cls, high, low = get_raw_intraday_data_from_id("public.intraday_prices", "company_id", id, start_datetime, end_datetime)
+    return is_available, date_time, volume, opn, cls, high, low
 
-    sql = "SELECT date_time, volume, opening_price, closing_price, high_price, low_price from public.etf_intraday_prices WHERE etf_id='" + str(etf_id) + \
-"' AND public.etf_intraday_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
-#    print sql
-#    cur.execute(sql)
-#    rows = cur.fetchall()
-    rows = Pcursor().fetchall(sql)
-    count = len(rows)
-    if count==0:
-        return False, [], [], [], [], [], []
-    for row in rows:
-        dt = row[0]
-        v = row[1]
-        o = row[2]
-        c = row[3]
-        h = row[4]
-        l = row[5]
-        date_time.append(dt)
-        volume.append(float(v))
-        opn.append(float(o))
-        cls.append(float(c))
-        high.append(float(h))
-        low.append(float(l))
-    return True, date_time, volume, opn, cls, high, low
+
+def get_raw_intraday_data_from_etf_id(id, start_datetime, end_datetime):
+    is_available, date_time, volume, opn, cls, high, low = get_raw_intraday_data_from_id("public.etf_intraday_prices", "etf_id", id, start_datetime, end_datetime)
+    return is_available, date_time, volume, opn, cls, high, low
 
 
 def get_intraday_data(market, symbol, start_datetime, end_datetime, interval):
