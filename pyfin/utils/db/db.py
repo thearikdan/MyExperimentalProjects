@@ -408,14 +408,14 @@ def add_to_daily_prices(daily_prices_table, company_etf_id, id, date_time, min_v
     sql = "INSERT INTO " + daily_prices_table + " (" + company_etf_id + " , date_time, min_volume, min_volume_times, max_volume, max_volume_times, avg_volume, opening_price, closing_price, high_price, high_price_times, low_price, low_price_times, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio)\
  VALUES('" + str(id) + "','" + timestamp + "'::timestamp without time zone" + ",'" + min_vo + "'," + min_vol_times_str + ",'" + max_vo + "'," + max_vol_times_str + ",'" +  avg_vo + "','" + op + "','" + cl + "','" + hi + "'," + high_times_str + ",'" + lo + \
           "'," + low_times_str + ",'" + vo_nan_r + "','" + op_nan_r + "','" + cl_nan_r + "','" + hi_nan_r + "','" + lo_nan_r + "');"
-    print(sql)
+#    print(sql)
 #    try:
     Pcursor().execute(sql)
 #    except psycopg2.IntegrityError:
 #        print ("SKIPPING " + sql)
  #       conn.rollback()
 #    else:
-    print ("Inserting id " + str(id))
+    print ("Inserting " + company_etf_id + " " + str(id))
 #        conn.commit()
 
 
