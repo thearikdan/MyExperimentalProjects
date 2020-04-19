@@ -88,7 +88,7 @@ def get_N_units_from_one_unit_interval(N, date_time, volume , opn, close, high, 
     if (N > count):
         return date_time_N, volume_N , open_N, close_N, high_N, low_N
 
-    new_count = count / N
+    new_count = int(count / N)
 
     for i in range (new_count):
         date_time_N.append(date_time[N * i])

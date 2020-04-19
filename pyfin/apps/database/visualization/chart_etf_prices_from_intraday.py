@@ -24,13 +24,7 @@ def get_sparse_date_list(date_list, tick_count):
 
 
 interval = 1
-#market = "nyse"
-#symbol = "NEE"
-#symbol = "LMT"
-
-market = "nasdaq"
-#symbol = "NVDA"
-symbol = "AMZN"
+symbol = "TQQQ"
 
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")
@@ -43,7 +37,7 @@ start_date = datetime(2020, 2, 26, start_hour, start_min)
 end_date = datetime(2020, 4, 17, end_hour, end_min)
 
 
-is_data_available, date_time, volume , opn, close, high, low, _, _, _, _, _ = db.get_intraday_data(market, symbol, start_date, end_date, interval)
+is_data_available, date_time, volume , opn, close, high, low, _, _, _, _, _ = db.get_etf_intraday_data(symbol, start_date, end_date, interval)
 
 
 cur.close()
