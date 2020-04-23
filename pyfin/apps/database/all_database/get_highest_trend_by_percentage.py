@@ -20,7 +20,7 @@ window_width = 7
 stride = 3
 
 
-end_date = datetime(2019, 12, 16, 9, 30)
+end_date = datetime(2020, 4, 22, 9, 30)
 
 conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 

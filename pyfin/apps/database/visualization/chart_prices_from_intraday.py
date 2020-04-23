@@ -39,7 +39,7 @@ conn, cur = db.connect_to_database("../../../database/database_settings.txt")
 start_hour, start_min = time_op.get_start_time_for_symbol(symbol)
 end_hour, end_min = time_op.get_end_time_for_symbol(symbol)
 
-start_date = datetime(2020, 2, 26, start_hour, start_min)
+start_date = datetime(2020, 3, 26, start_hour, start_min)
 end_date = datetime(2020, 4, 17, end_hour, end_min)
 
 

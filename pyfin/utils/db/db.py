@@ -938,6 +938,80 @@ INNER JOIN public.stock_exchanges ON public.stock_exchanges.exchange_id=public.c
 
 
 
+def get_raw_etf_daily_data(conn, cur, symbol, start_datetime, end_datetime):
+    date_time = []
+    min_volume=[]
+    max_volume=[]
+    avg_volume=[]
+    opn = []
+    cls = []
+    high = []
+    low = []
+    volume_nan_ratio = []
+    opening_nan_ratio = []
+    closing_nan_ratio = []
+    high_nan_ratio = []
+    low_nan_ratio = []
+    min_volume_times = []
+    max_volume_times = []
+    high_price_times = []
+    low_price_times = []
+
+
+    start_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M")
+    end_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M")
+
+    sql = "SELECT date_time, min_volume, max_volume, avg_volume, opening_price, closing_price, high_price, low_price, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio, min_volume_times, max_volume_times, high_price_times, low_price_times from public.etf_daily_prices INNER JOIN public.etfs ON public.etf_daily_prices.etf_id=public.etfs.etf_id WHERE public.etfs.symbol='" + symbol + \
+"' AND public.etf_daily_prices.date_time BETWEEN '" + start_datetime_str + "' AND '" + end_datetime_str + "' ORDER BY date_time ASC" +  ";"
+#    print (sql)
+    cur.execute(sql)
+    rows = cur.fetchall()
+    count = len(rows)
+    if count==0:
+        return False, [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
+    for row in rows:
+        dt = row[0]
+        min_v = row[1]
+        max_v = row[2]
+        avg_v = row[3]
+        o = row[4]
+        c = row[5]
+        h = row[6]
+        l = row[7]
+        v_nan_r = row[8]
+        o_nan_r = row[9]
+        c_nan_r = row[10]
+        h_nan_r = row[11]
+        l_nan_r = row[12]
+        min_v_times = row[13]
+        max_v_times = row[14]
+        h_times = row[15]
+        l_times = row[16]
+
+
+        date_time.append(dt)
+        min_volume.append(float(min_v))
+        max_volume.append(float(max_v))
+        avg_volume.append(float(avg_v))
+        opn.append(float(o))
+        cls.append(float(c))
+        high.append(float(h))
+        low.append(float(l))
+        volume_nan_ratio.append(float(v_nan_r))
+        opening_nan_ratio.append(float(o_nan_r))
+        closing_nan_ratio.append(float(c_nan_r))
+        high_nan_ratio.append(float(h_nan_r))
+        low_nan_ratio.append(float(l_nan_r))
+        min_volume_times.append(str(min_v_times))
+        max_volume_times.append(str(max_v_times))
+        high_price_times.append(str(h_times))
+        low_price_times.append(str(l_times))
+
+
+    return True, date_time, min_volume, max_volume, avg_volume, opn, cls, high, low, volume_nan_ratio, opening_nan_ratio, closing_nan_ratio, high_nan_ratio, low_nan_ratio, min_volume_times, max_volume_times, high_price_times, low_price_times
+
+
+
 def get_day_count(window_count, window_width, stride):
     day_count = window_width + stride * (window_count - 1)
     return day_count
@@ -1050,6 +1124,30 @@ def get_interday_percentage_change_by_opening_price(conn, cur, symbol, market, s
     perc = pc * 100
     nan_ratio = max(nan_start, nan_end)
     return perc, opn_start, opn_end, nan_ratio
+
+
+
+def get_etf_interday_percentage_change_by_closing_price(conn, cur, symbol, start_date, end_date, min_price, max_nan_filter):
+    is_data_available, date_all, min_volume_all, max_volume_all, avg_volume_all, opn_all, cls_all, high_all, low_all, volume_nan_ratio_all, opening_nan_ratio_all, closing_nan_ratio_all, high_nan_ratio_all, low_nan_ratio_all, _, _, _, _ = get_raw_etf_daily_data(
+        conn, cur, symbol, start_date, end_date)
+    if not is_data_available:
+        return None, None, None, None
+
+    count = len(date_all)
+    nan_start = closing_nan_ratio_all[0]
+    nan_end = closing_nan_ratio_all[count - 1]
+    if ((max_nan_filter < nan_start) or (max_nan_filter < nan_end)):
+        return None, None, None, None
+
+    cls_start = cls_all[0]
+    cls_end = cls_all[count - 1]
+    if (cls_end < min_price):
+        return None, None, None, None
+
+    pc = percentage.get_percentage_change_in_one_value(cls_start, cls_end)
+    perc = pc * 100
+    nan_ratio = max(nan_start, nan_end)
+    return perc, cls_start, cls_end, nan_ratio
 
 
 def get_sorted_ascending_trend_by_opening_precentage(conn, cur, filtered_markets, end_date, window_count, window_width, stride, min_price, max_nan_filter):
