@@ -3,20 +3,19 @@
 import sys
 sys.path.append("../../..")
 
+from utils.web import download
 from utils.db import db
+
 from utils import time_op, constants, sort_op
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 from utils.viz import progress_bar as pb
 
 
 
-interval = 1
-
 max_nan_filter = 0.3
-#min_price = 70.
-min_price = 20.
-min_percentage_up = 2.0
+min_price = 15.
+min_percentage_up = 1.5
 
 start_time = time.time()
 
@@ -27,25 +26,36 @@ symbols = db.get_all_etf_symbols(conn, cursor)
 
 count = len(symbols)
 
+available_symbols = []
+available_percentages = []
 
 items = list(range(count))
 l = len(items)
 pb.print_progress(0, l, prefix = 'Progress:', suffix = 'Complete', bar_length = 50)
 
 
-available_symbols = []
-available_percentages = []
-
-start_date = datetime(2020, 4, 28, 9, 30)
-end_date = datetime(2020, 4, 30, 16, 00)
-
 for i in range(count):
 
+    start_date = datetime(2020, 4, 30, 15, 58)
+    end_date = datetime.now() - timedelta(minutes=1)
 
     symbol = symbols[i]
-    perc, cls_start, cls_end, nan_ratio = db.get_etf_interday_percentage_change_by_closing_price(conn, cursor, symbols[i], start_date, end_date, min_price, max_nan_filter)
-    if perc is None:
+    is_data_available, start_date_time, start_volume, start_opn, start_close, start_high, start_low = download.get_current_intraday_data_from_web(symbols[i], start_date)
+    if not is_data_available:
         continue
+
+
+    is_data_available, end_date_time, end_volume, end_opn, end_close, end_high, end_low = download.get_current_intraday_data_from_web(symbols[i], end_date)
+    if not is_data_available:
+        continue
+
+    if end_close < min_price:
+        continue
+
+    perc = (end_close - start_close) * 100 / start_close
+    if perc < min_percentage_up:
+        continue
+
     if perc < min_percentage_up:
         continue
 
@@ -59,6 +69,7 @@ for i in range(count):
 
 cursor.close()
 conn.close()
+
 
 sorted_indices = sort_op.get_sorted_indices(available_percentages)
 sorted_symbols = sort_op.get_resorted_list(available_symbols, sorted_indices)

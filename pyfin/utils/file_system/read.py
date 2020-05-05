@@ -118,7 +118,7 @@ def heal_intraday_data(date_time, volume, opn, close, high, low):
 '''
 
 
-def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_type, security_type):
+def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_type, security_type, save_web_data):
     interval_string = "1m"
 
     if security_type == constants.Security_Type.Equity:
@@ -145,8 +145,9 @@ def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_typ
         if not (is_data_available):
             return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
 
-        #Write original data, even if some values are corrupt (0, or None)
-        write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+        if save_web_data:
+            #Write original data, even if some values are corrupt (0, or None)
+            write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
 
     elif storage_type == constants.Storage_Type.Database:
 #        conn, cur = db.connect_to_database("../../database/database_settings.txt")
@@ -162,13 +163,14 @@ def get_intraday_data(root_dir, symbol_market, start, end, interval, storage_typ
         if not (is_data_available):
             return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
 
-        #Write original data, even if some values are corrupt (0, or None)
-        if security_type == constants.Security_Type.Equity:
-            print("Adding security")
-            db.add_to_intraday_prices(market, ticker, date_time, volume, opn, close, high, low)
-        elif security_type == constants.Security_Type.ETF:
-            print("Adding ETF")
-            db.add_to_etf_intraday_prices(ticker, date_time, volume, opn, close, high, low)
+        if save_web_data:
+            #Write original data, even if some values are corrupt (0, or None)
+            if security_type == constants.Security_Type.Equity:
+                print("Adding security")
+                db.add_to_intraday_prices(market, ticker, date_time, volume, opn, close, high, low)
+            elif security_type == constants.Security_Type.ETF:
+                print("Adding ETF")
+                db.add_to_etf_intraday_prices(ticker, date_time, volume, opn, close, high, low)
 
         cur.close()
         conn.close()
@@ -305,7 +307,7 @@ def get_volume_from_file(filename):
     return get_volume_from_numeric_data(data)
 
 
-def get_all_intraday_prices_for_N_days_to_date (data_dir, market_symbol, N, last_date, storage_type, security_type):
+def get_all_intraday_prices_for_N_days_to_date (data_dir, market_symbol, N, last_date, storage_type, security_type, save_web_data):
     #in from_time and to_time only hour, minutes and seconds are important;                                                   years and months are ignored
     date_time_list = []
     volume_list = []
@@ -334,7 +336,7 @@ def get_all_intraday_prices_for_N_days_to_date (data_dir, market_symbol, N, last
             start_date = date.replace(hour=start_hour, minute=start_minute, second=00, microsecond=00)
             end_date = date.replace(hour=end_hour, minute=end_minute, second=00, microsecond=00)
 
-            is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(data_dir, market_symbol, start_date, end_date, 1, storage_type, security_type)
+            is_data_available, date_time, volume , opn, close, high, low = get_intraday_data(data_dir, market_symbol, start_date, end_date, 1, storage_type, security_type, save_web_data)
             if (is_data_available):
                 date_time_list.append(date_time)
                 volume_list.append(volume)
@@ -424,12 +426,13 @@ def merge_params(ticker, args):
     last_date = args[2]
     storage_type = args[3]
     security_type = args[4]
+    save_web_data = args[5]
 #    symbol, market = ticker.split(":")
     market_symbol = ticker
-    get_all_intraday_prices_for_N_days_to_date (data_dir, market_symbol, day_count, last_date, storage_type, security_type)
+    get_all_intraday_prices_for_N_days_to_date (data_dir, market_symbol, day_count, last_date, storage_type, security_type, save_web_data)
 
 
-def parallel_download_intraday_list_of_tickers(data_dir, tickers, markets, day_count, storage_type, security_type):
+def parallel_download_intraday_list_of_tickers(data_dir, tickers, markets, day_count, storage_type, security_type, save_web_data):
     #in from_time and to_time only hour, minutes and seconds are important; years and months are ignored
     now = datetime.now()
     # combine tickers with markets to pass param for parallel processing
@@ -445,12 +448,12 @@ def parallel_download_intraday_list_of_tickers(data_dir, tickers, markets, day_c
 
     with poolcontext(processes=multiprocessing.cpu_count()) as pool:
 
-        pool.map(partial(merge_params, args = (data_dir, day_count, now, storage_type, security_type)), tickers)
+        pool.map(partial(merge_params, args = (data_dir, day_count, now, storage_type, security_type, save_web_data)), tickers)
 
 
 
 
-def sequential_download_intraday_list_of_tickers(data_dir, tickers, markets, day_count, storage_type, security_type):
+def sequential_download_intraday_list_of_tickers(data_dir, tickers, markets, day_count, storage_type, security_type, save_web_data):
     #The sequential version is for debugging purposes
     now = datetime.now()
     # combine tickers with markets to pass param for parallel processing
@@ -467,5 +470,5 @@ def sequential_download_intraday_list_of_tickers(data_dir, tickers, markets, day
     for i in range (count):
         market_symbol = tickers[i]
         get_all_intraday_prices_for_N_days_to_date(data_dir, market_symbol, day_count, now, storage_type,
-                                                   security_type)
+                                                   security_type, save_web_data)
 

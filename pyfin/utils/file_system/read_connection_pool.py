@@ -302,7 +302,7 @@ class ParallelDownloader():
         self.storage = storage
 
 
-    def get_intraday_data(self, root_dir, symbol_market, start, end, interval, storage_type):
+    def get_intraday_data(self, root_dir, symbol_market, start, end, interval, storage_type, save_web_data):
         interval_string = "1m"
         ticker, market = symbol_market.split(":")
 
@@ -328,8 +328,9 @@ class ParallelDownloader():
             if not (is_data_available):
                 return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
 
-            # Write original data, even if some values are corrupt (0, or None)
-            write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
+            if save_web_data:
+                # Write original data, even if some values are corrupt (0, or None)
+                write.put_intraday_data_to_file(dir_name, filename, date_time, volume, opn, close, high, low)
 
         elif storage_type == constants.Storage_Type.Database:
             #        conn, cur = db.connect_to_database("../../database/database_settings.txt")
@@ -348,8 +349,9 @@ class ParallelDownloader():
             if not (is_data_available):
                 return (False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0)
 
-            # Write original data, even if some values are corrupt (0, or None)
-            db.add_to_intraday_prices(conn, cur, market, ticker, date_time, volume, opn, close, high, low)
+            if save_web_data:
+                # Write original data, even if some values are corrupt (0, or None)
+                db.add_to_intraday_prices(conn, cur, market, ticker, date_time, volume, opn, close, high, low)
             cur.close()
             connection_pool.putconn(conn)
         else:

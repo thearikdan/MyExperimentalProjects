@@ -3,6 +3,7 @@ from urllib.request import urlopen
 import json
 import pandas_datareader as pdr
 import numpy as np
+from datetime import timedelta
 
 
 def __get_intraday_data_from_web(ticker, start, end):
@@ -47,10 +48,19 @@ def get_full_day_intraday_data_from_web(ticker, start, end):
     return __get_intraday_data_from_web(ticker, start_full_day, end_full_day)
 
 
-def get_current_intraday_data_from_web(ticker, start, end):
-    start_current_time = start.replace(second=00)
+def get_current_intraday_data_from_web(ticker, start):
     end_current_time = start.replace(second=00)
-    return __get_intraday_data_from_web(ticker, start_current_time, end_current_time)
+    start_current_time = end_current_time - timedelta(minutes=1)
+    is_data_available, start_date_time, start_volume, start_opn, start_close, start_high, start_low = __get_intraday_data_from_web(ticker, start_current_time, end_current_time)
+    if not (is_data_available):
+        return (False, [], [], [], [], [], [])
+    dt = start_date_time[0]
+    sv = start_volume[0]
+    so = start_opn[0]
+    sc = start_close[0]
+    sh = start_high[0]
+    sl = start_low[0]
+    return True, dt, sv, so, sc, sh, sl
 
 
 def get_data_from_web(ticker, start_date, end_date):

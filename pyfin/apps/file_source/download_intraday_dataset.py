@@ -71,8 +71,8 @@ symbols, markets = db.get_all_symbols_and_markets(conn, cur)
 cur.close()
 conn.close()
 
-read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.Equity)
-#read.sequential_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.Equity)
+read.parallel_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.Equity, True)
+#read.sequential_download_intraday_list_of_tickers(data_root, symbols, markets, N, st, constants.Security_Type.Equity, True)
 
 
 seconds = time.time() - start_time
