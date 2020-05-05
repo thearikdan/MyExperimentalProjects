@@ -6,7 +6,7 @@ import numpy as np
 from datetime import timedelta
 
 
-def __get_intraday_data_from_web(ticker, start, end):
+def get_intraday_data_from_web(ticker, start, end):
     start_date_time = time_op.get_int_time(start)
     end_date_time = time_op.get_int_time(end)
 
@@ -45,13 +45,13 @@ def __get_intraday_data_from_web(ticker, start, end):
 def get_full_day_intraday_data_from_web(ticker, start, end):
     start_full_day = start.replace(hour=9, minute=30, second=00)
     end_full_day = start.replace(hour=16, minute=00, second=00)
-    return __get_intraday_data_from_web(ticker, start_full_day, end_full_day)
+    return get_intraday_data_from_web(ticker, start_full_day, end_full_day)
 
 
 def get_current_intraday_data_from_web(ticker, start):
     end_current_time = start.replace(second=00)
     start_current_time = end_current_time - timedelta(minutes=1)
-    is_data_available, start_date_time, start_volume, start_opn, start_close, start_high, start_low = __get_intraday_data_from_web(ticker, start_current_time, end_current_time)
+    is_data_available, start_date_time, start_volume, start_opn, start_close, start_high, start_low = get_intraday_data_from_web(ticker, start_current_time, end_current_time)
     if not (is_data_available):
         return (False, [], [], [], [], [], [])
     dt = start_date_time[0]
@@ -63,7 +63,7 @@ def get_current_intraday_data_from_web(ticker, start):
     return True, dt, sv, so, sc, sh, sl
 
 
-def get_data_from_web(ticker, start_date, end_date):
+def get_interday_data_from_web(ticker, start_date, end_date):
     data = pdr.get_data_yahoo(symbols=ticker, start=start_date, end=end_date)
     dateIndex = data.index
     date = np.array(dateIndex.to_pydatetime())

@@ -16,6 +16,7 @@ from utils.viz import progress_bar as pb
 max_nan_filter = 0.3
 min_price = 15.
 min_percentage_up = 1.5
+min_volume = 2000
 
 start_time = time.time()
 
@@ -23,6 +24,9 @@ conn, cursor = db.connect_to_database("../../../database/database_settings.txt")
 
 print ("Retrieving all symbols from database...")
 symbols = db.get_all_etf_symbols(conn, cursor)
+
+cursor.close()
+conn.close()
 
 count = len(symbols)
 
@@ -36,28 +40,34 @@ pb.print_progress(0, l, prefix = 'Progress:', suffix = 'Complete', bar_length = 
 
 for i in range(count):
 
-    start_date = datetime(2020, 4, 30, 15, 58)
+    start_date = datetime(2020, 5, 1, 15, 58)
     end_date = datetime.now() - timedelta(minutes=1)
 
     symbol = symbols[i]
-    is_data_available, start_date_time, start_volume, start_opn, start_close, start_high, start_low = download.get_current_intraday_data_from_web(symbols[i], start_date)
+    is_data_available, date_time, volume, opn, close, high, low = download.get_intraday_data_from_web(symbols[i], start_date, end_date)
+
     if not is_data_available:
         continue
 
+    count = len(close)
 
-    is_data_available, end_date_time, end_volume, end_opn, end_close, end_high, end_low = download.get_current_intraday_data_from_web(symbols[i], end_date)
-    if not is_data_available:
+    if close[count - 1] is None:
         continue
 
-    if end_close < min_price:
+    if close[count - 1] < min_price:
         continue
 
-    perc = (end_close - start_close) * 100 / start_close
+
+    if close[0] is None:
+        continue
+
+    if close[0] == 0:
+        continue
+
+    perc = (close[count - 1] - close[0]) * 100 / close[0]
     if perc < min_percentage_up:
         continue
 
-    if perc < min_percentage_up:
-        continue
 
     available_symbols.append(symbols[i])
     available_percentages.append(perc)
@@ -67,8 +77,6 @@ for i in range(count):
     pb.print_progress(i + 1, l, prefix = 'Progress:', suffix = 'Complete', bar_length = 50)
 
 
-cursor.close()
-conn.close()
 
 
 sorted_indices = sort_op.get_sorted_indices(available_percentages)

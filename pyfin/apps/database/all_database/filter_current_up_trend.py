@@ -45,24 +45,30 @@ for i in range(count):
     end_date = datetime.now() - timedelta(minutes=1)
 
     symbol = symbols[i]
-    is_data_available, start_date_time, start_volume, start_opn, start_close, start_high, start_low = download.get_current_intraday_data_from_web(symbols[i], start_date)
+    is_data_available, date_time, volume, opn, close, high, low = download.get_intraday_data_from_web(symbols[i], start_date, end_date)
+
     if not is_data_available:
         continue
 
+    count = len(close)
 
-    is_data_available, end_date_time, end_volume, end_opn, end_close, end_high, end_low = download.get_current_intraday_data_from_web(symbols[i], end_date)
-    if not is_data_available:
+    if close[count - 1] is None:
         continue
 
-    if end_close < min_price:
+    if close[count - 1] < min_price:
         continue
 
-    perc = (end_close - start_close) * 100 / start_close
+
+    if close[0] is None:
+        continue
+
+    if close[0] == 0:
+        continue
+
+    perc = (close[count - 1] - close[0]) * 100 / close[0]
     if perc < min_percentage_up:
         continue
 
-    if perc < min_percentage_up:
-        continue
 
     available_symbols.append(symbols[i])
     available_percentages.append(perc)
