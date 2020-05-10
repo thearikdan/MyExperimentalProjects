@@ -8,6 +8,10 @@ from utils.db import db
 
 symbol = 'TQQQ'
 symbol = 'TNA'
+symbol = 'URTY'
+symbol = 'SOXL'
+
+
 
 start_date_time = datetime(2020, 5, 4)
 end_date_time = datetime(2020, 5, 8)

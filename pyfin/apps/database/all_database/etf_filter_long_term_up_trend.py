@@ -15,8 +15,9 @@ interval = 1
 
 max_nan_filter = 0.3
 #min_price = 70.
-min_price = 20.
+min_price = 10.
 min_percentage_up = 2.0
+min_volume_filter = 1000000
 
 start_time = time.time()
 
@@ -36,14 +37,14 @@ pb.print_progress(0, l, prefix = 'Progress:', suffix = 'Complete', bar_length = 
 available_symbols = []
 available_percentages = []
 
-start_date = datetime(2020, 4, 28, 9, 30)
-end_date = datetime(2020, 4, 30, 16, 00)
+start_date = datetime(2020, 5, 4, 9, 30)
+end_date = datetime(2020, 5, 8, 16, 00)
 
 for i in range(count):
 
 
     symbol = symbols[i]
-    perc, cls_start, cls_end, nan_ratio = db.get_etf_interday_percentage_change_by_closing_price(conn, cursor, symbols[i], start_date, end_date, min_price, max_nan_filter)
+    perc, cls_start, cls_end, nan_ratio = db.get_etf_interday_percentage_change_by_closing_price(conn, cursor, symbols[i], start_date, end_date, min_price, min_volume_filter, max_nan_filter)
     if perc is None:
         continue
     if perc < min_percentage_up:

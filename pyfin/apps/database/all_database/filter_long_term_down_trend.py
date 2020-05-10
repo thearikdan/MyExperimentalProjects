@@ -17,6 +17,8 @@ target_exchanges = ['nyse', 'nasdaq']
 max_nan_filter = 0.3
 min_price = 100.
 min_percentage_down = -10.
+min_volume_filter = 1000000
+
 
 start_time = time.time()
 
@@ -46,7 +48,7 @@ for i in range(count):
     end_date = datetime(2019, 9, 27, end_hour, end_min)
 
     symbol = symbols[i]
-    perc, cls_start, cls_end, nan_ratio = db.get_interday_percentage_change_by_closing_price(conn, cursor, symbols[i], exchanges[i], start_date, end_date, min_price, max_nan_filter)
+    perc, cls_start, cls_end, nan_ratio = db.get_interday_percentage_change_by_closing_price(conn, cursor, symbols[i], exchanges[i], start_date, end_date, min_price, min_volume_filter, max_nan_filter)
     if perc is None:
         continue
     if perc > min_percentage_down:

@@ -18,6 +18,7 @@ target_exchanges = ['nyse', 'nasdaq']
 max_nan_filter = 0.3
 min_price = 70.
 min_percentage_up = 1.5
+min_volume_filter = 1000000
 
 start_time = time.time()
 
@@ -69,6 +70,9 @@ for i in range(count):
     if perc < min_percentage_up:
         continue
 
+    min_volume = min(volume)
+    if min_volume < (min_volume_filter / 1000.0):
+        continue
 
     available_symbols.append(symbols[i])
     available_percentages.append(perc)
