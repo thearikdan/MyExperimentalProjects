@@ -737,7 +737,7 @@ def get_intraday_data(market, symbol, start_datetime, end_datetime, interval):
         volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
         dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume, opn, close,
                                                                                 high, low)
-        print ("Data are already in database for " + symbol)
+#        print ("Data are already in database for " + symbol)
         return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
     else:
         return False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0
@@ -749,7 +749,7 @@ def get_etf_intraday_data(symbol, start_datetime, end_datetime, interval):
         volume, opn, close, high, low, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume, opn, close, high, low)
         dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time, volume, opn, close,
                                                                                 high, low)
-        print ("Data are already in database for " + symbol)
+#        print ("Data are already in database for " + symbol)
         return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
     else:
         return False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0
