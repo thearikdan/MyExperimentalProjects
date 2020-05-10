@@ -9,19 +9,25 @@ from utils.db import db
 symbol = 'TQQQ'
 start_date_time = datetime(2020, 5, 4)
 end_date_time = datetime(2020, 5, 8)
-interval = 1
+interval = 9
 
 conn, cur = db.connect_to_database("../../database/database_settings.txt")
 
+for interval in range (1, 15):
+    is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_etf_intraday_data(symbol, start_date_time, end_date_time, interval)
 
-is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_etf_intraday_data(symbol, start_date_time, end_date_time, interval)
+    if not is_data_available:
+        print ("No data is available")
+        exit(0)
 
-if not is_data_available:
-    print ("No data is available")
-    exit(0)
+
+    drop_list, percentages = drop_stats.get_drop_stats(cn)
+    #print (drop_list)
+    #print (percentages)
+    print (interval)
+    print (len(drop_list))
+    print (min(percentages))
+    print ("\n")
 
 cur.close()
 conn.close()
-
-drop_stats = drop_stats.get_drop_stats(cn)
-print (drop_stats)

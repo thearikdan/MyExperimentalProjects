@@ -34,6 +34,8 @@ def get_drop_list(price_list):
     i = 0
     while i < count:
         drop = get_next_drop(price_list, i)
+        if None in drop:
+            break
         if len(drop) > 0:
             drop_list.append(drop)
             i = drop[1]
@@ -42,6 +44,18 @@ def get_drop_list(price_list):
     return drop_list
 
 
+def get_percentages_from_list(price_list, ls):
+    count = len(ls)
+    perc_list = []
+    for i in range (count):
+        start = price_list[ls[i][0]]
+        end = price_list[ls[i][1]]
+        perc = (end - start) * 100.0 / start
+        perc_list.append(perc)
+    return perc_list
+
+
 def get_drop_stats(price_list):
     drop_list = get_drop_list(price_list)
-    return drop_list
+    percentages = get_percentages_from_list(price_list, drop_list)
+    return drop_list, percentages
