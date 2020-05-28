@@ -6,7 +6,7 @@ pd.core.common.is_list_like = pd.api.types.is_list_like
 import pandas_datareader as pdr
 
 from datetime import datetime
-import write
+from . import write
 import pickle
 from datetime import datetime
 from os.path import join, isfile
