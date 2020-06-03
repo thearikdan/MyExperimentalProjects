@@ -3,20 +3,21 @@
 import sys
 sys.path.append("../../..")
 
-from utils.web import download
 from utils.db import db
-
 from utils import time_op, constants, sort_op
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 from utils.viz import progress_bar as pb
 
 
 
+interval = 1
+
 max_nan_filter = 0.3
-min_price = 15.
-min_percentage_up = 1.5
-min_volume = 2000
+#min_price = 70.
+min_price = 10.
+min_percentage_up = 2.0
+min_volume_filter = 1000000
 
 start_time = time.time()
 
@@ -25,59 +26,41 @@ conn, cursor = db.connect_to_database("../../../database/database_settings.txt")
 print ("Retrieving all symbols from database...")
 symbols = db.get_all_etf_symbols(conn, cursor)
 
-cursor.close()
-conn.close()
-
 count = len(symbols)
 
-available_symbols = []
-available_percentages = []
 
 items = list(range(count))
 l = len(items)
 pb.print_progress(0, l, prefix = 'Progress:', suffix = 'Complete', bar_length = 50)
 
 
+available_symbols = []
+available_percentages = []
+
+start_date = datetime(2020, 5, 25, 9, 30)
+mid_date = datetime(2020, 5, 28, 9, 30)
+end_date = datetime(2020, 6, 2, 16, 00)
+
 for i in range(count):
 
-    start_date = datetime(2020, 6, 1, 15, 58)
-    end_date = datetime.now() - timedelta(minutes=1)
 
     symbol = symbols[i]
-    is_data_available, date_time, volume, opn, close, high, low = download.get_intraday_data_from_web(symbols[i], start_date, end_date)
-
-    if not is_data_available:
+    accel = db.get_etf_interday_acceleration_percentage_change_by_closing_price(conn, cursor, symbols[i], start_date, mid_date, end_date, min_price, min_volume_filter, max_nan_filter)
+    if accel is None:
         continue
-
-    count = len(close)
-
-    if close[count - 1] is None:
+    if accel < min_percentage_up:
         continue
-
-    if close[count - 1] < min_price:
-        continue
-
-
-    if close[0] is None:
-        continue
-
-    if close[0] == 0:
-        continue
-
-    perc = (close[count - 1] - close[0]) * 100 / close[0]
-    if perc < min_percentage_up:
-        continue
-
 
     available_symbols.append(symbols[i])
-    available_percentages.append(perc)
+    available_percentages.append(accel)
 
     time.sleep(0.1)
     # Update Progress Bar
     pb.print_progress(i + 1, l, prefix = 'Progress:', suffix = 'Complete', bar_length = 50)
 
 
-
+cursor.close()
+conn.close()
 
 sorted_indices = sort_op.get_sorted_indices(available_percentages)
 sorted_symbols = sort_op.get_resorted_list(available_symbols, sorted_indices)

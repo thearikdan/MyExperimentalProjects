@@ -1135,6 +1135,26 @@ def get_interday_percentage_change_by_opening_price(conn, cur, symbol, market, s
 
 
 
+def get_etf_interday_acceleration_percentage_change_by_closing_price(conn, cur, symbol, start_date, mid_date, end_date, min_price, min_volume_filter, max_nan_filter):
+    perc1, cls_start1, cls_end1, nan_ratio1 = get_etf_interday_percentage_change_by_closing_price(conn, cur, symbol, start_date, mid_date, min_price, min_volume_filter, max_nan_filter)
+    if perc1 is None:
+        return None
+    if perc1 == 0.0:
+        return None
+    perc2, cls_start2, cls_end2, nan_ratio2 = get_etf_interday_percentage_change_by_closing_price(conn, cur, symbol, mid_date, end_date, min_price, min_volume_filter, max_nan_filter)
+    if perc2 is None:
+        return None
+    try:
+        accel = (perc2 - perc1) * 100 / abs(perc1)
+    except:
+        return None
+    if symbol == 'TZA':
+        i =1
+    return accel
+
+
+
+
 def get_etf_interday_percentage_change_by_closing_price(conn, cur, symbol, start_date, end_date, min_price, min_volume_filter, max_nan_filter):
     is_data_available, date_all, min_volume_all, max_volume_all, avg_volume_all, opn_all, cls_all, high_all, low_all, volume_nan_ratio_all, opening_nan_ratio_all, closing_nan_ratio_all, high_nan_ratio_all, low_nan_ratio_all, _, _, _, _ = get_raw_etf_daily_data(
         conn, cur, symbol, start_date, end_date)
