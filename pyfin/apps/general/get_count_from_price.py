@@ -1,8 +1,8 @@
 price = float(input('Enter a price: '))
 
-rrsp = 312348.16
-inv = 125574
-tfsa = 73677
+rrsp = 298080
+inv = 118350
+tfsa = 67740
 
 rrsp_count = int(rrsp / price)
 inv_count = int(inv / price)
