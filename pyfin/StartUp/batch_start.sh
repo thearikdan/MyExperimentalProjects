@@ -1,5 +1,5 @@
 #!/bin/bash
-SCRIPT_DIR=/media/hdd/MyProjects/pyfin/StartUp
+SCRIPT_DIR=/media/ssd/MyProjects/pyfin/StartUp
 
 $SCRIPT_DIR/download_service_1.sh
 #$SCRIPT_DIR/download_service_2.sh

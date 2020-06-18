@@ -194,7 +194,7 @@ class AbstractDatabaseConnectionPool(object):
 class PostgresConnectionPool(AbstractDatabaseConnectionPool):
     def __init__(self,**kwargs):
         try:
-            settings_file_name = "/media/hdd/MyProjects/pyfin/database/database_settings.txt"
+            settings_file_name = "/media/ssd/MyProjects/pyfin/database/database_settings.txt"
             f = open(settings_file_name) #the path might not work for every app, should be added to sys.path
             lines = f.readlines()
             f.close()
