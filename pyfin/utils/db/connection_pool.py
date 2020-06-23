@@ -7,6 +7,8 @@ from gevent.socket import wait_read, wait_write
 from psycopg2.pool import ThreadedConnectionPool
 from psycopg2 import extensions, OperationalError, IntegrityError
 import sys
+import os.path
+
 logger = logging.getLogger(__name__)
 
 poolsize = 100  #number of max connections
@@ -194,12 +196,13 @@ class AbstractDatabaseConnectionPool(object):
 class PostgresConnectionPool(AbstractDatabaseConnectionPool):
     def __init__(self,**kwargs):
         try:
-            settings_file_name = "/media/ssd/MyProjects/pyfin/database/database_settings.txt"
+            my_path = os.path.abspath(os.path.dirname(__file__))
+            settings_file_name = os.path.join(my_path, "../../database/database_settings.txt")
             f = open(settings_file_name) #the path might not work for every app, should be added to sys.path
             lines = f.readlines()
             f.close()
-#            host = lines[0]
-            host = "127.0.0.1"
+            host = lines[0].rstrip()
+#            host = "127.0.0.1"
             dbname = lines[1].rstrip()
             user = lines[2].rstrip()
             passwd = lines[3].rstrip()
