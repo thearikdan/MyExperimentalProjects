@@ -14,8 +14,8 @@ symbol = 'TQQQ'
 
 
 
-start_date_time = datetime(2020, 6, 9)
-end_date_time = datetime(2020, 6, 23)
+start_date_time = datetime(2020, 6, 10, 9, 00)
+end_date_time = datetime(2020, 6, 23, 16, 00)
 
 interval = 6 #get this value from get_etf_drop_stat_recommended_stops.py
 
@@ -35,6 +35,7 @@ avg_percentage = mean(percentages)
 sigma = stdev(percentages)
 min_percentage = min(percentages)
 
+print(last_date)
 print ("Last price: " + str(last_price) + "\n")
 print ("Average drop percentage: " + str(avg_percentage))
 print ("Stop price for average drop percentage: " + str(last_price * (1 + avg_percentage/100.)) + "\n") #+ because avg_percentage is negative

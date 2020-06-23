@@ -13,8 +13,8 @@ symbol = 'TQQQ'
 
 
 
-start_date_time = datetime(2020, 6, 9)
-end_date_time = datetime(2020, 6, 23)
+start_date_time = datetime(2020, 6, 10, 9, 00)
+end_date_time = datetime(2020, 6, 23, 16, 00)
 
 
 min_interval = 0
@@ -34,5 +34,5 @@ for interval in range (1, 15):
         min_interval = interval
 
 
-print ("Minimum interval (days): " + str(min_interval))
+print ("Minimum interval (minutes): " + str(min_interval))
 print ("Minimum percentage" + str(min_percentage))
