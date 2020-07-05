@@ -13,8 +13,8 @@ symbol = 'TQQQ'
 
 
 
-start_date_time = datetime(2020, 6, 10, 9, 00)
-end_date_time = datetime(2020, 6, 23, 16, 00)
+start_date_time = datetime(2020, 6, 3, 9, 00)
+end_date_time = datetime(2020, 7, 3, 00, 00)
 
 
 min_interval = 0
