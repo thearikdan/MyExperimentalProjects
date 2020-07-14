@@ -37,8 +37,8 @@ pb.print_progress(0, l, prefix = 'Progress:', suffix = 'Complete', bar_length = 
 available_symbols = []
 available_percentages = []
 
-start_date = datetime(2020, 6, 1, 9, 30)
-end_date = datetime(2020, 6, 4, 16, 00)
+start_date = datetime(2020, 7, 3, 9, 30)
+end_date = datetime(2020, 7, 10, 16, 00)
 
 for i in range(count):
 

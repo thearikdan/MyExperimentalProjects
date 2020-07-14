@@ -40,7 +40,7 @@ pb.print_progress(0, l, prefix = 'Progress:', suffix = 'Complete', bar_length = 
 
 for i in range(count):
 
-    start_date = datetime(2020, 6, 4, 15, 58)
+    start_date = datetime(2020, 7, 3, 15, 58)
     end_date = datetime.now() - timedelta(minutes=1)
 
     symbol = symbols[i]
