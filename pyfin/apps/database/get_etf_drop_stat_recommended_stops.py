@@ -13,14 +13,14 @@ symbol = 'TQQQ'
 
 
 
-start_date_time = datetime(2020, 7, 1, 9, 00)
-end_date_time = datetime(2020, 7, 14, 00, 00)
-
+start_date_time = datetime(2020, 5, 1, 9, 00)
+end_date_time = datetime(2020, 7, 15, 00, 00)
+interval_range = range(1, 195) #390 min / 2 = 195 (9:30am-4pm)
 
 min_interval = 0
 min_percentage = 0
 
-for interval in range (1, 15):
+for interval in interval_range:
     is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_etf_intraday_data(symbol, start_date_time, end_date_time, interval)
 
     if not is_data_available:

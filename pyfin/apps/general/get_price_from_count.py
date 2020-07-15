@@ -1,6 +1,6 @@
 count = int(input('Enter desired number of shares for RRSP: '))
 
-rrsp = 383718
+rrsp = 353828.76
 
 
 rrsp_price = float(rrsp / count)
