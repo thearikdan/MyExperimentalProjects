@@ -245,6 +245,36 @@ def get_last_N_days_list_from_now(N):
 
 
 
+def get_number_of_hours_minutes_seconds_between_times(start, end):
+    diff = end - start
 
+    days, seconds = diff.days, diff.seconds
+    hours = days * 24 + seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = seconds % 60
+
+    return hours,minutes,seconds
+
+
+def get_number_of_minutes_seconds_between_times(start, end):
+    diff = end - start
+
+    days, seconds = diff.days, diff.seconds
+    hours = days * 24 + seconds // 3600
+    minutes = hours * 60 + (seconds % 3600) // 60
+    seconds = seconds % 60
+
+    return minutes,seconds
+
+
+def get_number_of_seconds_between_times(start, end):
+    diff = end - start
+
+    days, seconds = diff.days, diff.seconds
+    hours = days * 24 + seconds // 3600
+    minutes = hours * 60 + (seconds % 3600) // 60
+    seconds = minutes* 60 + seconds % 60
+
+    return seconds
 
 

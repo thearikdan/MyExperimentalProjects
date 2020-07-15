@@ -757,6 +757,43 @@ def get_etf_intraday_data(symbol, start_datetime, end_datetime, interval):
 
 
 
+def filter_before_hours_minutes(date_time, volume, opn, cls, high, low, after_hours_minutes):
+    date_time_f = []
+    volume_f = []
+    opn_f = []
+    cls_f = []
+    high_f = []
+    low_f = []
+
+    filter_hour_min_sec = time_op.extract_hour_minute_second(after_hours_minutes)
+    count = len(date_time)
+    for i in range (count):
+        hour_min_sec = time_op.extract_hour_minute_second(date_time[i])
+        if (hour_min_sec < filter_hour_min_sec):
+            continue
+        date_time_f.append(date_time[i])
+        volume_f.append(volume[i])
+        opn_f.append(opn[i])
+        cls_f.append(cls[i])
+        high_f.append(high[i])
+        low_f.append(low[i])
+    return date_time_f, volume_f, opn_f, cls_f, high_f, low_f
+
+
+
+def get_etf_intraday_data_after_hours_minutes(symbol, start_datetime, end_datetime, interval, after_hours_minutes):
+    is_data_available, date_time, volume, opn, close, high, low = get_raw_etf_intraday_data(symbol, start_datetime, end_datetime)
+    if (is_data_available):
+        date_time_f, volume_f, opn_f, close_f, high_f, low_f = filter_before_hours_minutes(date_time, volume, opn, close, high, low, after_hours_minutes)
+        v, o, c, h, l, c_v, c_o, c_c, c_h, c_l = heal.heal_intraday_data(volume_f, opn_f, close_f, high_f, low_f)
+
+        dtn, vn, on, cn, hn, ln = time_op.get_N_units_from_one_unit_interval(interval, date_time_f, v, o, c, h, l)
+        return (is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l)
+    else:
+        return False, [], [], [], [], [], [], 0.0, 0.0, 0.0, 0.0, 0.0
+
+
+
 def get_historical_intraday_data_for_N_days(conn, cur, market, symbol, start_datetime, end_datetime, days_count, interval, expected_length):
     date_time_list = []
     volume_per_list = []
