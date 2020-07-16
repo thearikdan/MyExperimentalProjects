@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sb
 from matplotlib import pyplot as plt
-#from scipy import stats
 
 
 from utils.db import db
