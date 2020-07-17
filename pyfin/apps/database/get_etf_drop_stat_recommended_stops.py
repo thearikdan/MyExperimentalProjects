@@ -7,20 +7,47 @@ from utils import time_op
 import json
 from utils.db import db
 
+from utils import file_op
+from os.path import join
+import time
+
+
 symbol = 'TQQQ'
 #symbol = 'TNA'
 #symbol = 'URTY'
 #symbol = 'SOXL'
 
+OUT_DIR = "data"
+filename = join(OUT_DIR, symbol + "_drop_stats.json")
 
-
+start_time = time.time()
 
 start_date_time = datetime(2020, 5, 1, 9, 00)
 end_date_time = datetime(2020, 7, 16, 00, 00)
 
-data = []
+file_op.ensure_dir_exists(OUT_DIR)
 
-start_hours_minutes = [datetime(2000, 1, 1, 9, 30), datetime(2000, 1, 1, 11, 00), datetime(2000, 1, 1, 12, 00), datetime(2000, 1, 1, 13, 00), datetime(2000, 1, 1, 14, 00), datetime(2000, 1, 1, 15, 00)]
+data = {}
+data["start_date_time"] = start_date_time.strftime("%m/%d/%Y, %H:%M:%S")
+data["end_date_time"] = end_date_time.strftime("%m/%d/%Y, %H:%M:%S")
+
+intervals_data = []
+
+start_hours_minutes = [datetime(2000, 1, 1, 9, 30),
+                       datetime(2000, 1, 1, 10, 00),
+                       datetime(2000, 1, 1, 10, 30),
+                       datetime(2000, 1, 1, 11, 00),
+                       datetime(2000, 1, 1, 11, 30),
+                       datetime(2000, 1, 1, 12, 00),
+                       datetime(2000, 1, 1, 12, 30),
+                       datetime(2000, 1, 1, 13, 00),
+                       datetime(2000, 1, 1, 13, 30),
+                       datetime(2000, 1, 1, 14, 00),
+                       datetime(2000, 1, 1, 14, 30),
+                       datetime(2000, 1, 1, 15, 00),
+                       datetime(2000, 1, 1, 15, 30)
+                       ]
+
 end_hours_minutes = datetime(2000, 1, 1, 16, 00)
 
 time_count = len(start_hours_minutes)
@@ -51,9 +78,17 @@ for i in range (time_count):
 
     dict = {"start_time":start_hours_minutes[i].strftime("%H:%M:%S"), "minimum_interval_in_minutes":min_interval, "minimum_percentage": min_percentage, }
     print (dict)
-    data.append(dict)
+    intervals_data.append(dict)
 
 
-filename = "drop_stats.json"
+data["intervals_data"] = intervals_data
 with open (filename, "w") as f:
     json.dump(data, f)
+
+
+seconds = time.time() - start_time
+
+mint, s = divmod(seconds, 60)
+h, m = divmod(mint, 60)
+
+print ("Elapsed time: %d hours :%02d minutes :%02d seconds" % (h, m, s))
