@@ -1,7 +1,6 @@
-rrsp_count = 3145
-inv_count = 1255
-tfsa_count = 680
-
+rrsp_count = 3134
+inv_count = 1232
+tfsa_count = 666
 
 price = float(input('Enter a price: '))
 stop = float(input('Enter stop percentage: '))

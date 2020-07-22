@@ -17,19 +17,24 @@ symbol = 'TQQQ'
 #symbol = 'URTY'
 #symbol = 'SOXL'
 
-OUT_DIR = "data"
-filename = join(OUT_DIR, symbol + "_drop_stats.json")
+DATA_DIR = "data"
 
 start_time = time.time()
 
 start_date_time = datetime(2020, 5, 1, 9, 00)
-end_date_time = datetime(2020, 7, 16, 00, 00)
+end_date_time = datetime(2020, 7, 22, 00, 00)
 
-file_op.ensure_dir_exists(OUT_DIR)
 
 data = {}
 data["start_date_time"] = start_date_time.strftime("%m/%d/%Y, %H:%M:%S")
 data["end_date_time"] = end_date_time.strftime("%m/%d/%Y, %H:%M:%S")
+
+date_dir = start_date_time.strftime("%m.%d.%Y") + "-" + end_date_time.strftime("%m.%d.%Y")
+OUT_DIR = join(DATA_DIR, symbol)
+#OUT_DIR = join(OUT_DIR, date_dir)
+file_op.ensure_dir_exists(OUT_DIR)
+
+filename = join(OUT_DIR, symbol + "_drop_stats.json")
 
 intervals_data = []
 
@@ -61,22 +66,24 @@ for i in range (time_count):
 
     min_interval = 0
     min_percentage = 0
+    sample_count = 0
 
     for interval in interval_range:
         is_data_available, dtn, vn, on, cn, hn, ln, c_v, c_o, c_c, c_h, c_l = db.get_etf_intraday_data_after_hours_minutes(symbol, start_date_time, end_date_time, interval, start_hours_minutes[i])
 
-
         if not is_data_available:
             print ("No data is available for " + start_hours_minutes[i].strftime("%H:%M:%S"))
             continue
-
+        
         print ("Analysing interval:" + str(interval))
         drop_list, percentages = drop_stats.get_drop_stats(cn)
         if (min(percentages) < min_percentage):
             min_percentage = min(percentages)
             min_interval = interval
+            sample_count = len(cn)
+            number_of_drops = len(drop_list)
 
-    dict = {"start_time":start_hours_minutes[i].strftime("%H:%M:%S"), "minimum_interval_in_minutes":min_interval, "minimum_percentage": min_percentage, }
+    dict = {"start_time":start_hours_minutes[i].strftime("%H:%M:%S"), "minimum_interval_in_minutes":min_interval, "minimum_percentage": min_percentage, "sample_count":sample_count, "number_of_drops":number_of_drops}
     print (dict)
     intervals_data.append(dict)
 

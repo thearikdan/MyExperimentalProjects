@@ -14,18 +14,24 @@ from os.path import join
 
 from utils.db import db
 
-OUT_DIR = "data"
+DATA_DIR = "data"
 
 symbol = 'TQQQ'
 #symbol = 'TNA'
 #symbol = 'URTY'
 #symbol = 'SOXL'
 
-with open(join(OUT_DIR, symbol + "_" + "drop_stats.json"), "r") as f:
+IN_DIR = join(DATA_DIR, symbol)
+with open(join(IN_DIR, symbol + "_" + "drop_stats.json"), "r") as f:
     data = json.load(f)
+
 
 start_date_time = datetime.strptime(data["start_date_time"], "%m/%d/%Y, %H:%M:%S")
 end_date_time = datetime.strptime(data["end_date_time"], "%m/%d/%Y, %H:%M:%S")
+
+date_dir = start_date_time.strftime("%m.%d.%Y") + "-" + end_date_time.strftime("%m.%d.%Y")
+OUT_DIR = join(IN_DIR, date_dir)
+
 
 
 intervals_data = data["intervals_data"]
@@ -51,7 +57,8 @@ for i in range (count):
         exit(0)
 
 
-    hist_range = range(-max_drop_perc, 0)
+    drop_step = 0.5
+    hist_range = np.arange(-max_drop_perc, 0, drop_step)
     drop_list, percentages = drop_stats.get_drop_stats(cn)
     hist = np.histogram(percentages, hist_range)
 
@@ -70,7 +77,8 @@ for i in range (count):
                 cond_prob[i][j] = h_j / h_i
 
     rows = list(range(-count, 0))
-    df = pd.DataFrame(data = cond_prob, index = rows, columns = rows)
+    rows_step = [row / 2 for row in rows]
+    df = pd.DataFrame(data = cond_prob, index = rows_step, columns = rows_step)
     name = symbol + "_" + start_hours_minutes_str + "_conditional_probabilities.csv"
     out_name = join(OUT_DIR, name)
     df.to_csv(out_name)
