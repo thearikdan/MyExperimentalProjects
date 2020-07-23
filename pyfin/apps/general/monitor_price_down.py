@@ -43,7 +43,7 @@ with open(settings_file_name) as json_file:
     settings = json.load(json_file)
 
 
-stop_price = 117.47
+stop_price = 109.74
 print ("Started monitoring for stop price " + str(stop_price))
 server = smtplib.SMTP( "smtp.gmail.com", 587 )
 server.starttls()

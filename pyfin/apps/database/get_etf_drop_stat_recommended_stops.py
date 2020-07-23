@@ -22,7 +22,7 @@ DATA_DIR = "data"
 start_time = time.time()
 
 start_date_time = datetime(2020, 5, 1, 9, 00)
-end_date_time = datetime(2020, 7, 22, 00, 00)
+end_date_time = datetime(2020, 7, 23, 00, 00)
 
 
 data = {}
