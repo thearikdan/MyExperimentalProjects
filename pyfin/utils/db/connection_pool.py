@@ -8,6 +8,7 @@ from psycopg2.pool import ThreadedConnectionPool
 from psycopg2 import extensions, OperationalError, IntegrityError
 import sys
 import os.path
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -197,22 +198,14 @@ class PostgresConnectionPool(AbstractDatabaseConnectionPool):
     def __init__(self,**kwargs):
         try:
             my_path = os.path.abspath(os.path.dirname(__file__))
-            settings_file_name = os.path.join(my_path, "../../database/database_settings.txt")
-            f = open(settings_file_name) #the path might not work for every app, should be added to sys.path
-            lines = f.readlines()
-            f.close()
-            host = lines[0].rstrip()
-#            host = "127.0.0.1"
-            dbname = lines[1].rstrip()
-            user = lines[2].rstrip()
-            passwd = lines[3].rstrip()
+            settings_file_name = os.path.join(my_path, "../security/settings.json")
+            with open(settings_file_name) as json_file:
+                settings = json.load(json_file)
 
-#            ReallyThreadedConnectionPool(5, 20, user=user,
-#                                         password=passwd,
-#                                         host=host,
-#                                         database=dbname)
-
-#            self.pconnect = ThreadedConnectionPool(1, poolsize, dsn=pdsn)
+            host = settings["server_name"]
+            dbname = settings["database_name"]
+            user = settings["database_user_name"]
+            passwd = settings["database_password"]
             self.pconnect = ThreadedConnectionPool(1, poolsize, user=user,
                                          password=passwd,
                                          host=host,
@@ -220,6 +213,7 @@ class PostgresConnectionPool(AbstractDatabaseConnectionPool):
         except:
             global _pgpool
             _pgpool = None
+            print('Database Connection Failed')
             raise ConnectorError('Database Connection Failed')
         maxsize = kwargs.pop('maxsize', None)
         self.kwargs = kwargs
