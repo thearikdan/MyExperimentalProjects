@@ -1,6 +1,0 @@
-1. Run "get_nasdaq_companies_from_wikipedia.py" script. It will create "NasdaqCompanies-Mar-03-2020.json" file with dictionaries of all nasdaq companies from wiki.
-2. Run "get_new_nasdaq_companies_data.py" to extract all symbols from the json dictionary file. It will create "new_nasdaq_companies.json" file with 
-3. Export existing industries from database
-4. Run "new_industries.py" to identify new industries
-5. Run "populate_nasdaq_list_industries_table from_file.py" to insert new industries
-6. Run "populate_file_list_companies_table.py" to insert new companies.

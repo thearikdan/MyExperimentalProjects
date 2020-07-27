@@ -1,2 +1,0 @@
-1. Clean up existing database. There are some symbols that never get any price downloded. In order to identify these symbols, run find_companies_with_empty_records.py. The utility will create a text file "empty_record_company_ids.txt"
-2. Run "remove_empty_companies_from_db.py" to remove the records of cthe found companies from the database.
