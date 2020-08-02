@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Post
 
 def home(request):
-	return render(request, 'marketsdataintelligence/home.html')
+	context = {
+	'posts': Post.objects.all()
+	}
+	return render(request, 'marketsdataintelligence/home.html', context)
 
 def about(request):
-	return HttpResponse('<h1>About Markets data intelligence</h1>')                                   
+	return render(request, 'marketsdataintelligence/about.html', {'title':'About'})        
