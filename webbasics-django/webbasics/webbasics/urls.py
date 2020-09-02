@@ -30,9 +30,4 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    print("Static URL:")
-    print (settings.MEDIA_URL)
-    print("Static ROOT:")
-    print (settings.MEDIA_ROOT)
-    
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
