@@ -1,5 +1,7 @@
 #!/bin/bash
-ROOT_DIR=`jq '.root_directory' settings.json`
+
+json_path="security/settings.json"
+ROOT_DIR=`jq '.root_directory' $json_path`
 echo $ROOT_DIR
-PSW=`jq '.database_password' settings.json`
+PSW=`jq '.database_password' $json_path`
 echo $PSW
