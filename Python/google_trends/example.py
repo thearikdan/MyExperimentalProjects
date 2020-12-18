@@ -5,7 +5,19 @@ from pytrends.request import TrendReq
 
 pytrend = TrendReq()
 
-pytrend.build_payload(kw_list=["TQQQ"])
+#Categories
+#Business and Industrial - 12
+#Business news - 784
+pytrend.build_payload(kw_list=["TQQQ"], timeframe='now 7-d', cat=12)
+
+df = pytrend.interest_over_time()
+df.to_html("interest_over_time.html")
+print (df)
+
+'''
+df = pytrend.get_historical_interest(keywords=['TQQQ'], year_start=2018, month_start=1, day_start=1, hour_start=0, year_end=2020, month_end=11, day_end=15, hour_end=0)
+df.to_html("historical_interest.html")
+print (df)
 
 df = pytrend.interest_by_region()
 print (df)
@@ -33,3 +45,4 @@ df = pytrend.today_searches(pn='US')
 
 df = pytrend.top_charts(2020, hl='en-US', tz=300, geo='GLOBAL')
 #print (df.head())
+'''
