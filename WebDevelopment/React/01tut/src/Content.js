@@ -1,33 +1,20 @@
-export const Content = () => {
-         const handleNameChange = () => {
-      
-         const names = ["Ara", "Kevin", "David"]
-         const int = Math.floor(Math.random() * 3)
-         return names[int]
-        }
+import ItemList from './ItemList';
 
-        const handleClick = () => {
-          console.log('You clicked it')
-        }
+const Content = ({items, handleCheck, handleDelete}) => {
 
-        const handleClick2 = (name) => {
-          console.log(`${name} was clicked`)
-        }
-        
-        const handleClick3 = (e) => {
-          console.log(e.target)
-        }
-
-        return (
-    <main>
-        <p onDoubleClick={handleClick}>
-            Hello {handleNameChange()}!
-        </p>  
-        <button onClick={handleClick}>Click it</button>
-        <button onClick={() => {handleClick2('Dave')}}>Click it</button>
-        <button onClick={(e) => {handleClick3(e)}}>Click it</button>
-    </main>    
-  )
+    return (
+        <main>
+            {items.length ? (
+                <ItemList
+                    items = {items}
+                    handleCheck = {handleCheck}
+                    handleDelete = {handleDelete}
+                />
+            ) : (
+                <p style={{ marginTop: '2rem' }}>Your list is empty.</p>
+            )}
+        </main>
+    )
 }
 
-export default Content;
+export default Content
