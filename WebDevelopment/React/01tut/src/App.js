@@ -8,6 +8,7 @@ function App() {
   const [items, setItems] = useState(JSON.parse(localStorage.getItem('shoppinglist')));
 
   const [newItem, setNewItem] = useState('')
+  const [search, setSearch] = useState('')
 
   const setAndSaveItems = (newItems) => {
     setItems(newItems);
