@@ -10,7 +10,7 @@ function FetchAPIMultipleImages() {
   // this useEffect will run once
   // similar to componentDidMount()
   useEffect(() => {
-    const url = "https://api.randomuser.me/?results=5";
+    const url = "https://api.randomuser.me/?results=3";
     fetch(url)
       .then((res) => res.json())
       .then(
