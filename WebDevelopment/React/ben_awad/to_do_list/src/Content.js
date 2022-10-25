@@ -1,9 +1,8 @@
 import React from "react";
 import ToDo from "./ToDo";
 
-function Content({ items, toggleComplete, show }) {
+function Content({ items, toggleComplete, handleDelete, show }) {
   let showItems = [];
-  console.log({ show });
   if (show === "all") {
     showItems = items;
   } else if (show === "active") {
@@ -18,6 +17,7 @@ function Content({ items, toggleComplete, show }) {
         <ToDo
           key={item.id}
           itemToggleComplete={() => toggleComplete(item.id)}
+          onDelete={() => handleDelete(item.id)}
           todo={item}
         />
       ))}

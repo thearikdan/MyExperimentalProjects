@@ -29,10 +29,21 @@ function App() {
     setTodos(newTodo);
   };
 
+  const handleDelete = (id) => {
+    console.log("handleDelete");
+    const newTodo = todos.filter((todo) => todo.id != id);
+    setTodos(newTodo);
+  };
+
   return (
     <div className="App">
       <Header addTodo={addTodo} />
-      <Content items={todos} toggleComplete={toggleComplete} show={show} />
+      <Content
+        items={todos}
+        toggleComplete={toggleComplete}
+        handleDelete={handleDelete}
+        show={show}
+      />
       <Footer items={todos} setShow={setShow} />
     </div>
   );
