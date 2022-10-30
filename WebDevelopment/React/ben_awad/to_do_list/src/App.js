@@ -8,6 +8,7 @@ import { useState } from "react";
 function App() {
   const [todos, setTodos] = useState([]);
   const [show, setShow] = useState("all");
+  const [toggleAllComplete, setToggleAllComplete] = useState(false);
 
   const addTodo = (todo) => {
     const newTodos = [todo, ...todos];
@@ -30,8 +31,23 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    console.log("handleDelete");
-    const newTodo = todos.filter((todo) => todo.id != id);
+    const newTodo = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodo);
+  };
+
+  const handleDeleteCompleted = () => {
+    const newTodo = todos.filter((todo) => !todo.complete);
+    setTodos(newTodo);
+  };
+
+  const handleToggleAllComplete = () => {
+    setToggleAllComplete(!toggleAllComplete);
+    const newTodo = todos.map((todo) => {
+      return {
+        ...todo,
+        complete: toggleAllComplete,
+      };
+    });
     setTodos(newTodo);
   };
 
@@ -44,7 +60,12 @@ function App() {
         handleDelete={handleDelete}
         show={show}
       />
-      <Footer items={todos} setShow={setShow} />
+      <Footer
+        items={todos}
+        setShow={setShow}
+        handleDeleteCompleted={handleDeleteCompleted}
+        handleToggleAllComplete={handleToggleAllComplete}
+      />
     </div>
   );
 }
