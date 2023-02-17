@@ -1,11 +1,7 @@
-def fib(n):
-    if n == 0:
-        number = 0
-    elif n == 1:
-        number = 1
-    else:
-        number = fib(n-1) + fib(n-2)
-    return number
+def fib(n:int)->int:
+    if (n == 0 or n == 1):
+        return 1
 
-for i in range (10):
-    print (fib(i))
+    return fib(n-1) + fib(n-2)
+
+print (fib(5))
