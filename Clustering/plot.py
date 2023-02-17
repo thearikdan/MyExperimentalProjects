@@ -13,3 +13,5 @@ blobs, _ = data.make_blobs(n_samples=50, centers=[(-0.75,2.25), (1.0, 2.0)], clu
 test_data = np.vstack([moons, blobs])
 plt.scatter(test_data.T[0], test_data.T[1], color='b', **plot_kwds)
 plt.show()
+
+#An insignificant change for testing pull request
