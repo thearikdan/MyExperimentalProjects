@@ -33,3 +33,5 @@ cluster_member_colors = [sns.desaturate(x, p) for x, p in
                          zip(cluster_colors, clusterer.probabilities_)]
 plt.scatter(*test_data.T, s=50, linewidth=0, c=cluster_member_colors, alpha=0.25)
 plt.show()
+
+#Pull request comment #2
